@@ -6,7 +6,11 @@ Run `python run_experiment.py --scenario all --reps 1000 --mode quick` for
 fast marker-only screening (NOT valid for final autosomal acceptance).
 """
 import argparse
+import bz2
 import csv
+import gzip
+import hashlib
+import io
 import json
 from dataclasses import asdict, replace
 from pathlib import Path
@@ -15,6 +19,10 @@ import time
 import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parent/'src'))
 from epi_pulse import Config, run
+from science_contract import load_contract
+
+RESULT_SCHEMA_VERSION = 'pulse-result-v1'
+MODEL = 'panmictic_pulse_reciprocal_epistasis'
 
 SCENARIOS = {
  'neutral': dict(),
@@ -70,6 +78,51 @@ def wilson_interval(successes, n, z=1.959963984540054):
     delta=z*np.sqrt(p*(1-p)/n + z*z/(4*n*n))/den
     return [float(max(0,mid-delta)),float(min(1,mid+delta))]
 
+def run_mode(cfg, mode):
+    """Project raw engine statistics onto the requested evaluation policy.
+
+    auto_mod remains the raw first-pass diagnostic. The historical field
+    auto_mod_at_50ka denotes the requested horizon (50 ka only at default gens).
+    """
+    if mode not in ('full', 'quick', 'adaptive'):
+        raise ValueError('mode must be full/quick/adaptive')
+    cfg = replace(cfg, stop_when_absorbed=mode != 'full')
+    result = run(cfg)
+    if mode == 'quick':
+        result.update(auto_mod_at_50ka='NOT_EVALUATED_QUICK',
+                      auto_evaluation_status='not_evaluated_quick',
+                      target_auto='', joint_and_target='')
+    elif mode == 'adaptive' and result['p10_joint'] == 0:
+        result.update(auto_mod_at_50ka='NOT_EVALUATED_EVENT_IMPOSSIBLE',
+                      auto_evaluation_status='not_evaluated_event_impossible',
+                      target_auto='', joint_and_target=0.0)
+    else:
+        final = result
+        if mode == 'adaptive':
+            final = run(replace(cfg, stop_when_absorbed=False),
+                        accelerate_after_absorption=True)
+            if abs(final['p10_joint'] - result['p10_joint']) > 1e-12:
+                raise RuntimeError('Early absorption check failed: marker results changed')
+        result.update(auto_mod_at_50ka=final['auto_mod'],
+                      auto_evaluation_status='evaluated_at_target',
+                      target_auto=final['target_auto'],
+                      joint_and_target=float(result['p10_joint']) * int(final['target_auto']))
+    result['auto_generations_completed'] = (
+        final['generations_completed']
+        if result['auto_evaluation_status'] == 'evaluated_at_target' else '')
+    return result
+
+def target_metadata(cfg, contract):
+    """Model chronology in generations before present, without historical inference."""
+    parameters = {entry['id']: entry['value'] for entry in contract['reference_parameters']}
+    mixture = parameters['mixture_generations_ago']
+    years = parameters['years_per_generation']
+    return dict(result_schema_version=RESULT_SCHEMA_VERSION, model=MODEL,
+                science_contract_version=contract['contract_version'],
+                target_generation=cfg.gens, mixture_generations_ago=mixture,
+                years_per_generation=years, target_generations_ago=mixture-cfg.gens,
+                target_age_ka=(mixture-cfg.gens)*years/1000)
+
 def main():
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--scenario',choices=['all',*SCENARIOS],default='all')
@@ -104,12 +157,23 @@ def main():
     summary=[]
     all_rows=[]
     posterior=None
+    posterior_sha256=''
     if args.mt_posterior:
-        a=np.loadtxt(args.mt_posterior,comments='#')
+        posterior_bytes=Path(args.mt_posterior).read_bytes()
+        posterior_sha256=hashlib.sha256(posterior_bytes).hexdigest()
+        # Preserve loadtxt's filename-based gzip/bzip2 handling while hashing
+        # exactly the file bytes used by this execution.
+        payload=posterior_bytes
+        if str(args.mt_posterior).endswith('.gz'):
+            payload=gzip.decompress(payload)
+        elif str(args.mt_posterior).endswith('.bz2'):
+            payload=bz2.decompress(payload)
+        a=np.loadtxt(io.BytesIO(payload),comments='#')
         posterior=a[:,0] if a.ndim==2 else a
         print(f'Loaded {len(posterior)} SI1 mtDNA fitness gap posterior values',flush=True)
     base=Config(N=args.N,f=args.f,male_frac=args.male_frac,gens=args.gens,
                 stop_when_absorbed=args.mode!='full')
+    chronology=target_metadata(base, load_contract())
     for j,name in enumerate(names):
         cfg=replace(base,**{**SCENARIOS[name],**overrides})
         rows=[]
@@ -117,29 +181,21 @@ def main():
         for i in range(args.reps):
             # Paired-replicate seeds: all scenarios share the same replicate index.
             c=replace(cfg,seed=args.seed+i)
+            mt_source='fixed' if posterior is None else 'posterior_not_applied'
+            draw_seed=''
             if posterior is not None and c.s_mt != 0:
-                draw_rng=np.random.default_rng(args.seed+i+27383)
+                mt_source='posterior_draw'
+                draw_seed=args.seed+i+27383
+                draw_rng=np.random.default_rng(draw_seed)
                 c=replace(c,s_mt=float(draw_rng.choice(posterior)))
-            res=run(c)
-            if args.mode=='adaptive' and res['p10_joint']>0:
-                full=run(replace(c,stop_when_absorbed=False), accelerate_after_absorption=True)
-                if abs(full['p10_joint']-res['p10_joint'])>1e-12:
-                    raise RuntimeError('Early absorption check failed: marker results changed')
-                res['auto_mod_at_50ka']=full['auto_mod']
-                res['target_auto']=full['target_auto']
-            elif args.mode=='adaptive':
-                # Proof by absorption/terminal time: if p10 is already zero, the
-                # ten-male event is impossible at the sampling generation.
-                res['auto_mod_at_50ka']='NOT_EVALUATED_EVENT_IMPOSSIBLE'
-                res['target_auto']=''
+            res=run_mode(c, args.mode)
             row={'scenario':name,'rep':i,'seed':c.seed,'mode':args.mode,
                  'initial_f':args.f,'N':args.N,'gens_requested':args.gens,'s_mt_realized':c.s_mt,
+                 **chronology,
+                 'config_realized':json.dumps(asdict(c),sort_keys=True,separators=(',', ':'),allow_nan=False),
+                 'mt_selection_source':mt_source,'mt_posterior_sha256':posterior_sha256,
+                 'mt_posterior_draw_seed':draw_seed,
                  **res}
-            if args.mode=='quick':
-                row['target_auto']=''  # Early stopping INVALIDATES ancestry at 50 ka
-                row['joint_and_target']=''
-            else:
-                row['joint_and_target']=float(res['p10_joint']) * int(bool(res['target_auto']))
             rows.append(row)
         keys=['p10_joint','mt_mod','Y_mod','joint_fixed']
         if args.mode=='full':keys.append('auto_mod')
@@ -168,7 +224,8 @@ def main():
     jsonpath=output.with_suffix('.json')
     with jsonpath.open('w') as fobj:
         json.dump(dict(meta=dict(vars(args),scenarios={k:{**SCENARIOS[k],**overrides} for k in names},
-            definition='P(ten sampled males each modern mt AND modern Y at 50 ka)'),
+            **chronology,
+            definition=f'P(ten sampled males each modern mt AND modern Y at generation {args.gens} after pulse)'),
             summary=summary),fobj,indent=2)
     print('Wrote:',output,'and',jsonpath,flush=True)
 
