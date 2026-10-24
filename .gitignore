@@ -1,0 +1,17 @@
+# Local configuration and generated files
+/.aws/
+/.codex/
+/.agents/
+.venv/
+__pycache__/
+*.py[cod]
+*.bundle
+
+# External scientific resources: redistribution rights are not established.
+/reich_study/
+/reich_experiment_v2/source/
+/reich_experiment_v2/src/reich_panmictic_original.py
+
+# Local simulation outputs
+/reich_experiment_v2/results/
+/reich_experiment_v2/figures/

@@ -1,0 +1,27 @@
+{
+  "experiment": "Reich SI3 pulse with bidirectional reciprocal epistasis",
+  "source_paper": "David Reich, preprint bioRxiv 10.64898/2026.03.11.711219, v2 October 13 2026",
+  "inputs": "User-provided SI1/SI2/SI3/SI4 PDFs and code, SI1 mtDNA posterior file",
+  "python_version": "3.13.5",
+  "numpy_version": "2.3.5",
+  "model_engine_sha256": "95f854cb0a8eeef33810168a487d5b998a90f4f69f9d873508a1f67407deb641",
+  "extension_sha256": "d941b407df579b0bd35307e6d536d3bf750747a104aeabdc4f8cb25a184f807d",
+  "seed": 62026,
+  "trial_reps": {
+    "reich_point": 160,
+    "symmetric_1pct": 90,
+    "direction_mod_5pct": 90,
+    "direction_arch_5pct": 90,
+    "neutral": 80
+  },
+  "C_comparison": "NOT EXECUTED",
+  "status": "EXPLORATORY; does not establish biologically plausible epistasis nor challenge paper conclusively",
+  "revision": "v2-directional-epistasis-2026-10-24",
+  "updates": [
+    "Eight Reich-anchored symmetric/directional epistasis scenarios",
+    "Composable four-coefficient CLI overrides",
+    "compare_runs.py Fisher+Wilson analysis",
+    "14 automated unit tests",
+    "Imported user 500-run benchmark results"
+  ]
+}
