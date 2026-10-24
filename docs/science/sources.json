@@ -1,0 +1,103 @@
+{
+  "schema_version": "1",
+  "sources": [
+    {
+      "id": "reich-preprint",
+      "path": "reich_study/2026.03.11.711219v2.full.pdf",
+      "title": "Hypothesis: A modern human range expansion ~300,000 years ago had a critical role in Neandertal origins",
+      "sha256": "03292afc6fda05d546e1e4d5747d7b7ca911f53d055a0abf20be70e8c74bbe75",
+      "publication_status": "preprint_not_peer_reviewed",
+      "parent_id": null,
+      "version": {
+        "content_id": "sha256:03292afc6fda05d546e1e4d5747d7b7ca911f53d055a0abf20be70e8c74bbe75",
+        "label": "v2",
+        "posted_date": "2026-10-13",
+        "basis": "Local filename and historical manifest identify v2; page 1 states the posted date."
+      },
+      "identification": {
+        "page": 1,
+        "heading": "Hypothesis: A modern human range expansion",
+        "method": "local_pdf_text_review",
+        "status_evidence": "which was not certified by peer review",
+        "date_evidence": "this version posted October 13, 2026"
+      },
+      "doi": "10.64898/2026.03.11.711219"
+    },
+    {
+      "id": "SI1",
+      "path": "reich_study/media-1.pdf",
+      "title": "Biological constraints mean that in the absence of a range expansion, fixation of early modern human lineage mtDNA and Y chromosomes in Neandertals is unlikely",
+      "sha256": "fdacf60b4e3528a91c324abd00cc0f7dc7f50e2e43b4254ec30e6ec58cea7056",
+      "publication_status": "preprint_not_peer_reviewed",
+      "parent_id": "reich-preprint",
+      "version": {
+        "content_id": "sha256:fdacf60b4e3528a91c324abd00cc0f7dc7f50e2e43b4254ec30e6ec58cea7056",
+        "label": "local_content_version",
+        "posted_date": null,
+        "basis": "Local supplement identified by its page-1 heading; no standalone revision number or date established. Association with the supplied preprint is local, not independently certified."
+      },
+      "identification": {
+        "page": 1,
+        "heading": "Supplementary Information section 1",
+        "method": "local_pdf_text_review"
+      }
+    },
+    {
+      "id": "SI2",
+      "path": "reich_study/media-3.pdf",
+      "title": "No evidence for a Dobzhansky-Muller Incompatibility between Denisovan mtDNA and modern human nuclear DNA",
+      "sha256": "57d78b3aeeb9ff474b5c67ae55590af966656d5e984544a178fd3ece8338829c",
+      "publication_status": "preprint_not_peer_reviewed",
+      "parent_id": "reich-preprint",
+      "version": {
+        "content_id": "sha256:57d78b3aeeb9ff474b5c67ae55590af966656d5e984544a178fd3ece8338829c",
+        "label": "local_content_version",
+        "posted_date": null,
+        "basis": "Local supplement identified by its page-1 heading; no standalone revision number or date established. Association with the supplied preprint is local, not independently certified."
+      },
+      "identification": {
+        "page": 1,
+        "heading": "Supplementary Information section 2",
+        "method": "local_pdf_text_review"
+      }
+    },
+    {
+      "id": "SI3",
+      "path": "reich_study/media-5.pdf",
+      "title": "Modern human range expansions predict fixation of modern mtDNA and Y in Neandertals",
+      "sha256": "130ae34e6e653123f43e5d146ed43746d22243ac456620f930d0ca452f0c737b",
+      "publication_status": "preprint_not_peer_reviewed",
+      "parent_id": "reich-preprint",
+      "version": {
+        "content_id": "sha256:130ae34e6e653123f43e5d146ed43746d22243ac456620f930d0ca452f0c737b",
+        "label": "local_content_version",
+        "posted_date": null,
+        "basis": "Local supplement identified by its page-1 heading; no standalone revision number or date established. Association with the supplied preprint is local, not independently certified."
+      },
+      "identification": {
+        "page": 1,
+        "heading": "Supplementary Information section 3",
+        "method": "local_pdf_text_review"
+      }
+    },
+    {
+      "id": "SI4",
+      "path": "reich_study/media-7.pdf",
+      "title": "A catalog of mutations that may have been important in uniquely modern human biology",
+      "sha256": "72f1f5c316b96441624fd3f4926299a8480ec869efc0e5868e994b4e2e108ad5",
+      "publication_status": "preprint_not_peer_reviewed",
+      "parent_id": "reich-preprint",
+      "version": {
+        "content_id": "sha256:72f1f5c316b96441624fd3f4926299a8480ec869efc0e5868e994b4e2e108ad5",
+        "label": "local_content_version",
+        "posted_date": null,
+        "basis": "Local supplement identified by its page-1 heading; no standalone revision number or date established. Association with the supplied preprint is local, not independently certified."
+      },
+      "identification": {
+        "page": 1,
+        "heading": "Supplementary Information section 4",
+        "method": "local_pdf_text_review"
+      }
+    }
+  ]
+}

@@ -1,0 +1,261 @@
+{
+  "schema_version": "1",
+  "resources": [
+    {
+      "path": "reich_experiment_v2/source/mechanisms_code/README.md",
+      "sha256": "507d561da271739fc4cbed75cffde83a2477a30727e6b00f8a47d975ca9ca2eb",
+      "redistribution": {
+        "status": "not_established",
+        "basis": "Ressource fournie localement ; aucune preuve d'autorisation de redistribution vérifiée dans cet inventaire."
+      }
+    },
+    {
+      "path": "reich_experiment_v2/source/mechanisms_code/cluster/joint_run.py",
+      "sha256": "25694097d1bf3515c7cd7a275418f8a91d313dd5c6d431c3e918e7a8b71ea433",
+      "redistribution": {
+        "status": "not_established",
+        "basis": "Ressource fournie localement ; aucune preuve d'autorisation de redistribution vérifiée dans cet inventaire."
+      }
+    },
+    {
+      "path": "reich_experiment_v2/source/mechanisms_code/cluster/panm4_collect.py",
+      "sha256": "32deb287a5a79b15603e7bbf74930579250ace5055cfc697b59cd4c8c96c7130",
+      "redistribution": {
+        "status": "not_established",
+        "basis": "Ressource fournie localement ; aucune preuve d'autorisation de redistribution vérifiée dans cet inventaire."
+      }
+    },
+    {
+      "path": "reich_experiment_v2/source/mechanisms_code/cluster/panm4_run.py",
+      "sha256": "94bea81a19c39087d092c2169c24c6f4c9ae68ebc0653b27b874cec6564798d4",
+      "redistribution": {
+        "status": "not_established",
+        "basis": "Ressource fournie localement ; aucune preuve d'autorisation de redistribution vérifiée dans cet inventaire."
+      }
+    },
+    {
+      "path": "reich_experiment_v2/source/mechanisms_code/cluster/panm4_submit.py",
+      "sha256": "ebc5160616bea0d279fddaf0022b8386dc9f77d96f787f2db27c2b28d0287253",
+      "redistribution": {
+        "status": "not_established",
+        "basis": "Ressource fournie localement ; aucune preuve d'autorisation de redistribution vérifiée dans cet inventaire."
+      }
+    },
+    {
+      "path": "reich_experiment_v2/source/mechanisms_code/cluster/panmictic_sim.py",
+      "sha256": "95f854cb0a8eeef33810168a487d5b998a90f4f69f9d873508a1f67407deb641",
+      "redistribution": {
+        "status": "not_established",
+        "basis": "Ressource fournie localement ; aucune preuve d'autorisation de redistribution vérifiée dans cet inventaire."
+      }
+    },
+    {
+      "path": "reich_experiment_v2/source/mechanisms_code/cluster/ysupp_sim.py",
+      "sha256": "5ec4b1610e84fdf28bf2744b5cda580ba960f8fd405c72159ef19e37f48f4766",
+      "redistribution": {
+        "status": "not_established",
+        "basis": "Ressource fournie localement ; aucune preuve d'autorisation de redistribution vérifiée dans cet inventaire."
+      }
+    },
+    {
+      "path": "reich_experiment_v2/source/mechanisms_code/mt_gap_posterior_pooled_rna.txt",
+      "sha256": "4342c0f5eeefbef732179a6100140e026cbe59808e16d8aaada14ec5a21d2705",
+      "redistribution": {
+        "status": "not_established",
+        "basis": "Ressource fournie localement ; aucune preuve d'autorisation de redistribution vérifiée dans cet inventaire."
+      }
+    },
+    {
+      "path": "reich_experiment_v2/source/muller_ratchet_code/README.md",
+      "sha256": "4866774c6319ca1e70ab474f79a60dd43a2a8ea82da4a07435ee888fec1f09df",
+      "redistribution": {
+        "status": "not_established",
+        "basis": "Ressource fournie localement ; aucune preuve d'autorisation de redistribution vérifiée dans cet inventaire."
+      }
+    },
+    {
+      "path": "reich_experiment_v2/source/muller_ratchet_code/fixation_curves_code/README.md",
+      "sha256": "eddb0132d3bcafb010a84e32e524d23dcecd7212ae8c0b0832d68a9b92583ab1",
+      "redistribution": {
+        "status": "not_established",
+        "basis": "Ressource fournie localement ; aucune preuve d'autorisation de redistribution vérifiée dans cet inventaire."
+      }
+    },
+    {
+      "path": "reich_experiment_v2/source/muller_ratchet_code/fixation_curves_code/fixation_curves_mtdna.csv",
+      "sha256": "1f5a261c53f79c757824d950b022bb4cb2e6b5ac2cda263ef6cdfa13dc3ff196",
+      "redistribution": {
+        "status": "not_established",
+        "basis": "Ressource fournie localement ; aucune preuve d'autorisation de redistribution vérifiée dans cet inventaire."
+      }
+    },
+    {
+      "path": "reich_experiment_v2/source/muller_ratchet_code/fixation_curves_code/panm3_collect.py",
+      "sha256": "ca931c221783fdda8ea9e40c41026763216b6bf9f7e16bc7d9764caaaeddfc41",
+      "redistribution": {
+        "status": "not_established",
+        "basis": "Ressource fournie localement ; aucune preuve d'autorisation de redistribution vérifiée dans cet inventaire."
+      }
+    },
+    {
+      "path": "reich_experiment_v2/source/muller_ratchet_code/fixation_curves_code/panm3_run.py",
+      "sha256": "0aeb02586037bb154d3d9f9a83b365a0db8a24c5718f1827dae0a71e3c8ad289",
+      "redistribution": {
+        "status": "not_established",
+        "basis": "Ressource fournie localement ; aucune preuve d'autorisation de redistribution vérifiée dans cet inventaire."
+      }
+    },
+    {
+      "path": "reich_experiment_v2/source/muller_ratchet_code/fixation_curves_code/panm3_submit.py",
+      "sha256": "53a6a8019bf99ca14dcbf917c0bc9e276e708ad529b3c4fbb0e1085dc3adfff9",
+      "redistribution": {
+        "status": "not_established",
+        "basis": "Ressource fournie localement ; aucune preuve d'autorisation de redistribution vérifiée dans cet inventaire."
+      }
+    },
+    {
+      "path": "reich_experiment_v2/source/muller_ratchet_code/fixation_curves_code/panmictic_sim.py",
+      "sha256": "1659f3c2d9f09523f4b08bba55bbbe802edddb62de82f7383b56830bd95d959a",
+      "redistribution": {
+        "status": "not_established",
+        "basis": "Ressource fournie localement ; aucune preuve d'autorisation de redistribution vérifiée dans cet inventaire."
+      }
+    },
+    {
+      "path": "reich_experiment_v2/source/muller_ratchet_code/fixation_curves_code/requirements.txt",
+      "sha256": "c6f8bc70b65508ef9f4ba126981126fff07d5e8bc17ad8ced50591d2a3760af4",
+      "redistribution": {
+        "status": "not_established",
+        "basis": "Ressource fournie localement ; aucune preuve d'autorisation de redistribution vérifiée dans cet inventaire."
+      }
+    },
+    {
+      "path": "reich_experiment_v2/source/muller_ratchet_code/fixation_curves_code/run_local.py",
+      "sha256": "d73b09841a4b7a58777880c20e164a9f6da36769a6c63efc4566408a2a6c1382",
+      "redistribution": {
+        "status": "not_established",
+        "basis": "Ressource fournie localement ; aucune preuve d'autorisation de redistribution vérifiée dans cet inventaire."
+      }
+    },
+    {
+      "path": "reich_experiment_v2/src/reich_panmictic_original.py",
+      "sha256": "95f854cb0a8eeef33810168a487d5b998a90f4f69f9d873508a1f67407deb641",
+      "redistribution": {
+        "status": "not_established",
+        "basis": "Ressource fournie localement ; aucune preuve d'autorisation de redistribution vérifiée dans cet inventaire."
+      }
+    },
+    {
+      "path": "reich_study/2026.03.11.711219v2.full.pdf",
+      "sha256": "03292afc6fda05d546e1e4d5747d7b7ca911f53d055a0abf20be70e8c74bbe75",
+      "redistribution": {
+        "status": "not_established",
+        "basis": "Ressource fournie localement ; aucune preuve d'autorisation de redistribution vérifiée dans cet inventaire."
+      }
+    },
+    {
+      "path": "reich_study/experience_reich_epistasie_reproductible.zip",
+      "sha256": "fa2202b7072d2d8010fd7e389d52864b0467d2ca0e86fd766bf272d1dc40b833",
+      "redistribution": {
+        "status": "not_established",
+        "basis": "Ressource fournie localement ; aucune preuve d'autorisation de redistribution vérifiée dans cet inventaire."
+      }
+    },
+    {
+      "path": "reich_study/experience_reich_epistasie_v2.zip",
+      "sha256": "19e8def4dc0bed8d9778fc38e66c5eda07c5d816353224d2eadd60b302ad38c3",
+      "redistribution": {
+        "status": "not_established",
+        "basis": "Ressource fournie localement ; aucune preuve d'autorisation de redistribution vérifiée dans cet inventaire."
+      }
+    },
+    {
+      "path": "reich_study/media-1.pdf",
+      "sha256": "fdacf60b4e3528a91c324abd00cc0f7dc7f50e2e43b4254ec30e6ec58cea7056",
+      "redistribution": {
+        "status": "not_established",
+        "basis": "Ressource fournie localement ; aucune preuve d'autorisation de redistribution vérifiée dans cet inventaire."
+      }
+    },
+    {
+      "path": "reich_study/media-10.gz",
+      "sha256": "ca581f61a78f17f58e1bc5a4f9b3bae2b2c52e8efe461c796fb588d2b72a23ca",
+      "redistribution": {
+        "status": "not_established",
+        "basis": "Ressource fournie localement ; aucune preuve d'autorisation de redistribution vérifiée dans cet inventaire."
+      }
+    },
+    {
+      "path": "reich_study/media-11.tsv",
+      "sha256": "1377981421b871a41ca720bf391d12520d67bce619bfc219c7a94caaed735f6f",
+      "redistribution": {
+        "status": "not_established",
+        "basis": "Ressource fournie localement ; aucune preuve d'autorisation de redistribution vérifiée dans cet inventaire."
+      }
+    },
+    {
+      "path": "reich_study/media-2.zip",
+      "sha256": "b5100143af426c02c19c3a636e7dc598b767270aef1cbd24fe1b33145991f5db",
+      "redistribution": {
+        "status": "not_established",
+        "basis": "Ressource fournie localement ; aucune preuve d'autorisation de redistribution vérifiée dans cet inventaire."
+      }
+    },
+    {
+      "path": "reich_study/media-3.pdf",
+      "sha256": "57d78b3aeeb9ff474b5c67ae55590af966656d5e984544a178fd3ece8338829c",
+      "redistribution": {
+        "status": "not_established",
+        "basis": "Ressource fournie localement ; aucune preuve d'autorisation de redistribution vérifiée dans cet inventaire."
+      }
+    },
+    {
+      "path": "reich_study/media-4.zip",
+      "sha256": "4cad0b8b458c2d1b23de1caae35a8d60f5fbe996cc377837ec745f032750e365",
+      "redistribution": {
+        "status": "not_established",
+        "basis": "Ressource fournie localement ; aucune preuve d'autorisation de redistribution vérifiée dans cet inventaire."
+      }
+    },
+    {
+      "path": "reich_study/media-5.pdf",
+      "sha256": "130ae34e6e653123f43e5d146ed43746d22243ac456620f930d0ca452f0c737b",
+      "redistribution": {
+        "status": "not_established",
+        "basis": "Ressource fournie localement ; aucune preuve d'autorisation de redistribution vérifiée dans cet inventaire."
+      }
+    },
+    {
+      "path": "reich_study/media-6.zip",
+      "sha256": "e252748b34f9bde896c4d9aeec343ce1a6ea08eac4924fa4dc9e412835745f3f",
+      "redistribution": {
+        "status": "not_established",
+        "basis": "Ressource fournie localement ; aucune preuve d'autorisation de redistribution vérifiée dans cet inventaire."
+      }
+    },
+    {
+      "path": "reich_study/media-7.pdf",
+      "sha256": "72f1f5c316b96441624fd3f4926299a8480ec869efc0e5868e994b4e2e108ad5",
+      "redistribution": {
+        "status": "not_established",
+        "basis": "Ressource fournie localement ; aucune preuve d'autorisation de redistribution vérifiée dans cet inventaire."
+      }
+    },
+    {
+      "path": "reich_study/media-8.zip",
+      "sha256": "696c3440e8d5271e438a1ec93e33142800fda8d4b64600ee8e7b99409a8a4239",
+      "redistribution": {
+        "status": "not_established",
+        "basis": "Ressource fournie localement ; aucune preuve d'autorisation de redistribution vérifiée dans cet inventaire."
+      }
+    },
+    {
+      "path": "reich_study/media-9.xlsx",
+      "sha256": "c40da222e420e7b216043d6c1c0af0bba17f70f2cfdb198e7ccf9e42413e06e0",
+      "redistribution": {
+        "status": "not_established",
+        "basis": "Ressource fournie localement ; aucune preuve d'autorisation de redistribution vérifiée dans cet inventaire."
+      }
+    }
+  ]
+}

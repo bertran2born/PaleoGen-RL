@@ -1,0 +1,319 @@
+{
+  "schema_version": "1",
+  "contract_version": "science-observations-v1",
+  "timeline": {
+    "elapsed_generations": 6993,
+    "target_age_ka": 50
+  },
+  "observations": [
+    {
+      "id": "sampled_uniparental_pattern",
+      "status": "observation",
+      "definition": "Les Neandertaliens échantillonnés portent des lignées mtDNA et Y apparentées aux humains modernes ; cela ne démontre pas une fixation dans toute la population passée.",
+      "unit": "lineage_pattern",
+      "sampling": "Individus anciens séquencés rapportés par SI3 ; ni recensement ni échantillon expérimental commun de dix mâles.",
+      "uncertainty": {
+        "kind": "not_quantified",
+        "confidence_level": null
+      },
+      "citations": [
+        {
+          "source_id": "SI3",
+          "content_id": "sha256:130ae34e6e653123f43e5d146ed43746d22243ac456620f930d0ca452f0c737b",
+          "pages": [
+            1
+          ],
+          "section": "Motivation, paragraphes 1–3"
+        }
+      ]
+    },
+    {
+      "id": "reported_autosomal_ancestry",
+      "status": "observation",
+      "definition": "Ascendance apparentée aux humains modernes rapportée à environ 3–7 % sur les autosomes des Neandertaliens.",
+      "unit": "fraction",
+      "sampling": "Inférences génomiques résumées dans SI1 et SI3 ; pas une mesure sur les huit loci du prototype.",
+      "uncertainty": {
+        "kind": "reported_range",
+        "bounds": [
+          0.03,
+          0.07
+        ],
+        "confidence_level": null
+      },
+      "citations": [
+        {
+          "source_id": "SI1",
+          "content_id": "sha256:fdacf60b4e3528a91c324abd00cc0f7dc7f50e2e43b4254ec30e6ec58cea7056",
+          "pages": [
+            1
+          ],
+          "section": "Motivation, premier paragraphe"
+        },
+        {
+          "source_id": "SI3",
+          "content_id": "sha256:130ae34e6e653123f43e5d146ed43746d22243ac456620f930d0ca452f0c737b",
+          "pages": [
+            1
+          ],
+          "section": "Motivation, troisième paragraphe"
+        }
+      ]
+    }
+  ],
+  "statistics": [
+    {
+      "id": "mt_fixation",
+      "status": "hypothesis",
+      "definition": "Fixation moderne du mtDNA dans la population simulée entière à la génération cible. Extrapolation opérationnelle distincte de la présence dans les échantillons anciens.",
+      "unit": "boolean",
+      "sampling": "Tous les individus simulés, femmes et hommes.",
+      "uncertainty": {
+        "kind": "not_quantified",
+        "confidence_level": null
+      },
+      "citations": [
+        {
+          "source_id": "SI3",
+          "content_id": "sha256:130ae34e6e653123f43e5d146ed43746d22243ac456620f930d0ca452f0c737b",
+          "pages": [
+            1
+          ],
+          "section": "Motivation, fixation théorique et données échantillonnées"
+        }
+      ],
+      "formula": "mt_mod == 1",
+      "denominator": "N individus portant chacun une copie mtDNA"
+    },
+    {
+      "id": "y_fixation",
+      "status": "hypothesis",
+      "definition": "Fixation moderne du Y parmi tous les mâles simulés à la génération cible ; non définie si aucun mâle.",
+      "unit": "boolean",
+      "sampling": "Tous les mâles simulés uniquement.",
+      "uncertainty": {
+        "kind": "not_quantified",
+        "confidence_level": null
+      },
+      "citations": [
+        {
+          "source_id": "SI3",
+          "content_id": "sha256:130ae34e6e653123f43e5d146ed43746d22243ac456620f930d0ca452f0c737b",
+          "pages": [
+            1
+          ],
+          "section": "Motivation, fixation théorique et données échantillonnées"
+        }
+      ],
+      "formula": "male_n > 0 and Y_mod == 1",
+      "denominator": "N_m copies Y des mâles"
+    },
+    {
+      "id": "ten_male_joint",
+      "status": "hypothesis",
+      "definition": "Probabilité que chacun des dix mâles porte simultanément mtDNA moderne et Y moderne ; ne requiert pas leur fixation dans toute la population.",
+      "unit": "probability",
+      "sampling": "Échantillon aléatoire simple de dix mâles distincts sans remise, dans la même population terminale.",
+      "uncertainty": {
+        "kind": "not_quantified",
+        "confidence_level": null
+      },
+      "citations": [
+        {
+          "source_id": "SI3",
+          "content_id": "sha256:130ae34e6e653123f43e5d146ed43746d22243ac456620f930d0ca452f0c737b",
+          "pages": [
+            4
+          ],
+          "section": "Scenario 1, protocole précédant les résultats"
+        }
+      ],
+      "formula": "(K)_10 / (N_m)_10 if N_m >= 10 and K >= 10 else 0",
+      "denominator": "(N_m)_10 ; K mâles portent les deux marqueurs ; (x)_10 = x(x-1)...(x-9)"
+    },
+    {
+      "id": "final_autosomal_ancestry",
+      "status": "hypothesis",
+      "definition": "Proxy neutre diploïde mesuré à la génération finale nominale de 50 ka ; cible inclusive 0.03 <= A <= 0.07. Ce proxy ne constitue pas une mesure génomique empirique.",
+      "unit": "fraction",
+      "sampling": "Tous les individus et uniquement les loci explicitement inclus ; partenaires sélectionnés exclus.",
+      "uncertainty": {
+        "kind": "not_quantified",
+        "confidence_level": null
+      },
+      "citations": [
+        {
+          "source_id": "SI1",
+          "content_id": "sha256:fdacf60b4e3528a91c324abd00cc0f7dc7f50e2e43b4254ec30e6ec58cea7056",
+          "pages": [
+            2
+          ],
+          "section": "Methods, temps de mélange et échantillonnage"
+        },
+        {
+          "source_id": "SI3",
+          "content_id": "sha256:130ae34e6e653123f43e5d146ed43746d22243ac456620f930d0ca452f0c737b",
+          "pages": [
+            4
+          ],
+          "section": "Scenario 1, critère autosomal (a)"
+        }
+      ],
+      "formula": "A = sum(modern allele copies at included loci) / (2 * N * L)",
+      "denominator": "2 * N * L copies diploïdes ; L loci inclus de poids égal",
+      "target_bounds": [
+        0.03,
+        0.07
+      ]
+    }
+  ],
+  "reference_parameters": [
+    {
+      "id": "years_per_generation",
+      "status": "hypothesis",
+      "definition": "Durée de génération du modèle publié.",
+      "unit": "years/generation",
+      "sampling": "Paramètre publié du modèle ; pas une observation directe.",
+      "uncertainty": {
+        "kind": "not_quantified",
+        "confidence_level": null
+      },
+      "citations": [
+        {
+          "source_id": "SI1",
+          "content_id": "sha256:fdacf60b4e3528a91c324abd00cc0f7dc7f50e2e43b4254ec30e6ec58cea7056",
+          "pages": [
+            2
+          ],
+          "section": "Methods, chronologie"
+        }
+      ],
+      "value": 28.6
+    },
+    {
+      "id": "mixture_generations_ago",
+      "status": "hypothesis",
+      "definition": "Mélange nominal à 250 ka.",
+      "unit": "generations_before_present",
+      "sampling": "Paramètre publié du modèle ; pas une observation directe.",
+      "uncertainty": {
+        "kind": "not_quantified",
+        "confidence_level": null
+      },
+      "citations": [
+        {
+          "source_id": "SI1",
+          "content_id": "sha256:fdacf60b4e3528a91c324abd00cc0f7dc7f50e2e43b4254ec30e6ec58cea7056",
+          "pages": [
+            2
+          ],
+          "section": "Methods, Tmix"
+        }
+      ],
+      "value": 8741
+    },
+    {
+      "id": "sampling_generations_ago",
+      "status": "hypothesis",
+      "definition": "Échantillonnage nominal à 50 ka.",
+      "unit": "generations_before_present",
+      "sampling": "Paramètre publié du modèle ; pas une observation directe.",
+      "uncertainty": {
+        "kind": "not_quantified",
+        "confidence_level": null
+      },
+      "citations": [
+        {
+          "source_id": "SI1",
+          "content_id": "sha256:fdacf60b4e3528a91c324abd00cc0f7dc7f50e2e43b4254ec30e6ec58cea7056",
+          "pages": [
+            2
+          ],
+          "section": "Methods, Tsamp"
+        }
+      ],
+      "value": 1748
+    },
+    {
+      "id": "modern_uniparental_ne",
+      "status": "hypothesis",
+      "definition": "Taille effective uniparentale moderne du modèle.",
+      "unit": "haploid_copies",
+      "sampling": "Paramètre publié du modèle ; pas une observation directe.",
+      "uncertainty": {
+        "kind": "not_quantified",
+        "confidence_level": null
+      },
+      "citations": [
+        {
+          "source_id": "SI1",
+          "content_id": "sha256:fdacf60b4e3528a91c324abd00cc0f7dc7f50e2e43b4254ec30e6ec58cea7056",
+          "pages": [
+            2
+          ],
+          "section": "Methods, NM-uniparental"
+        }
+      ],
+      "value": 7000
+    },
+    {
+      "id": "archaic_uniparental_ne",
+      "status": "hypothesis",
+      "definition": "Taille effective uniparentale archaïque avant mélange.",
+      "unit": "haploid_copies",
+      "sampling": "Paramètre publié du modèle ; pas une observation directe.",
+      "uncertainty": {
+        "kind": "not_quantified",
+        "confidence_level": null
+      },
+      "citations": [
+        {
+          "source_id": "SI1",
+          "content_id": "sha256:fdacf60b4e3528a91c324abd00cc0f7dc7f50e2e43b4254ec30e6ec58cea7056",
+          "pages": [
+            2
+          ],
+          "section": "Methods, NA-uniparental"
+        }
+      ],
+      "value": 2250
+    },
+    {
+      "id": "neandertal_uniparental_ne",
+      "status": "hypothesis",
+      "definition": "Taille effective uniparentale post-mélange ; SI1 arrondit à 750 dans son analyse de fixation.",
+      "unit": "haploid_copies",
+      "sampling": "Paramètre publié du modèle ; pas une observation directe.",
+      "uncertainty": {
+        "kind": "not_quantified",
+        "confidence_level": null
+      },
+      "citations": [
+        {
+          "source_id": "SI1",
+          "content_id": "sha256:fdacf60b4e3528a91c324abd00cc0f7dc7f50e2e43b4254ec30e6ec58cea7056",
+          "pages": [
+            2
+          ],
+          "section": "Methods, NN-uniparental"
+        }
+      ],
+      "value": 725
+    }
+  ],
+  "mode_semantics": {
+    "quick": {
+      "final_autosomal": "unavailable"
+    },
+    "full": {
+      "final_autosomal": "all_trajectories"
+    },
+    "adaptive": {
+      "final_autosomal": "event_possible_trajectories_only"
+    }
+  },
+  "uncertainty_policy": {
+    "simulation_intervals": "monte_carlo_only",
+    "historical_confidence_level": null
+  }
+}
