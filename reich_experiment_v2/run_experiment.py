@@ -123,6 +123,53 @@ def target_metadata(cfg, contract):
                 years_per_generation=years, target_generations_ago=mixture-cfg.gens,
                 target_age_ka=(mixture-cfg.gens)*years/1000)
 
+def scientific_context(cfg, mt_selection_source):
+    """Describe limits of the CLI experiment, without evaluating scientific fit."""
+    notes = {
+        'published_comparison': (
+            'La parité locale du code ne reproduit pas les probabilités intégrées '
+            'du préprint ; ces sorties ne démontrent pas une histoire évolutive.'),
+        'population_size': (
+            'N est un recensement simulé ; son assimilation à une taille effective '
+            'est une approximation sans calibration du Ne réalisé.'),
+        'demography': (
+            'Le modèle est un pulse panmictique sans expansion ; '
+            'aucune comparaison spatiale calibrée n’est réalisée ici.'),
+        'autosomal_proxy': (
+            'L’ascendance est un proxy à quelques loci de poids égal, '
+            'sujet à discrétisation ; elle ne reconstruit pas un génome.'),
+        'sampling': (
+            'La probabilité des dix mâles est une statistique simulée distincte '
+            'de la fixation et des observations historiques échantillonnées.'),
+    }
+    if mt_selection_source == 'posterior_draw':
+        notes['mt_selection'] = (
+            's_mt est tiré par réplicat dans le fichier fourni ; son origine SI1 '
+            'n’est pas authentifiée par ce chargement. Ce tirage seul ne reproduit '
+            'pas la distribution intégrée publiée.')
+    else:
+        notes['mt_selection'] = (
+            's_mt est fixé par la configuration, sans intégration d’un posterior '
+            'mitochondrial, y compris si un fichier fourni reste non appliqué.')
+    if cfg.sel_locus == 'Y' and cfg.s != 0:
+        notes['y_selection'] = (
+            'Le coefficient de sélection Y est fixé ; les incertitudes '
+            'des paramètres publiés ne sont pas toutes intégrées.')
+    active = any((cfg.mt_mod_nuc_arch, cfg.mt_arch_nuc_mod,
+                  cfg.y_mod_nuc_arch, cfg.y_arch_nuc_mod))
+    if active:
+        notes['epistasis'] = (
+            'Les pénalités réciproques sont exploratoires, sans validation '
+            'biologique ; leurs partenaires autosomaux sont exclus du proxy, '
+            'dont la base diffère de la référence sans ces pénalités.')
+    elif cfg.s == 0 and cfg.s_mt == 0:
+        notes['neutral_control'] = (
+            'Ce contrôle neutre est une hypothèse de simulation, '
+            'pas une reproduction de la référence sélectionnée publiée.')
+    return dict(scientific_status='exploratory_simulation',
+                published_result_reproduction='not_demonstrated',
+                uncertainty_scope='monte_carlo_only', approximation_notes=notes)
+
 def main():
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--scenario',choices=['all',*SCENARIOS],default='all')
@@ -189,12 +236,15 @@ def main():
                 draw_rng=np.random.default_rng(draw_seed)
                 c=replace(c,s_mt=float(draw_rng.choice(posterior)))
             res=run_mode(c, args.mode)
+            context=scientific_context(c, mt_source)
             row={'scenario':name,'rep':i,'seed':c.seed,'mode':args.mode,
                  'initial_f':args.f,'N':args.N,'gens_requested':args.gens,'s_mt_realized':c.s_mt,
                  **chronology,
                  'config_realized':json.dumps(asdict(c),sort_keys=True,separators=(',', ':'),allow_nan=False),
                  'mt_selection_source':mt_source,'mt_posterior_sha256':posterior_sha256,
                  'mt_posterior_draw_seed':draw_seed,
+                 **{key:value for key,value in context.items() if key != 'approximation_notes'},
+                 'approximation_notes':json.dumps(context['approximation_notes'],sort_keys=True,ensure_ascii=False),
                  **res}
             rows.append(row)
         keys=['p10_joint','mt_mod','Y_mod','joint_fixed']
@@ -214,7 +264,12 @@ def main():
         if args.mode in ('full','adaptive') and all(r['joint_and_target'] in (0.,1.) for r in rows):
             metrics['P_joint_auto_Wilson95']=wilson_interval(sum(r['joint_and_target'] for r in rows),len(rows))
         metrics['time_seconds']=round(time.monotonic()-start,2)
-        summary.append(dict(name=name,reps=args.reps,**metrics))
+        # The context describes the scenario policy; realized coefficients remain
+        # in each CSV row, including draws that happen to be zero.
+        source=('posterior_draw' if posterior is not None and cfg.s_mt != 0
+                else 'fixed' if posterior is None else 'posterior_not_applied')
+        summary.append(dict(name=name,reps=args.reps,**metrics,
+                            scientific_context=scientific_context(cfg, source)))
         all_rows.extend(rows)
         print(f'{name:<29s}  P(sample 10 both)={metrics["p10_joint"]:.4%}  '
               f'P(mt,Y fixation)={metrics["joint_fixed"]:.4%}  '

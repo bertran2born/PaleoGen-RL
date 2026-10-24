@@ -234,3 +234,77 @@ Vérification I7 du 24 octobre 2026 : ces commandes réussissent sous Nix avec
 respectivement 4, 22 et 64 tests, dont les contrôles gzip/bzip2. Les cinq DoD
 de l'Issue sont vérifiés ; ces preuves couvrent M2 D8 pour les nouvelles sorties
 CLI. Le milestone reste incomplet et n'est pas modifié.
+
+## Interprétation des sorties scientifiques — I8
+
+Chaque nouvelle ligne CSV et chaque synthèse de scénario dans le JSON compagnon
+portent le contexte suivant. Les champs simples sont des colonnes CSV ;
+`approximation_notes` y est un objet JSON encodé dans une cellule. Dans les
+synthèses JSON, ces quatre champs sont regroupés sous `scientific_context`.
+
+| Champ | Valeur / portée |
+| --- | --- |
+| `scientific_status` | `exploratory_simulation` : sortie simulée du prototype, y compris ses contrôles et références approximatives |
+| `published_result_reproduction` | `not_demonstrated` : aucune reproduction des probabilités intégrées du préprint n'est établie par cette exécution |
+| `uncertainty_scope` | `monte_carlo_only` : les intervalles existants concernent les répétitions simulées, pas l'incertitude historique |
+| `approximation_notes` | Explications lisibles des limites de comparaison, indexées par thème |
+
+Ce contexte décrit la portée scientifique du résultat. Il ne mesure ni sa qualité
+ni sa plausibilité et n'entre dans aucun indicateur ou filtre. Il reste distinct
+du statut de disponibilité autosomale I6 : une sortie `exploratory_simulation`
+peut avoir une ascendance finale évaluée ou non évaluée. Les paramètres réalisés
+et la chronologie I7 restent inchangés et permettent le rejeu.
+
+Les thèmes communs aux sorties sont `published_comparison`, `population_size`,
+`demography`, `autosomal_proxy` et `sampling`. Ils rappellent respectivement :
+la portée locale de la parité I5, l'approximation recensement/Ne sans calibration,
+le pulse panmictique sans comparaison spatiale calibrée, la discrétisation du proxy
+à quelques loci, et la distinction entre probabilité simulée des dix mâles,
+fixation et observations historiques. Les limites proviennent du README et du
+contrat `observations.md` ; aucune nouvelle valeur d'écart au préprint n'est
+calculée et aucun résultat publié n'est traité comme une observation supplémentaire.
+
+`mt_selection` distingue un coefficient fixé d'un tirage par réplicat dans le
+fichier fourni. Le chargement et l'empreinte I7 ne prouvent pas que ce fichier est
+un posterior SI1 authentique. Même un véritable tirage SI1 ne suffit pas à
+reproduire l'intégration de tous les paramètres du préprint. `y_selection`
+signale le coefficient Y fixé lorsque cette sélection est active.
+
+`epistasis` apparaît dès qu'au moins une des quatre pénalités réciproques est
+non nulle, après overrides. Cette note rappelle leur statut exploratoire sans
+validation biologique et l'exclusion des partenaires du proxy autosomal :
+l'ascendance n'est donc pas rendue comparable à celle de la référence sans ces
+pénalités. Sans ces pénalités ni sélection mtDNA/Y, `neutral_control` distingue
+le contrôle neutre de la référence sélectionnée. Le nom du scénario ne décide
+jamais seul de l'activation de ces notes.
+
+Le contexte d'une ligne utilise sa configuration réalisée. Le contexte d'une
+synthèse décrit la politique du scénario après overrides : il n'affiche pas
+un coefficient mitochondrial tiré individuel comme paramètre de toute la série.
+Les coefficients individuels restent dans `config_realized` et `s_mt_realized`.
+Cette Issue ne fournit pas le rapport général de classification de M1 D8 et
+ne valide pas les hypothèses historiques.
+
+`tests/test_pulse_scientific_context.py` inspecte les deux formats sur les trois
+modes et les scénarios neutre, sélectionné et sélectionné avec épistasie.
+Les overrides activant une pénalité dans `neutral` et annulant toutes les
+pénalités de `symmetric_1pct` sont couverts. Un posterior synthétique vérifie
+la qualification du tirage et du fichier non appliqué. Enfin, toutes les séries
+nommées sont exécutées avec le contexte réel puis un fournisseur descriptif
+inerte : les CSV et JSON privés des seuls champs de contexte et métadonnées
+variables doivent être identiques. Les simulations, paramètres et agrégations
+sont réellement exécutés dans les deux cas.
+
+Commandes depuis `reich_experiment_v2/` :
+
+```sh
+nix develop -c python -m unittest discover -s tests -p 'test_pulse_scientific_context.py'
+nix develop -c python -m unittest discover -s tests -p 'test_pulse*.py'
+nix develop -c python -m unittest discover -s tests
+```
+
+Vérification I8 du 24 octobre 2026 : ces commandes réussissent sous Nix avec
+respectivement 4, 26 et 68 tests. Les quatre DoD de l'Issue sont vérifiés et
+couvrent M2 D9 pour les nouvelles sorties CLI. Les tests antérieurs restent
+inchangés. M2 et sa dépendance M1 restent ouverts ; aucun fichier milestone
+n'est modifié.
