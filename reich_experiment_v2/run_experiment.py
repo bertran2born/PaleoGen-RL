@@ -78,6 +78,17 @@ def wilson_interval(successes, n, z=1.959963984540054):
     delta=z*np.sqrt(p*(1-p)/n + z*z/(4*n*n))/den
     return [float(max(0,mid-delta)),float(min(1,mid+delta))]
 
+def require_completed_pass(result, cfg, *, full=False):
+    """Reject failed reproduction and horizons not reached by integral passes."""
+    generation = result['generations_completed']
+    reason = result['termination_reason']
+    if reason == 'reproduction_failed':
+        raise RuntimeError(f'reproduction_failed: seed={cfg.seed}, '
+                           f'generations_completed={generation}, target={cfg.gens}')
+    if generation != cfg.gens and (full or reason != 'markers_absorbed'):
+        raise RuntimeError(f'incomplete_horizon: seed={cfg.seed}, '
+                           f'generations_completed={generation}, target={cfg.gens}, reason={reason}')
+
 def run_mode(cfg, mode):
     """Project raw engine statistics onto the requested evaluation policy.
 
@@ -88,6 +99,7 @@ def run_mode(cfg, mode):
         raise ValueError('mode must be full/quick/adaptive')
     cfg = replace(cfg, stop_when_absorbed=mode != 'full')
     result = run(cfg)
+    require_completed_pass(result, cfg, full=mode == 'full')
     if mode == 'quick':
         result.update(auto_mod_at_50ka='NOT_EVALUATED_QUICK',
                       auto_evaluation_status='not_evaluated_quick',
@@ -101,6 +113,7 @@ def run_mode(cfg, mode):
         if mode == 'adaptive':
             final = run(replace(cfg, stop_when_absorbed=False),
                         accelerate_after_absorption=True)
+            require_completed_pass(final, cfg, full=True)
             if abs(final['p10_joint'] - result['p10_joint']) > 1e-12:
                 raise RuntimeError('Early absorption check failed: marker results changed')
         result.update(auto_mod_at_50ka=final['auto_mod'],
@@ -235,7 +248,10 @@ def main():
                 draw_seed=args.seed+i+27383
                 draw_rng=np.random.default_rng(draw_seed)
                 c=replace(c,s_mt=float(draw_rng.choice(posterior)))
-            res=run_mode(c, args.mode)
+            try:
+                res=run_mode(c, args.mode)
+            except RuntimeError as error:
+                ap.exit(1, f'{name} rep={i}: {error}\n')
             context=scientific_context(c, mt_source)
             row={'scenario':name,'rep':i,'seed':c.seed,'mode':args.mode,
                  'initial_f':args.f,'N':args.N,'gens_requested':args.gens,'s_mt_realized':c.s_mt,

@@ -308,3 +308,71 @@ respectivement 4, 26 et 68 tests. Les quatre DoD de l'Issue sont vérifiés et
 couvrent M2 D9 pour les nouvelles sorties CLI. Les tests antérieurs restent
 inchangés. M2 et sa dépendance M1 restent ouverts ; aucun fichier milestone
 n'est modifié.
+
+## Terminaison et échec reproductif — I9
+
+Le moteur étendu distingue maintenant trois valeurs de `termination_reason`,
+exportées dans les lignes CSV des exécutions acceptées :
+
+| Valeur | Signification |
+| --- | --- |
+| `horizon_reached` | La boucle a produit toutes les générations demandées |
+| `markers_absorbed` | La branche d'arrêt précoce a constaté absorption des deux marqueurs |
+| `reproduction_failed` | Le moteur reproductif n'a pas pu fournir une population suivante |
+
+`generations_completed` compte uniquement les populations suivantes réellement
+produites. Une tentative échouée n'ajoute aucune génération : un échec à la
+première tentative retourne zéro, un échec après trois populations produites
+retourne trois. Le moteur brut conserve les statistiques de la dernière population
+disponible à des fins diagnostiques ; son `target_auto` ne certifie donc pas à lui
+seul une mesure finale. Le comportement reproductif et ses tirages restent
+inchangés, ainsi que la source tierce. Les exécutions sans échec conservent leurs
+indicateurs et compteurs précédents ; la raison est un champ supplémentaire.
+
+`run_mode` refuse tout passage `reproduction_failed`, y compris un premier passage
+`quick` ou adaptatif dont P10 vaut zéro. Il refuse également qu'un passage
+intégral, initial ou de continuation, fournisse un résultat final sans avoir atteint
+l'horizon exact. Le contrôle d'égalité P10 entre premier passage et continuation
+reste appliqué aux continuations réussies. Un arrêt normal à absorption reste
+admis pour le premier passage et conserve la disponibilité I6 ; il ne devient
+pas un échec simplement parce qu'il précède l'horizon.
+
+Sur ces refus, la CLI retourne le code 1 et un diagnostic contenant scénario,
+réplicat, graine, générations réalisées et horizon demandé. Aucun nouveau CSV
+ou JSON n'est écrit par cet appel : l'export intervient après la réussite de tous
+les réplicats. Les trajectoires échouées ne sont donc ni remplacées par zéro ni
+retirées silencieusement du dénominateur d'une synthèse. Aucun nouvel essai,
+changement de graine ou réduction de pénalité ne contourne l'échec. Des fichiers
+préexistants ne sont pas supprimés par ce refus ; la gestion générale des
+destinations existantes n'est pas modifiée dans cette Issue.
+
+`auto_generations_completed` conserve la génération du passage intégral validé.
+`termination_reason` décrit le premier passage ; en mode adaptatif, une raison
+`markers_absorbed` peut donc coexister avec une mesure autosomale finale issue
+d'une continuation réussie, comme les autres diagnostics I6/I7 du premier passage.
+
+`tests/test_pulse_termination.py` vérifie les trois raisons, la conservation exacte
+des statistiques de la population après une interruption contrôlée, les trois
+modes et le refus d'une continuation échouée ou d'un horizon incohérent.
+Une population parentale synthétique entièrement incompatible utilise les vraies
+fonctions de reproduction et de viabilité pour démontrer l'échec dès la première
+génération et le diagnostic CLI. Trois appels en sous-processus sans remplacement
+des fonctions utilisent aussi un fichier synthétique imposant une sélection
+mitochondriale létale ; aucune origine SI1 n'est attribuée à cette fixture.
+Ces cas extrêmes testent la gestion des erreurs et ne représentent pas des
+hypothèses historiques validées.
+
+Commandes depuis `reich_experiment_v2/` :
+
+```sh
+nix develop -c python -m unittest discover -s tests -p 'test_pulse_termination.py'
+nix develop -c python -m unittest discover -s tests -p 'test_pulse*.py'
+nix develop -c python -m unittest discover -s tests
+```
+
+Vérification I9 du 24 octobre 2026 : ces commandes réussissent sous Nix avec
+respectivement 7, 33 et 75 tests. Les quatre DoD sont vérifiés, y compris la
+parité antérieure des trajectoires réussies. Les fixtures I6 ont reçu les
+métadonnées de terminaison et le cas isolant la divergence P10 conserve son
+assertion après atteinte de l'horizon. M2 et M1 restent ouverts ; aucun milestone
+n'est modifié.

@@ -94,6 +94,8 @@ def run_extended(cfg: Config, *, accelerate_after_absorption: bool = False):
         # trigger through cfg.dm, which original._breed consults.
         from dataclasses import replace
         P = original._init(cfg,rng)
+        generations_completed = 0
+        termination_reason = 'horizon_reached'
         no_more_marker_selection = False
         eligible_to_accelerate = (not active and cfg.sel_locus in ('none','Y','mt')
             and cfg.dm == 0 and cfg.xdrive == 0 and cfg.xdrive_cost == 0
@@ -118,8 +120,11 @@ def run_extended(cfg: Config, *, accelerate_after_absorption: bool = False):
                 cur=replace(cur,dm=1.0)
                 setattr(cur, '_original_dm',cfg.dm)
             nxt=original._step(P,cur,rng,g)
-            if nxt is None: break
+            if nxt is None:
+                termination_reason = 'reproduction_failed'
+                break
             P=nxt
+            generations_completed += 1
             if cfg.pulse2_gen and g==cfg.pulse2_gen:
                 P=original._second_pulse(P,cfg,rng)
             if ((cfg.stop_when_absorbed or (accelerate_after_absorption and eligible_to_accelerate))
@@ -129,7 +134,9 @@ def run_extended(cfg: Config, *, accelerate_after_absorption: bool = False):
                 pm=float((P['mt']==1).mean())
                 py=float((P['Y'][male]==1).mean()) if male.any() else 0.0
                 if pm in (0.0,1.0) and py in (0.0,1.0):
-                    if cfg.stop_when_absorbed:break
+                    if cfg.stop_when_absorbed:
+                        termination_reason = 'markers_absorbed'
+                        break
                     if accelerate_after_absorption and eligible_to_accelerate:
                         no_more_marker_selection=True
         data=original._stats(P,tuple(exclude_autos),tuple(exclude_x))
@@ -141,7 +148,8 @@ def run_extended(cfg: Config, *, accelerate_after_absorption: bool = False):
         p10=float(np.prod([(both-i)/(nm-i) for i in range(10)])) if both>=10 and nm>=10 else 0.0
         data.update(both_modern_men=both, male_n=nm,
                     p10_joint=p10, joint_fixed=bool(data['mt_mod'] == 1.0 and data['Y_mod'] == 1.0),
-                    generations_completed=g+1,
+                    generations_completed=generations_completed,
+                    termination_reason=termination_reason,
                     target_auto=bool(0.03 <= data['auto_mod'] <= 0.07))
         return data
     finally:

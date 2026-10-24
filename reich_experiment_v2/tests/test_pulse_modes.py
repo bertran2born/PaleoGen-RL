@@ -21,6 +21,7 @@ def raw_result(probability, ancestry=0.05, generation=11):
     return dict(p10_joint=probability, auto_mod=ancestry,
                 target_auto=0.03 <= ancestry <= 0.07,
                 generations_completed=generation, mt_mod=probability,
+                termination_reason='horizon_reached' if generation == 80 else 'markers_absorbed',
                 Y_mod=probability, joint_fixed=probability == 1)
 
 
@@ -86,7 +87,7 @@ class TestPulseModes(unittest.TestCase):
             self.assertEqual(asdict(first.args[0]), {**asdict(cfg), 'stop_when_absorbed': True})
             self.assertEqual(asdict(second.args[0]), {**asdict(cfg), 'stop_when_absorbed': False})
             self.assertEqual(second.kwargs, {'accelerate_after_absorption': True})
-        with patch('run_experiment.run', side_effect=[raw_result(.25), raw_result(.5)]):
+        with patch('run_experiment.run', side_effect=[raw_result(.25), raw_result(.5, generation=80)]):
             with self.assertRaisesRegex(RuntimeError, 'marker results changed'):
                 run_mode(cfg, 'adaptive')
 
