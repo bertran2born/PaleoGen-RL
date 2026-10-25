@@ -1,6 +1,6 @@
 # M1 — Référentiel scientifique et provenance traçable
 
-Status: READY
+Status: DONE
 Depends on: none
 
 ## Outcome
@@ -56,8 +56,8 @@ PaleoGen-RL possède un contrat scientifique versionné décrivant les observati
 - [x] D5 [O2] Les versions SI1–SI4 et du préprint sont consignées, sans assimilation à une publication évaluée par les pairs.
 - [x] D6 [O3] Une politique de redistribution explicite est présente pour chaque archive de code originale.
 - [x] D7 [O3] L'export public exclut les ressources marquées « non établie » ou « non autorisée ».
-- [ ] D8 [O4] Un rapport distingue « reproduction exacte », « reproduction approximative » et « résultat exploratoire ».
-- [ ] D9 [O1, O2, O3, O4] Les contrôles automatisés du contrat scientifique passent sans accès réseau.
+- [x] D8 [O4] Un rapport distingue « reproduction exacte », « reproduction approximative » et « résultat exploratoire ».
+- [x] D9 [O1, O2, O3, O4] Les contrôles automatisés du contrat scientifique passent sans accès réseau.
 
 ## Final Validation
 
@@ -112,6 +112,23 @@ Sous Nix, les 12 tests de `test_public_export.py` et les 52 tests complets passe
 Voir `docs/issues/I4-filter-public-resource-export.md` et la procédure dans
 `docs/science/provenance.md`. D7 est satisfait pour cet export documentaire local ;
 la distribution exécutable M10/M11 n'est pas réalisée. D8 et D9 restent ouverts.
+
+Preuves finales (I20, 25 octobre 2026) : le
+[rapport de qualification scientifique](../science/scientific-evidence-report.md)
+relie les neuf critères aux documents et assertions inspectés. Il distingue la
+parité exacte locale sur la matrice I5 de la référence simplifiée approximative
+et des résultats exploratoires ; aucune reproduction des probabilités intégrées
+publiées ni preuve historique n'est revendiquée. Les quatre suites M1 sont
+réexécutées sous Nix dans un espace réseau isolé par `unshare` (seule interface
+`lo`) : 10 tests du contrat, 8 de provenance, 8 des sources et 12 de l'export,
+tous réussis, sous-processus inclus. Les 35 tests pulse et 155 tests complets
+réussissent également. Voir
+[I20](../issues/I20-audit-scientific-evidence-and-offline-contract.md) pour les
+commandes. D1–D7 sont reconfirmés, D8/D9 satisfaits : M1 est achevé dans son
+périmètre. L'installation initiale sans réseau, la convergence autosomale, la
+calibration spatiale et la distribution exécutable ne sont pas établies par
+cette validation. Les notes précédentes restent des preuves historiques datées ;
+aucun autre milestone n'est clôturé automatiquement.
 
 ## References
 
