@@ -15,15 +15,21 @@ from paleogen_rl.genetics.ancestry import BlockPanel, MEASUREMENT_VERSION
 from paleogen_rl.genetics.inheritance import RecombinationMap, INHERITANCE_VERSION
 from paleogen_rl.genetics.selected import SIMULATION_VERSION
 from paleogen_rl.genetics.resolution import RESOLUTIONS, SEEDS, _bounded_mean, _target_summary
+from paleogen_rl.genetics.protocol import AutosomalProtocol
 
 
 STUDY_VERSION = 'selected-autosomal-resolution-v1'
+PLAN_VERSION = 'selected-autosomal-resolution-plan-v1'
+PLANNED_STUDY_VERSION = 'selected-autosomal-resolution-v2'
+PLAN_INPUTS = ('population_size', 'f', 'male_fraction', 'generations', 'map_length',
+               'resolutions', 'seeds', 'scenarios')
 STUDY_SCENARIOS = tuple(SCENARIOS)
 ROOT = Path(__file__).resolve().parent
 IMPLEMENTATION_FILES = (
     'study_autosomal_resolution.py', 'run_experiment.py', 'paleogen_rl/genetics/ancestry.py',
     'paleogen_rl/genetics/inheritance.py', 'paleogen_rl/genetics/selected.py',
     'paleogen_rl/genetics/pulse.py', 'paleogen_rl/genetics/resolution.py',
+    'paleogen_rl/genetics/protocol.py',
     'src/epi_pulse.py', 'src/reich_panmictic_original.py', 'flake.lock',
 )
 WORK_FIELDS = ('candidates_generated', 'accepted_candidates', 'offspring_generated', 'block_copy_transmissions')
@@ -57,13 +63,8 @@ def _differences(rows):
     return result
 
 
-def run_selected_resolution_study(*, resolutions=RESOLUTIONS, seeds=SEEDS,
-                                  scenarios=STUDY_SCENARIOS, generations=20, map_length=1.):
-    """Compare full evaluations at fixed synthetic partner positions 0 and 1.
-
-    All input declarations are validated before any simulation. Source hashes
-    identify the local implementation; no third-party content is exported.
-    """
+def _validate_inputs(*, resolutions, seeds, scenarios, generations, map_length,
+                     population_size, f, male_fraction):
     if (not isinstance(resolutions, (tuple, list)) or len(resolutions) < 3
             or any(type(b) is not int or b < 2 for b in resolutions)
             or any(a >= b for a, b in zip(resolutions, resolutions[1:]))):
@@ -81,6 +82,23 @@ def run_selected_resolution_study(*, resolutions=RESOLUTIONS, seeds=SEEDS,
     if (isinstance(map_length, (bool, np.bool_)) or not isinstance(map_length, Real)
             or not np.isfinite(map_length) or map_length < 0):
         raise ValueError('map_length must be finite and nonnegative')
+    # Reuse I19's demographic and per-sex pulse constraints. The historical
+    # diagnostic API also allows horizon zero, unlike positive-horizon plans.
+    AutosomalProtocol('demographic-validation', population_size, max(1, generations), f, male_fraction,
+                      RecombinationMap(BlockPanel('validation', ('mt', 'y')), (0.,)), 'mt', 'y')
+
+
+def run_selected_resolution_study(*, resolutions=RESOLUTIONS, seeds=SEEDS,
+                                  scenarios=STUDY_SCENARIOS, generations=20, map_length=1.,
+                                  population_size=40, f=.05, male_fraction=.5):
+    """Compare full evaluations at fixed synthetic partner positions 0 and 1.
+
+    All input declarations are validated before any simulation. Source hashes
+    identify the local implementation; no third-party content is exported.
+    """
+    _validate_inputs(resolutions=resolutions, seeds=seeds, scenarios=scenarios,
+                     generations=generations, map_length=map_length,
+                     population_size=population_size, f=f, male_fraction=male_fraction)
     map_length = float(map_length)
     hashes = {path: hashlib.sha256((ROOT/path).read_bytes()).hexdigest() for path in IMPLEMENTATION_FILES}
     scenario_rows = []
@@ -90,7 +108,7 @@ def run_selected_resolution_study(*, resolutions=RESOLUTIONS, seeds=SEEDS,
             panel = BlockPanel(f'synthetic-resolution-{blocks}', tuple(f'b{i}' for i in range(blocks)))
             switch = -expm1(-2*map_length/(blocks-1))/2
             mapping = RecombinationMap(panel, (switch,)*(blocks-1))
-            config = Config(N=40, f=.05, male_frac=.5, gens=generations,
+            config = Config(N=population_size, f=float(f), male_frac=float(male_fraction), gens=generations,
                             stop_when_absorbed=False, **SCENARIOS[name])
             replicates = []
             for seed in seeds:
@@ -123,7 +141,7 @@ def run_selected_resolution_study(*, resolutions=RESOLUTIONS, seeds=SEEDS,
                 numpy_version=np.__version__, rng_bit_generator=engine['rng_bit_generator'],
                 measurement_version=MEASUREMENT_VERSION, inheritance_version=INHERITANCE_VERSION,
                 simulation_version=SIMULATION_VERSION, implementation_sha256=hashes,
-                protocol=dict(population_size=40, f=.05, male_fraction=.5, generations=generations,
+                protocol=dict(population_size=population_size, f=float(f), male_fraction=float(male_fraction), generations=generations,
                               seeds=list(seeds), resolutions=list(resolutions), scenarios=list(scenarios),
                               map_length=map_length, map_rule='r=-expm1(-2*L/(B-1))/2',
                               partner_positions=dict(mt=0., y=1.), target_interval=[.03, .07],
@@ -133,14 +151,74 @@ def run_selected_resolution_study(*, resolutions=RESOLUTIONS, seeds=SEEDS,
                 scenarios=scenario_rows, total_work_units=_sum_work(scenario_rows))
 
 
+def validate_resolution_plan(plan):
+    """Return an owned, normalized declaration, without running a simulation."""
+    if not isinstance(plan, dict) or set(plan) != {'plan_version', 'plan_id', *PLAN_INPUTS}:
+        raise ValueError('plan must declare exactly plan_version, plan_id and all study inputs')
+    if plan['plan_version'] != PLAN_VERSION:
+        raise ValueError('unsupported resolution plan version')
+    identity = plan['plan_id']
+    if not isinstance(identity, str) or not identity or identity != identity.strip():
+        raise ValueError('plan_id must be a nonempty trimmed string')
+    _validate_inputs(**{key: plan[key] for key in PLAN_INPUTS})
+    if plan['generations'] < 1:
+        raise ValueError('plan generations must be positive')
+    return {**plan, **{key: float(plan[key]) for key in ('f', 'male_fraction', 'map_length')},
+            **{key: list(plan[key]) for key in ('resolutions', 'seeds', 'scenarios')}}
+
+
+def _canonical_plan(plan):
+    return json.dumps(plan, sort_keys=True, separators=(',', ':'), ensure_ascii=False, allow_nan=False)
+
+
+def _unique_plan_fields(pairs):
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError(f'duplicate plan field: {key}')
+        result[key] = value
+    return result
+
+
+def load_resolution_plan(path):
+    payload = Path(path).read_bytes()
+    plan = validate_resolution_plan(json.loads(payload, object_pairs_hook=_unique_plan_fields))
+    return plan, hashlib.sha256(payload).hexdigest()
+
+
+def run_resolution_plan(plan):
+    plan = validate_resolution_plan(plan)
+    report = run_selected_resolution_study(**{key: plan[key] for key in PLAN_INPUTS})
+    report.update(study_version=PLANNED_STUDY_VERSION,
+                  scientific_status='exploratory_selected_resolution_diagnostic',
+                  plan=plan, plan_sha256=hashlib.sha256(_canonical_plan(plan).encode('utf-8')).hexdigest(),
+                  plan_file_sha256=None)
+    for scenario in report['scenarios']:
+        for row in scenario['resolutions']:
+            declaration = row['recombination_map']
+            mapping = RecombinationMap(BlockPanel(**declaration['panel']), declaration['switch_probabilities'])
+            protocol = AutosomalProtocol(
+                f"{plan['plan_id']}:B{row['block_count']}", plan['population_size'], plan['generations'],
+                plan['f'], plan['male_fraction'], mapping,
+                row['selection']['mt_partner_block'], row['selection']['y_partner_block'])
+            row.update(autosomal_protocol=protocol.to_dict(), autosomal_protocol_sha256=protocol.sha256)
+    return report
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True, help='new JSON destination (no overwrite)')
+    parser.add_argument('--plan', type=Path, help='explicit versioned study plan (otherwise use the I18 diagnostic)')
     args = parser.parse_args(argv)
     if args.output.exists() or args.output.is_symlink():
         parser.error('output already exists')
     try:
-        report = run_selected_resolution_study()
+        if args.plan is None:
+            report = run_selected_resolution_study()
+        else:
+            plan, file_hash = load_resolution_plan(args.plan)
+            report = run_resolution_plan(plan)
+            report['plan_file_sha256'] = file_hash
         with args.output.open('x', encoding='utf-8') as stream:
             json.dump(report, stream, indent=2, allow_nan=False)
             stream.write('\n')
