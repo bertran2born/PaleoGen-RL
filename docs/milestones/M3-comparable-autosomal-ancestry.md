@@ -3,6 +3,10 @@
 Status: READY
 Depends on: M2
 
+Acceptation technique partielle I24 : D2–D10 vérifiés dans le périmètre de
+l'[audit](../science/m3-audit.md). D1 et l'acceptation scientifique globale
+restent ouverts : protocole principal et convergence non établis.
+
 ## Outcome
 
 PaleoGen-RL mesure l'ascendance autosomale finale avec une représentation adaptée aux comparaisons entre modèles, sans l'artefact connu des huit loci sentinelles du prototype. La même observable est calculée pour les mécanismes neutres et épistatiques, y compris lorsque des loci sont soumis à sélection. Les résultats permettent de tester la plage de 3–7 % sans confondre erreur de discrétisation et sélection biologique.
@@ -41,34 +45,54 @@ PaleoGen-RL mesure l'ascendance autosomale finale avec une représentation adapt
 
 ## Relevant Repository Surfaces
 
-- `src/reich_panmictic_original.py` — hérédité autosomale actuelle.
-- `src/epi_pulse.py` — exclusion actuelle des loci partenaires du proxy neutre.
+- `src/reich_panmictic_original.py` et `src/epi_pulse.py` — chemin historique de compatibilité, avec proxy neutre distinct.
 - `compute_autosomal_limit.py` — diagnostic théorique de la discrétisation.
 - `plot_autosomal_sensitivity.py` — visualisation du diagnostic.
-- `paleogen_rl/genetics/` (proposed) — représentation et mesure communes.
-- `tests/test_autosomal_ancestry.py` (proposed) — vérifications de la nouvelle observable.
+- `paleogen_rl/genetics/ancestry.py` et `inheritance.py` — mesure totale et transmission phasée sur carte déclarée.
+- `paleogen_rl/genetics/neutral.py`, `selected.py` et `pulse.py` — dérive, sélection et évaluation des trois modes.
+- `paleogen_rl/genetics/protocol.py` — contrats de mesure explicites et identifiés.
+- `run_experiment.py` — activation des blocs par carte/protocole, chemin historique préservé par défaut.
+- `study_autosomal_resolution.py` — études multirésolution et aperçu de coût avant simulation.
+- `tests/test_autosomal_ancestry.py`, `test_autosomal_inheritance.py`, `test_autosomal_neutral.py` — contrôles analytiques et statistiques.
+- `tests/test_autosomal_selected.py`, `test_autosomal_block_modes.py`, `test_autosomal_protocol.py` — scénarios, modes et identité de mesure.
+- `docs/science/m3-audit.md` — correspondance des critères et limites d'acceptation.
 
 ## Definition of Done
 
 - [ ] D1 [O1] Tous les scénarios existants utilisent le même nombre et la même définition de blocs autosomiques pour la métrique principale.
-- [ ] D2 [O1] Activer les loci partenaires sans sélection ne change pas la définition de l'observable autosomale.
-- [ ] D3 [O2] Les tests de ségrégation valident les proportions mendéliennes avec les tolérances chiffrées dans le protocole de test.
-- [ ] D4 [O2] À recombinaison nulle et à recombinaison active, les trajectoires satisfont les invariants d'ascendance attendus.
-- [ ] D5 [O2] Un contrôle neutre reproduit la moyenne théorique attendue sur un lot de graines préfixé, dans son intervalle de confiance pré-enregistré.
-- [ ] D6 [O3] `quick` ne produit aucune valeur prétendument finale pour cette nouvelle statistique.
-- [ ] D7 [O3] `adaptive` et `full` concordent sur le critère conjoint sur un jeu de références et de graines fixé.
-- [ ] D8 [O4] Un rapport compare au moins trois résolutions croissantes et donne les écarts de la métrique cible.
-- [ ] D9 [O4] La configuration annonce explicitement le coût des résolutions et le mode choisi.
-- [ ] D10 [O1, O2, O3, O4] Les tests autosomiques réussissent, indépendamment des scénarios épistatiques activés.
+- [x] D2 [O1] Activer les loci partenaires sans sélection ne change pas la définition de l'observable autosomale.
+- [x] D3 [O2] Les tests de ségrégation valident les proportions mendéliennes avec les tolérances chiffrées dans le protocole de test.
+- [x] D4 [O2] À recombinaison nulle et à recombinaison active, les trajectoires satisfont les invariants d'ascendance attendus.
+- [x] D5 [O2] Un contrôle neutre reproduit la moyenne théorique attendue sur un lot de graines préfixé, dans son intervalle de confiance pré-enregistré.
+- [x] D6 [O3] `quick` ne produit aucune valeur prétendument finale pour cette nouvelle statistique.
+- [x] D7 [O3] `adaptive` et `full` concordent sur le critère conjoint sur un jeu de références et de graines fixé.
+- [x] D8 [O4] Un rapport compare au moins trois résolutions croissantes et donne les écarts de la métrique cible.
+- [x] D9 [O4] La configuration annonce explicitement le coût des résolutions et le mode choisi.
+- [x] D10 [O1, O2, O3, O4] Les tests autosomiques réussissent, indépendamment des scénarios épistatiques activés.
 
 ## Final Validation
 
 ```sh
-python -m unittest discover -s tests -p 'test_autosomal_ancestry.py'
-python -m unittest discover -s tests
+nix develop -c python -m unittest discover -s tests -p 'test_autosomal_ancestry.py'
+nix develop -c python -m unittest discover -s tests -p 'test_autosomal*.py'
+nix develop -c python -m unittest discover -s tests
 ```
 
-`tests/test_autosomal_ancestry.py` est une surface proposée, absente du prototype actuel.
+Les commandes s'exécutent depuis `reich_experiment_v2/`.
+
+Preuves I24 (25 octobre 2026) : les trois commandes ci-dessus réussissent
+sous Nix avec **8 tests de mesure, 95 tests autosomaux et 172 tests complets**.
+Les contrôles isolés de transmission, dérive neutre et modes réussissent aussi
+avec **9/8/9 tests**. L'[audit D1–D10](../science/m3-audit.md) donne assertions,
+graines, seuils, types de preuves et limites. Les scénarios sélectionnés sont
+couverts, et les archives I14/I18/I22 fournissent les rapports à trois résolutions.
+D8 valide l'existence du diagnostic, sans prouver la convergence R4.
+D9 est vérifié pour les configurations explicites de blocs : aperçu full et
+coûts effectifs des modes, en unités logiques, sans borne de temps matériel
+ou de pic mémoire. Le chemin par défaut conserve le proxy historique ; aucun
+protocole principal convergent n'est adopté. D1 reste décoché et le statut
+reste READY. Aucune ancienne preuve datée, simulation ou observation n'est
+modifiée par cette mise à jour documentaire.
 
 ## References
 
