@@ -7,6 +7,11 @@ une définition commune indépendante de l'activation des DMI. Le moteur M2, ses
 tirages, sa CLI, ses statistiques et ses critères 3–7 % ne sont pas modifiés.
 La nouvelle primitive n'est donc pas encore la métrique principale des scénarios.
 
+I12 ajoute une [transmission phasée de blocs](autosomal-inheritance-protocol.md)
+avec carte explicite et projection en comptes compatibles. Cette primitive est
+elle aussi séparée du moteur M2 ; elle ne remplace pas une simulation intégrée,
+une calibration génomique ou une étude de convergence.
+
 M3 démarre à la demande explicite de l'utilisateur après la validation des dix
 DoD techniques de M2 par I10. La dépendance transitive M1 D8/D9 reste ouverte.
 Aucun DoD global de M3 n'est déclaré satisfait par cette seule brique.
