@@ -4,7 +4,7 @@ import argparse
 from dataclasses import asdict, replace
 import hashlib
 import json
-from math import expm1
+from math import expm1, log, sqrt
 from numbers import Real
 from pathlib import Path
 
@@ -21,6 +21,7 @@ from paleogen_rl.genetics.protocol import AutosomalProtocol
 STUDY_VERSION = 'selected-autosomal-resolution-v1'
 PLAN_VERSION = 'selected-autosomal-resolution-plan-v1'
 PLANNED_STUDY_VERSION = 'selected-autosomal-resolution-v2'
+PREVIEW_VERSION = 'selected-autosomal-workload-preview-v1'
 PLAN_INPUTS = ('population_size', 'f', 'male_fraction', 'generations', 'map_length',
                'resolutions', 'seeds', 'scenarios')
 STUDY_SCENARIOS = tuple(SCENARIOS)
@@ -205,11 +206,53 @@ def run_resolution_plan(plan):
     return report
 
 
+def preview_resolution_plan(plan):
+    """Describe full-study work on completion, without RNG or engine calls.
+
+    Rejection can increase candidates and transmissions; an early failure can
+    instead stop before completion. State entries describe one population,
+    never a peak process-memory bound. No inference uses simulated outcomes.
+    """
+    plan = validate_resolution_plan(plan)
+    replicates = len(plan['seeds'])
+    evaluations_per_resolution = replicates*len(plan['scenarios'])
+    offspring = plan['population_size']*plan['generations']*evaluations_per_resolution
+    rows = []
+    for blocks in plan['resolutions']:
+        rows.append(dict(block_count=blocks, evaluations=evaluations_per_resolution,
+                         offspring_generated_on_completion=offspring,
+                         accepted_candidates_on_completion=offspring,
+                         candidates_generated_lower_bound_on_completion=offspring,
+                         block_copy_transmissions_lower_bound_on_completion=2*blocks*offspring,
+                         state_allele_entries=2*plan['population_size']*blocks))
+    total = {key: sum(row[key] for row in rows) for key in (
+        'evaluations', 'offspring_generated_on_completion', 'accepted_candidates_on_completion',
+        'candidates_generated_lower_bound_on_completion', 'block_copy_transmissions_lower_bound_on_completion')}
+    total['largest_population_state_allele_entries'] = max(row['state_allele_entries'] for row in rows)
+    return dict(preview_version=PREVIEW_VERSION, scientific_status='planning_only',
+                simulation_performed=False, mode='full', convergence_status='not_established',
+                plan=plan, plan_sha256=hashlib.sha256(_canonical_plan(plan).encode('utf-8')).hexdigest(),
+                plan_file_sha256=None, resolutions=rows, total_workload=total,
+                precision=dict(replicates_per_scenario_resolution=replicates, confidence_level=.95,
+                               intervals_simultaneous=False,
+                               bounded_mean_radius_unclipped=sqrt(log(40)/(2*replicates)),
+                               paired_difference_radius_unclipped=sqrt(2*log(40)/replicates),
+                               method='hoeffding_95_pointwise',
+                               target_probability_interval='wilson_95_pointwise_outcome_dependent'),
+                assumptions=dict(completion_required=True, rejection_overhead_included=False,
+                                 cost_units='logical_counts_not_time',
+                                 state_units='allele_entries_one_population_not_peak_memory',
+                                 independent_replicates_required=True))
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True, help='new JSON destination (no overwrite)')
     parser.add_argument('--plan', type=Path, help='explicit versioned study plan (otherwise use the I18 diagnostic)')
+    parser.add_argument('--preview', action='store_true', help='describe the declared plan without running simulations')
     args = parser.parse_args(argv)
+    if args.preview and args.plan is None:
+        parser.error('--preview requires --plan')
     if args.output.exists() or args.output.is_symlink():
         parser.error('output already exists')
     try:
@@ -217,7 +260,7 @@ def main(argv=None):
             report = run_selected_resolution_study()
         else:
             plan, file_hash = load_resolution_plan(args.plan)
-            report = run_resolution_plan(plan)
+            report = preview_resolution_plan(plan) if args.preview else run_resolution_plan(plan)
             report['plan_file_sha256'] = file_hash
         with args.output.open('x', encoding='utf-8') as stream:
             json.dump(report, stream, indent=2, allow_nan=False)
