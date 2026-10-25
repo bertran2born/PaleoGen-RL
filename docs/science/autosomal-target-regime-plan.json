@@ -1,0 +1,12 @@
+{
+  "plan_version": "selected-autosomal-resolution-plan-v1",
+  "plan_id": "target-regime-pilot-i22",
+  "population_size": 1450,
+  "f": 0.05,
+  "male_fraction": 0.5,
+  "generations": 6993,
+  "map_length": 1.0,
+  "resolutions": [8, 32, 128],
+  "seeds": [520000, 520001],
+  "scenarios": ["neutral", "reich_point", "reich_plus_symmetric_1pct"]
+}
