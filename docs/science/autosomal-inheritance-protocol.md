@@ -6,6 +6,10 @@ Ce protocole est écrit avant la première exécution des tests I12. Ses graines
 effectifs et seuils ne seront pas ajustés aux résultats pour les faire passer.
 Il ne décrit pas des données observées ou une calibration génomique humaine.
 
+I13 ajoute le [contrôle de dérive neutre en population](autosomal-neutral-protocol.md)
+qui réutilise cette transmission avec choix uniforme des parents par sexe et
+mesure finale I11. Il reste séparé du moteur M2 et des scénarios sélectionnés.
+
 Un état contient N individus, deux homologues et B blocs ordonnés du panel I11.
 Chaque valeur binaire représente une copie moderne (1) ou archaïque (0).
 La dimension des homologues d'un descendant place la contribution maternelle en
@@ -145,10 +149,11 @@ et tolérances définis avant leur première exécution, sans ajustement du prot
 Les cinq DoD d'I12 sont vérifiés ; les suites, moteurs et paramètres M2 sont
 inchangés. `git diff --check` réussit.
 
-La dérive neutre en population, la convergence entre résolutions, les coûts
-mesurés et l'intégration aux scénarios et modes restent des travaux ultérieurs.
-Une validation de transmission ne démontre pas leur satisfaction et ne clôture
-pas M3. Aucun fichier milestone n'est modifié dans cette Issue.
+Le contrôle de dérive neutre en population est fourni séparément par I13.
+La convergence entre résolutions, les coûts mesurés et l'intégration aux
+scénarios et modes restent des travaux ultérieurs. La validation de transmission
+I12 ne démontre pas leur satisfaction et ne clôture pas M3. Aucun fichier
+milestone n'est modifié dans cette Issue.
 
 Références : [M3](../milestones/M3-comparable-autosomal-ancestry.md),
 [mesure I11](autosomal-block-measurement.md),
