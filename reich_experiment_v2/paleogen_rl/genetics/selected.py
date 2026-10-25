@@ -12,9 +12,13 @@ import numpy as np
 
 from .ancestry import MEASUREMENT_VERSION, measure_ancestry
 from .inheritance import INHERITANCE_VERSION, RecombinationMap, copy_counts, inherit_diploid
+from .weighted_ancestry import (
+    MEASUREMENT_VERSION as WEIGHTED_MEASUREMENT_VERSION, WeightedBlockPanel, measure_weighted_ancestry,
+)
 
 
 SIMULATION_VERSION = 'selected-autosomal-block-simulation-v1'
+WEIGHTED_REPORT_VERSION = 'weighted-selected-autosomal-block-report-v1'
 COEFFICIENTS = ('s_mt', 's_y', 'mt_mod_nuc_arch', 'mt_arch_nuc_mod',
                 'y_mod_nuc_arch', 'y_arch_nuc_mod')
 
@@ -110,7 +114,7 @@ def _marker(values, size, name, allowed):
 
 
 def run_selected(haplotypes, sex, mt, y, *, recombination_map, selection,
-                 generations, seed, max_rounds=200, stop_when_absorbed=False):
+                 generations, seed, max_rounds=200, stop_when_absorbed=False, measurement_panel=None):
     """Run fixed-size, separate-sex reproduction and offspring rejection.
 
     Parent groups are sampled uniformly. Failed slots are retried with their
@@ -118,9 +122,15 @@ def run_selected(haplotypes, sex, mt, y, *, recombination_map, selection,
     exactly the block RNG stream of run_neutral, irrespective of annotations.
     Full mode is the default. Optional stopping checks both markers after each
     complete generation and always leaves final ancestry unavailable.
+    An explicit weighted measurement panel changes only the measurement report,
+    never selection, inheritance, random draws or marker stopping.
     """
     if not isinstance(recombination_map, RecombinationMap):
         raise ValueError('recombination_map must be a RecombinationMap')
+    if measurement_panel is not None and (
+            not isinstance(measurement_panel, WeightedBlockPanel)
+            or measurement_panel.panel != recombination_map.panel):
+        raise ValueError('measurement_panel must be weighted and match the recombination panel exactly')
     if not isinstance(selection, BlockSelection):
         raise ValueError('selection must be a BlockSelection')
     if type(stop_when_absorbed) is not bool:
@@ -144,7 +154,9 @@ def run_selected(haplotypes, sex, mt, y, *, recombination_map, selection,
         raise ValueError('Y must be 0/1 in males and -1 in females')
     partners = tuple(dict.fromkeys(block for block in
                      (selection.mt_partner_block, selection.y_partner_block) if block is not None))
-    initial_measurement = measure_ancestry(counts, panel, generation=0, target_generation=0,
+    measure = measure_ancestry if measurement_panel is None else measure_weighted_ancestry
+    measured_panel = panel if measurement_panel is None else measurement_panel
+    initial_measurement = measure(counts, measured_panel, generation=0, target_generation=0,
                                          mode='full', partner_block_ids=partners)
     population = np.asarray(haplotypes, dtype=np.uint8).copy()
     sx, maternal, paternal = (sx.astype(np.uint8, copy=True), maternal.astype(np.uint8, copy=True),
@@ -153,7 +165,8 @@ def run_selected(haplotypes, sex, mt, y, *, recombination_map, selection,
     selecting = any(getattr(selection, field) for field in COEFFICIENTS)
     rng = np.random.default_rng(seed)
     report = dict(
-        simulation_version=SIMULATION_VERSION, measurement_version=MEASUREMENT_VERSION,
+        simulation_version=SIMULATION_VERSION,
+        measurement_version=MEASUREMENT_VERSION if measurement_panel is None else WEIGHTED_MEASUREMENT_VERSION,
         inheritance_version=INHERITANCE_VERSION, model='sex_structured_selected_blocks',
         scientific_status='exploratory_block_simulation', mode='quick' if stop_when_absorbed else 'full', seed=seed,
         numpy_version=np.__version__, rng_bit_generator=type(rng.bit_generator).__name__,
@@ -165,6 +178,8 @@ def run_selected(haplotypes, sex, mt, y, *, recombination_map, selection,
         work_units=dict(candidates_generated=0, accepted_candidates=0, offspring_generated=0,
                         block_copy_transmissions=0, state_allele_entries=2*size*blocks),
     )
+    if measurement_panel is not None:
+        report.update(report_version=WEIGHTED_REPORT_VERSION, measurement_panel=measurement_panel.to_dict())
     for name, array in (('haplotypes', population), ('sex', sx), ('mt', maternal), ('y', paternal)):
         report[f'initial_{name}_sha256'] = hashlib.sha256(array.tobytes()).hexdigest()
     work = report['work_units']
@@ -210,7 +225,7 @@ def run_selected(haplotypes, sex, mt, y, *, recombination_map, selection,
             if mt_absorbed and y_absorbed and report['generations_completed'] < generations:
                 report['termination_reason'] = 'markers_absorbed'
                 break
-    report['final_measurement'] = measure_ancestry(
-        copy_counts(population), panel, generation=report['generations_completed'], target_generation=generations,
+    report['final_measurement'] = measure(
+        copy_counts(population), measured_panel, generation=report['generations_completed'], target_generation=generations,
         mode='quick' if stop_when_absorbed else 'full', partner_block_ids=partners)
     return SelectedRun(population, sx, maternal, paternal, report)
