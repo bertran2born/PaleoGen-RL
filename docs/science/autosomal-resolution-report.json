@@ -1,0 +1,3381 @@
+{
+  "study_version": "neutral-autosomal-resolution-v1",
+  "scientific_status": "synthetic_neutral_resolution_diagnostic",
+  "convergence_status": "not_assessed",
+  "mode": "full",
+  "measurement_version": "autosomal-block-measurement-v1",
+  "inheritance_version": "autosomal-block-inheritance-v1",
+  "simulation_version": "neutral-autosomal-block-simulation-v1",
+  "numpy_version": "2.5.3",
+  "rng_bit_generator": "PCG64",
+  "protocol": {
+    "population_size": 40,
+    "male_n": 20,
+    "female_n": 20,
+    "initial_modern_individual_indices": [
+      0,
+      20
+    ],
+    "initial_state": "both_homologues_modern_at_all_blocks_for_listed_individuals",
+    "initial_ancestry": 0.05,
+    "generations": 20,
+    "seeds": [
+      410000,
+      410001,
+      410002,
+      410003,
+      410004,
+      410005,
+      410006,
+      410007,
+      410008,
+      410009,
+      410010,
+      410011,
+      410012,
+      410013,
+      410014,
+      410015,
+      410016,
+      410017,
+      410018,
+      410019,
+      410020,
+      410021,
+      410022,
+      410023,
+      410024,
+      410025,
+      410026,
+      410027,
+      410028,
+      410029,
+      410030,
+      410031,
+      410032,
+      410033,
+      410034,
+      410035,
+      410036,
+      410037,
+      410038,
+      410039,
+      410040,
+      410041,
+      410042,
+      410043,
+      410044,
+      410045,
+      410046,
+      410047,
+      410048,
+      410049,
+      410050,
+      410051,
+      410052,
+      410053,
+      410054,
+      410055,
+      410056,
+      410057,
+      410058,
+      410059,
+      410060,
+      410061,
+      410062,
+      410063,
+      410064,
+      410065,
+      410066,
+      410067,
+      410068,
+      410069,
+      410070,
+      410071,
+      410072,
+      410073,
+      410074,
+      410075,
+      410076,
+      410077,
+      410078,
+      410079,
+      410080,
+      410081,
+      410082,
+      410083,
+      410084,
+      410085,
+      410086,
+      410087,
+      410088,
+      410089,
+      410090,
+      410091,
+      410092,
+      410093,
+      410094,
+      410095,
+      410096,
+      410097,
+      410098,
+      410099,
+      410100,
+      410101,
+      410102,
+      410103,
+      410104,
+      410105,
+      410106,
+      410107,
+      410108,
+      410109,
+      410110,
+      410111,
+      410112,
+      410113,
+      410114,
+      410115,
+      410116,
+      410117,
+      410118,
+      410119,
+      410120,
+      410121,
+      410122,
+      410123,
+      410124,
+      410125,
+      410126,
+      410127
+    ],
+    "resolutions": [
+      8,
+      32,
+      128
+    ],
+    "map_length": 1.0,
+    "map_rule": "r=-expm1(-2*map_length/(B-1))/2",
+    "target_interval": [
+      0.03,
+      0.07
+    ],
+    "target_inclusive": true,
+    "confidence_level": 0.95,
+    "intervals_simultaneous": false
+  },
+  "resolutions": [
+    {
+      "block_count": 8,
+      "recombination_map": {
+        "inheritance_version": "autosomal-block-inheritance-v1",
+        "model": "independent_boundary_switches",
+        "panel": {
+          "panel_id": "synthetic-resolution-8",
+          "block_ids": [
+            "b0",
+            "b1",
+            "b2",
+            "b3",
+            "b4",
+            "b5",
+            "b6",
+            "b7"
+          ]
+        },
+        "switch_probabilities": [
+          0.12426135346235702,
+          0.12426135346235702,
+          0.12426135346235702,
+          0.12426135346235702,
+          0.12426135346235702,
+          0.12426135346235702,
+          0.12426135346235702
+        ],
+        "initial_homologue_probability": 0.5,
+        "within_block_recombination": false,
+        "offspring_homologue_order": [
+          "maternal",
+          "paternal"
+        ]
+      },
+      "initial_haplotypes_sha256": "0a7cf75116fa1d16848ed9c4222d2c56f6662d0cca6caf352d7304a786d7d44d",
+      "initial_sex_sha256": "21d547c667588b2dfb8d721f889b23783a7cb2d19f87cd45f149a068f73ca00e",
+      "allele_copy_denominator": 640,
+      "replicates": [
+        {
+          "seed": 410000,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410001,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410002,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.01875,
+          "modern_allele_copies": 12
+        },
+        {
+          "seed": 410003,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.1921875,
+          "modern_allele_copies": 123
+        },
+        {
+          "seed": 410004,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.065625,
+          "modern_allele_copies": 42
+        },
+        {
+          "seed": 410005,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.021875,
+          "modern_allele_copies": 14
+        },
+        {
+          "seed": 410006,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.125,
+          "modern_allele_copies": 80
+        },
+        {
+          "seed": 410007,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0515625,
+          "modern_allele_copies": 33
+        },
+        {
+          "seed": 410008,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.06875,
+          "modern_allele_copies": 44
+        },
+        {
+          "seed": 410009,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.1140625,
+          "modern_allele_copies": 73
+        },
+        {
+          "seed": 410010,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410011,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.1109375,
+          "modern_allele_copies": 71
+        },
+        {
+          "seed": 410012,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.003125,
+          "modern_allele_copies": 2
+        },
+        {
+          "seed": 410013,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410014,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410015,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0265625,
+          "modern_allele_copies": 17
+        },
+        {
+          "seed": 410016,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.003125,
+          "modern_allele_copies": 2
+        },
+        {
+          "seed": 410017,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410018,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0375,
+          "modern_allele_copies": 24
+        },
+        {
+          "seed": 410019,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0046875,
+          "modern_allele_copies": 3
+        },
+        {
+          "seed": 410020,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.015625,
+          "modern_allele_copies": 10
+        },
+        {
+          "seed": 410021,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410022,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.1375,
+          "modern_allele_copies": 88
+        },
+        {
+          "seed": 410023,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.065625,
+          "modern_allele_copies": 42
+        },
+        {
+          "seed": 410024,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410025,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0359375,
+          "modern_allele_copies": 23
+        },
+        {
+          "seed": 410026,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410027,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0296875,
+          "modern_allele_copies": 19
+        },
+        {
+          "seed": 410028,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410029,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0796875,
+          "modern_allele_copies": 51
+        },
+        {
+          "seed": 410030,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0734375,
+          "modern_allele_copies": 47
+        },
+        {
+          "seed": 410031,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0171875,
+          "modern_allele_copies": 11
+        },
+        {
+          "seed": 410032,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.009375,
+          "modern_allele_copies": 6
+        },
+        {
+          "seed": 410033,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.18125,
+          "modern_allele_copies": 116
+        },
+        {
+          "seed": 410034,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.1078125,
+          "modern_allele_copies": 69
+        },
+        {
+          "seed": 410035,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0171875,
+          "modern_allele_copies": 11
+        },
+        {
+          "seed": 410036,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.125,
+          "modern_allele_copies": 80
+        },
+        {
+          "seed": 410037,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.165625,
+          "modern_allele_copies": 106
+        },
+        {
+          "seed": 410038,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0234375,
+          "modern_allele_copies": 15
+        },
+        {
+          "seed": 410039,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0375,
+          "modern_allele_copies": 24
+        },
+        {
+          "seed": 410040,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0015625,
+          "modern_allele_copies": 1
+        },
+        {
+          "seed": 410041,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.075,
+          "modern_allele_copies": 48
+        },
+        {
+          "seed": 410042,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0375,
+          "modern_allele_copies": 24
+        },
+        {
+          "seed": 410043,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0515625,
+          "modern_allele_copies": 33
+        },
+        {
+          "seed": 410044,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0890625,
+          "modern_allele_copies": 57
+        },
+        {
+          "seed": 410045,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.1015625,
+          "modern_allele_copies": 65
+        },
+        {
+          "seed": 410046,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410047,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.134375,
+          "modern_allele_copies": 86
+        },
+        {
+          "seed": 410048,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.134375,
+          "modern_allele_copies": 86
+        },
+        {
+          "seed": 410049,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410050,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0109375,
+          "modern_allele_copies": 7
+        },
+        {
+          "seed": 410051,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.065625,
+          "modern_allele_copies": 42
+        },
+        {
+          "seed": 410052,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410053,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410054,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410055,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0515625,
+          "modern_allele_copies": 33
+        },
+        {
+          "seed": 410056,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0265625,
+          "modern_allele_copies": 17
+        },
+        {
+          "seed": 410057,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0015625,
+          "modern_allele_copies": 1
+        },
+        {
+          "seed": 410058,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410059,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410060,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0046875,
+          "modern_allele_copies": 3
+        },
+        {
+          "seed": 410061,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410062,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0109375,
+          "modern_allele_copies": 7
+        },
+        {
+          "seed": 410063,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.00625,
+          "modern_allele_copies": 4
+        },
+        {
+          "seed": 410064,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.00625,
+          "modern_allele_copies": 4
+        },
+        {
+          "seed": 410065,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0453125,
+          "modern_allele_copies": 29
+        },
+        {
+          "seed": 410066,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410067,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0203125,
+          "modern_allele_copies": 13
+        },
+        {
+          "seed": 410068,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.090625,
+          "modern_allele_copies": 58
+        },
+        {
+          "seed": 410069,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0453125,
+          "modern_allele_copies": 29
+        },
+        {
+          "seed": 410070,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.20625,
+          "modern_allele_copies": 132
+        },
+        {
+          "seed": 410071,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410072,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410073,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.040625,
+          "modern_allele_copies": 26
+        },
+        {
+          "seed": 410074,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410075,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410076,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.034375,
+          "modern_allele_copies": 22
+        },
+        {
+          "seed": 410077,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.1,
+          "modern_allele_copies": 64
+        },
+        {
+          "seed": 410078,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.1171875,
+          "modern_allele_copies": 75
+        },
+        {
+          "seed": 410079,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0828125,
+          "modern_allele_copies": 53
+        },
+        {
+          "seed": 410080,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.321875,
+          "modern_allele_copies": 206
+        },
+        {
+          "seed": 410081,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0265625,
+          "modern_allele_copies": 17
+        },
+        {
+          "seed": 410082,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.040625,
+          "modern_allele_copies": 26
+        },
+        {
+          "seed": 410083,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.1171875,
+          "modern_allele_copies": 75
+        },
+        {
+          "seed": 410084,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410085,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0265625,
+          "modern_allele_copies": 17
+        },
+        {
+          "seed": 410086,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0265625,
+          "modern_allele_copies": 17
+        },
+        {
+          "seed": 410087,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.021875,
+          "modern_allele_copies": 14
+        },
+        {
+          "seed": 410088,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.1859375,
+          "modern_allele_copies": 119
+        },
+        {
+          "seed": 410089,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.05,
+          "modern_allele_copies": 32
+        },
+        {
+          "seed": 410090,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410091,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.015625,
+          "modern_allele_copies": 10
+        },
+        {
+          "seed": 410092,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0234375,
+          "modern_allele_copies": 15
+        },
+        {
+          "seed": 410093,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0515625,
+          "modern_allele_copies": 33
+        },
+        {
+          "seed": 410094,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410095,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0765625,
+          "modern_allele_copies": 49
+        },
+        {
+          "seed": 410096,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.1140625,
+          "modern_allele_copies": 73
+        },
+        {
+          "seed": 410097,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0703125,
+          "modern_allele_copies": 45
+        },
+        {
+          "seed": 410098,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.1515625,
+          "modern_allele_copies": 97
+        },
+        {
+          "seed": 410099,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.1265625,
+          "modern_allele_copies": 81
+        },
+        {
+          "seed": 410100,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410101,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.059375,
+          "modern_allele_copies": 38
+        },
+        {
+          "seed": 410102,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0546875,
+          "modern_allele_copies": 35
+        },
+        {
+          "seed": 410103,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0359375,
+          "modern_allele_copies": 23
+        },
+        {
+          "seed": 410104,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410105,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0109375,
+          "modern_allele_copies": 7
+        },
+        {
+          "seed": 410106,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410107,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.078125,
+          "modern_allele_copies": 50
+        },
+        {
+          "seed": 410108,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.046875,
+          "modern_allele_copies": 30
+        },
+        {
+          "seed": 410109,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410110,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410111,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410112,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410113,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0109375,
+          "modern_allele_copies": 7
+        },
+        {
+          "seed": 410114,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0359375,
+          "modern_allele_copies": 23
+        },
+        {
+          "seed": 410115,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.003125,
+          "modern_allele_copies": 2
+        },
+        {
+          "seed": 410116,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0265625,
+          "modern_allele_copies": 17
+        },
+        {
+          "seed": 410117,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0296875,
+          "modern_allele_copies": 19
+        },
+        {
+          "seed": 410118,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0125,
+          "modern_allele_copies": 8
+        },
+        {
+          "seed": 410119,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.1546875,
+          "modern_allele_copies": 99
+        },
+        {
+          "seed": 410120,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410121,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.040625,
+          "modern_allele_copies": 26
+        },
+        {
+          "seed": 410122,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0703125,
+          "modern_allele_copies": 45
+        },
+        {
+          "seed": 410123,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.075,
+          "modern_allele_copies": 48
+        },
+        {
+          "seed": 410124,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.025,
+          "modern_allele_copies": 16
+        },
+        {
+          "seed": 410125,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.121875,
+          "modern_allele_copies": 78
+        },
+        {
+          "seed": 410126,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0109375,
+          "modern_allele_copies": 7
+        },
+        {
+          "seed": 410127,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        }
+      ],
+      "ancestry": {
+        "mean": 0.04615478515625,
+        "interval": [
+          0.0,
+          0.1661951340712401
+        ],
+        "method": "hoeffding_95_pointwise"
+      },
+      "target": {
+        "count": 24,
+        "replicates": 128,
+        "probability": 0.1875,
+        "interval": [
+          0.12936141696376852,
+          0.2638491807071743
+        ],
+        "method": "wilson_95_pointwise"
+      },
+      "work_units": {
+        "offspring_generated": 102400,
+        "block_copy_transmissions": 1638400,
+        "state_allele_entries": 640
+      }
+    },
+    {
+      "block_count": 32,
+      "recombination_map": {
+        "inheritance_version": "autosomal-block-inheritance-v1",
+        "model": "independent_boundary_switches",
+        "panel": {
+          "panel_id": "synthetic-resolution-32",
+          "block_ids": [
+            "b0",
+            "b1",
+            "b2",
+            "b3",
+            "b4",
+            "b5",
+            "b6",
+            "b7",
+            "b8",
+            "b9",
+            "b10",
+            "b11",
+            "b12",
+            "b13",
+            "b14",
+            "b15",
+            "b16",
+            "b17",
+            "b18",
+            "b19",
+            "b20",
+            "b21",
+            "b22",
+            "b23",
+            "b24",
+            "b25",
+            "b26",
+            "b27",
+            "b28",
+            "b29",
+            "b30",
+            "b31"
+          ]
+        },
+        "switch_probabilities": [
+          0.031239503583116484,
+          0.031239503583116484,
+          0.031239503583116484,
+          0.031239503583116484,
+          0.031239503583116484,
+          0.031239503583116484,
+          0.031239503583116484,
+          0.031239503583116484,
+          0.031239503583116484,
+          0.031239503583116484,
+          0.031239503583116484,
+          0.031239503583116484,
+          0.031239503583116484,
+          0.031239503583116484,
+          0.031239503583116484,
+          0.031239503583116484,
+          0.031239503583116484,
+          0.031239503583116484,
+          0.031239503583116484,
+          0.031239503583116484,
+          0.031239503583116484,
+          0.031239503583116484,
+          0.031239503583116484,
+          0.031239503583116484,
+          0.031239503583116484,
+          0.031239503583116484,
+          0.031239503583116484,
+          0.031239503583116484,
+          0.031239503583116484,
+          0.031239503583116484,
+          0.031239503583116484
+        ],
+        "initial_homologue_probability": 0.5,
+        "within_block_recombination": false,
+        "offspring_homologue_order": [
+          "maternal",
+          "paternal"
+        ]
+      },
+      "initial_haplotypes_sha256": "a28af390900e6c8863b9dd36f666b9981af823d141c340040ba9831c4f38a3bd",
+      "initial_sex_sha256": "21d547c667588b2dfb8d721f889b23783a7cb2d19f87cd45f149a068f73ca00e",
+      "allele_copy_denominator": 2560,
+      "replicates": [
+        {
+          "seed": 410000,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.05390625,
+          "modern_allele_copies": 138
+        },
+        {
+          "seed": 410001,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.01328125,
+          "modern_allele_copies": 34
+        },
+        {
+          "seed": 410002,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.003515625,
+          "modern_allele_copies": 9
+        },
+        {
+          "seed": 410003,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.1015625,
+          "modern_allele_copies": 260
+        },
+        {
+          "seed": 410004,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.064453125,
+          "modern_allele_copies": 165
+        },
+        {
+          "seed": 410005,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410006,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.02890625,
+          "modern_allele_copies": 74
+        },
+        {
+          "seed": 410007,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.026953125,
+          "modern_allele_copies": 69
+        },
+        {
+          "seed": 410008,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.182421875,
+          "modern_allele_copies": 467
+        },
+        {
+          "seed": 410009,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0125,
+          "modern_allele_copies": 32
+        },
+        {
+          "seed": 410010,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.002734375,
+          "modern_allele_copies": 7
+        },
+        {
+          "seed": 410011,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.005078125,
+          "modern_allele_copies": 13
+        },
+        {
+          "seed": 410012,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.017578125,
+          "modern_allele_copies": 45
+        },
+        {
+          "seed": 410013,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410014,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.039453125,
+          "modern_allele_copies": 101
+        },
+        {
+          "seed": 410015,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.033203125,
+          "modern_allele_copies": 85
+        },
+        {
+          "seed": 410016,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.18125,
+          "modern_allele_copies": 464
+        },
+        {
+          "seed": 410017,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410018,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.008203125,
+          "modern_allele_copies": 21
+        },
+        {
+          "seed": 410019,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410020,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.16171875,
+          "modern_allele_copies": 414
+        },
+        {
+          "seed": 410021,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.00546875,
+          "modern_allele_copies": 14
+        },
+        {
+          "seed": 410022,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.002734375,
+          "modern_allele_copies": 7
+        },
+        {
+          "seed": 410023,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410024,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410025,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.025,
+          "modern_allele_copies": 64
+        },
+        {
+          "seed": 410026,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.30078125,
+          "modern_allele_copies": 770
+        },
+        {
+          "seed": 410027,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410028,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.11328125,
+          "modern_allele_copies": 290
+        },
+        {
+          "seed": 410029,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0375,
+          "modern_allele_copies": 96
+        },
+        {
+          "seed": 410030,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.24921875,
+          "modern_allele_copies": 638
+        },
+        {
+          "seed": 410031,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410032,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410033,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.019921875,
+          "modern_allele_copies": 51
+        },
+        {
+          "seed": 410034,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.051171875,
+          "modern_allele_copies": 131
+        },
+        {
+          "seed": 410035,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.00234375,
+          "modern_allele_copies": 6
+        },
+        {
+          "seed": 410036,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410037,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.02109375,
+          "modern_allele_copies": 54
+        },
+        {
+          "seed": 410038,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.020703125,
+          "modern_allele_copies": 53
+        },
+        {
+          "seed": 410039,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.037109375,
+          "modern_allele_copies": 95
+        },
+        {
+          "seed": 410040,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.007421875,
+          "modern_allele_copies": 19
+        },
+        {
+          "seed": 410041,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.080078125,
+          "modern_allele_copies": 205
+        },
+        {
+          "seed": 410042,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.066796875,
+          "modern_allele_copies": 171
+        },
+        {
+          "seed": 410043,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.045703125,
+          "modern_allele_copies": 117
+        },
+        {
+          "seed": 410044,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.120703125,
+          "modern_allele_copies": 309
+        },
+        {
+          "seed": 410045,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.01796875,
+          "modern_allele_copies": 46
+        },
+        {
+          "seed": 410046,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.000390625,
+          "modern_allele_copies": 1
+        },
+        {
+          "seed": 410047,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.059375,
+          "modern_allele_copies": 152
+        },
+        {
+          "seed": 410048,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410049,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.18046875,
+          "modern_allele_copies": 462
+        },
+        {
+          "seed": 410050,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.09609375,
+          "modern_allele_copies": 246
+        },
+        {
+          "seed": 410051,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410052,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410053,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410054,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.099609375,
+          "modern_allele_copies": 255
+        },
+        {
+          "seed": 410055,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.264453125,
+          "modern_allele_copies": 677
+        },
+        {
+          "seed": 410056,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.00625,
+          "modern_allele_copies": 16
+        },
+        {
+          "seed": 410057,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.06796875,
+          "modern_allele_copies": 174
+        },
+        {
+          "seed": 410058,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410059,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410060,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.000390625,
+          "modern_allele_copies": 1
+        },
+        {
+          "seed": 410061,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410062,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.040625,
+          "modern_allele_copies": 104
+        },
+        {
+          "seed": 410063,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410064,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410065,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.01484375,
+          "modern_allele_copies": 38
+        },
+        {
+          "seed": 410066,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410067,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.014453125,
+          "modern_allele_copies": 37
+        },
+        {
+          "seed": 410068,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.105859375,
+          "modern_allele_copies": 271
+        },
+        {
+          "seed": 410069,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.078125,
+          "modern_allele_copies": 200
+        },
+        {
+          "seed": 410070,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.07109375,
+          "modern_allele_copies": 182
+        },
+        {
+          "seed": 410071,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.040234375,
+          "modern_allele_copies": 103
+        },
+        {
+          "seed": 410072,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.02265625,
+          "modern_allele_copies": 58
+        },
+        {
+          "seed": 410073,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.166796875,
+          "modern_allele_copies": 427
+        },
+        {
+          "seed": 410074,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.009765625,
+          "modern_allele_copies": 25
+        },
+        {
+          "seed": 410075,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.01953125,
+          "modern_allele_copies": 50
+        },
+        {
+          "seed": 410076,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.20546875,
+          "modern_allele_copies": 526
+        },
+        {
+          "seed": 410077,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.050390625,
+          "modern_allele_copies": 129
+        },
+        {
+          "seed": 410078,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.055859375,
+          "modern_allele_copies": 143
+        },
+        {
+          "seed": 410079,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.032421875,
+          "modern_allele_copies": 83
+        },
+        {
+          "seed": 410080,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.091796875,
+          "modern_allele_copies": 235
+        },
+        {
+          "seed": 410081,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.126171875,
+          "modern_allele_copies": 323
+        },
+        {
+          "seed": 410082,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.02734375,
+          "modern_allele_copies": 70
+        },
+        {
+          "seed": 410083,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.12109375,
+          "modern_allele_copies": 310
+        },
+        {
+          "seed": 410084,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410085,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.090234375,
+          "modern_allele_copies": 231
+        },
+        {
+          "seed": 410086,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.015625,
+          "modern_allele_copies": 40
+        },
+        {
+          "seed": 410087,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.03046875,
+          "modern_allele_copies": 78
+        },
+        {
+          "seed": 410088,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.075390625,
+          "modern_allele_copies": 193
+        },
+        {
+          "seed": 410089,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410090,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.037109375,
+          "modern_allele_copies": 95
+        },
+        {
+          "seed": 410091,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.008984375,
+          "modern_allele_copies": 23
+        },
+        {
+          "seed": 410092,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.03046875,
+          "modern_allele_copies": 78
+        },
+        {
+          "seed": 410093,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.150390625,
+          "modern_allele_copies": 385
+        },
+        {
+          "seed": 410094,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410095,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.1078125,
+          "modern_allele_copies": 276
+        },
+        {
+          "seed": 410096,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.023828125,
+          "modern_allele_copies": 61
+        },
+        {
+          "seed": 410097,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.012109375,
+          "modern_allele_copies": 31
+        },
+        {
+          "seed": 410098,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410099,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0546875,
+          "modern_allele_copies": 140
+        },
+        {
+          "seed": 410100,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.008203125,
+          "modern_allele_copies": 21
+        },
+        {
+          "seed": 410101,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0359375,
+          "modern_allele_copies": 92
+        },
+        {
+          "seed": 410102,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.033984375,
+          "modern_allele_copies": 87
+        },
+        {
+          "seed": 410103,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0109375,
+          "modern_allele_copies": 28
+        },
+        {
+          "seed": 410104,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.051953125,
+          "modern_allele_copies": 133
+        },
+        {
+          "seed": 410105,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0015625,
+          "modern_allele_copies": 4
+        },
+        {
+          "seed": 410106,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.012890625,
+          "modern_allele_copies": 33
+        },
+        {
+          "seed": 410107,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.005078125,
+          "modern_allele_copies": 13
+        },
+        {
+          "seed": 410108,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.005078125,
+          "modern_allele_copies": 13
+        },
+        {
+          "seed": 410109,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0140625,
+          "modern_allele_copies": 36
+        },
+        {
+          "seed": 410110,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.021484375,
+          "modern_allele_copies": 55
+        },
+        {
+          "seed": 410111,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0265625,
+          "modern_allele_copies": 68
+        },
+        {
+          "seed": 410112,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410113,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.08046875,
+          "modern_allele_copies": 206
+        },
+        {
+          "seed": 410114,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.013671875,
+          "modern_allele_copies": 35
+        },
+        {
+          "seed": 410115,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.056640625,
+          "modern_allele_copies": 145
+        },
+        {
+          "seed": 410116,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.012890625,
+          "modern_allele_copies": 33
+        },
+        {
+          "seed": 410117,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.075390625,
+          "modern_allele_copies": 193
+        },
+        {
+          "seed": 410118,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.08203125,
+          "modern_allele_copies": 210
+        },
+        {
+          "seed": 410119,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.26171875,
+          "modern_allele_copies": 670
+        },
+        {
+          "seed": 410120,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410121,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0171875,
+          "modern_allele_copies": 44
+        },
+        {
+          "seed": 410122,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.103125,
+          "modern_allele_copies": 264
+        },
+        {
+          "seed": 410123,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.004296875,
+          "modern_allele_copies": 11
+        },
+        {
+          "seed": 410124,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.05703125,
+          "modern_allele_copies": 146
+        },
+        {
+          "seed": 410125,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0578125,
+          "modern_allele_copies": 148
+        },
+        {
+          "seed": 410126,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.04140625,
+          "modern_allele_copies": 106
+        },
+        {
+          "seed": 410127,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.016015625,
+          "modern_allele_copies": 41
+        }
+      ],
+      "ancestry": {
+        "mean": 0.046685791015625006,
+        "interval": [
+          0.0,
+          0.16672613993061508
+        ],
+        "method": "hoeffding_95_pointwise"
+      },
+      "target": {
+        "count": 27,
+        "replicates": 128,
+        "probability": 0.2109375,
+        "interval": [
+          0.14921308750498039,
+          0.28950671534064165
+        ],
+        "method": "wilson_95_pointwise"
+      },
+      "work_units": {
+        "offspring_generated": 102400,
+        "block_copy_transmissions": 6553600,
+        "state_allele_entries": 2560
+      }
+    },
+    {
+      "block_count": 128,
+      "recombination_map": {
+        "inheritance_version": "autosomal-block-inheritance-v1",
+        "model": "independent_boundary_switches",
+        "panel": {
+          "panel_id": "synthetic-resolution-128",
+          "block_ids": [
+            "b0",
+            "b1",
+            "b2",
+            "b3",
+            "b4",
+            "b5",
+            "b6",
+            "b7",
+            "b8",
+            "b9",
+            "b10",
+            "b11",
+            "b12",
+            "b13",
+            "b14",
+            "b15",
+            "b16",
+            "b17",
+            "b18",
+            "b19",
+            "b20",
+            "b21",
+            "b22",
+            "b23",
+            "b24",
+            "b25",
+            "b26",
+            "b27",
+            "b28",
+            "b29",
+            "b30",
+            "b31",
+            "b32",
+            "b33",
+            "b34",
+            "b35",
+            "b36",
+            "b37",
+            "b38",
+            "b39",
+            "b40",
+            "b41",
+            "b42",
+            "b43",
+            "b44",
+            "b45",
+            "b46",
+            "b47",
+            "b48",
+            "b49",
+            "b50",
+            "b51",
+            "b52",
+            "b53",
+            "b54",
+            "b55",
+            "b56",
+            "b57",
+            "b58",
+            "b59",
+            "b60",
+            "b61",
+            "b62",
+            "b63",
+            "b64",
+            "b65",
+            "b66",
+            "b67",
+            "b68",
+            "b69",
+            "b70",
+            "b71",
+            "b72",
+            "b73",
+            "b74",
+            "b75",
+            "b76",
+            "b77",
+            "b78",
+            "b79",
+            "b80",
+            "b81",
+            "b82",
+            "b83",
+            "b84",
+            "b85",
+            "b86",
+            "b87",
+            "b88",
+            "b89",
+            "b90",
+            "b91",
+            "b92",
+            "b93",
+            "b94",
+            "b95",
+            "b96",
+            "b97",
+            "b98",
+            "b99",
+            "b100",
+            "b101",
+            "b102",
+            "b103",
+            "b104",
+            "b105",
+            "b106",
+            "b107",
+            "b108",
+            "b109",
+            "b110",
+            "b111",
+            "b112",
+            "b113",
+            "b114",
+            "b115",
+            "b116",
+            "b117",
+            "b118",
+            "b119",
+            "b120",
+            "b121",
+            "b122",
+            "b123",
+            "b124",
+            "b125",
+            "b126",
+            "b127"
+          ]
+        },
+        "switch_probabilities": [
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438,
+          0.007812339806686438
+        ],
+        "initial_homologue_probability": 0.5,
+        "within_block_recombination": false,
+        "offspring_homologue_order": [
+          "maternal",
+          "paternal"
+        ]
+      },
+      "initial_haplotypes_sha256": "7dbeaa1d9f5f4e9d184d67db35c6ce8182d05b59df36d5793e2515eaeb9b832d",
+      "initial_sex_sha256": "21d547c667588b2dfb8d721f889b23783a7cb2d19f87cd45f149a068f73ca00e",
+      "allele_copy_denominator": 10240,
+      "replicates": [
+        {
+          "seed": 410000,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.007421875,
+          "modern_allele_copies": 76
+        },
+        {
+          "seed": 410001,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410002,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.11552734375,
+          "modern_allele_copies": 1183
+        },
+        {
+          "seed": 410003,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0220703125,
+          "modern_allele_copies": 226
+        },
+        {
+          "seed": 410004,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0361328125,
+          "modern_allele_copies": 370
+        },
+        {
+          "seed": 410005,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0568359375,
+          "modern_allele_copies": 582
+        },
+        {
+          "seed": 410006,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.05732421875,
+          "modern_allele_copies": 587
+        },
+        {
+          "seed": 410007,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.02646484375,
+          "modern_allele_copies": 271
+        },
+        {
+          "seed": 410008,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.07314453125,
+          "modern_allele_copies": 749
+        },
+        {
+          "seed": 410009,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0546875,
+          "modern_allele_copies": 560
+        },
+        {
+          "seed": 410010,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.02978515625,
+          "modern_allele_copies": 305
+        },
+        {
+          "seed": 410011,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.12236328125,
+          "modern_allele_copies": 1253
+        },
+        {
+          "seed": 410012,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0150390625,
+          "modern_allele_copies": 154
+        },
+        {
+          "seed": 410013,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0544921875,
+          "modern_allele_copies": 558
+        },
+        {
+          "seed": 410014,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.000390625,
+          "modern_allele_copies": 4
+        },
+        {
+          "seed": 410015,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410016,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.04462890625,
+          "modern_allele_copies": 457
+        },
+        {
+          "seed": 410017,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410018,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.03408203125,
+          "modern_allele_copies": 349
+        },
+        {
+          "seed": 410019,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.043359375,
+          "modern_allele_copies": 444
+        },
+        {
+          "seed": 410020,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.08095703125,
+          "modern_allele_copies": 829
+        },
+        {
+          "seed": 410021,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410022,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.111328125,
+          "modern_allele_copies": 1140
+        },
+        {
+          "seed": 410023,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410024,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410025,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.06201171875,
+          "modern_allele_copies": 635
+        },
+        {
+          "seed": 410026,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.12763671875,
+          "modern_allele_copies": 1307
+        },
+        {
+          "seed": 410027,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410028,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410029,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.04306640625,
+          "modern_allele_copies": 441
+        },
+        {
+          "seed": 410030,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.00087890625,
+          "modern_allele_copies": 9
+        },
+        {
+          "seed": 410031,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410032,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.03310546875,
+          "modern_allele_copies": 339
+        },
+        {
+          "seed": 410033,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.027734375,
+          "modern_allele_copies": 284
+        },
+        {
+          "seed": 410034,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410035,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.04853515625,
+          "modern_allele_copies": 497
+        },
+        {
+          "seed": 410036,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410037,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.05771484375,
+          "modern_allele_copies": 591
+        },
+        {
+          "seed": 410038,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.15126953125,
+          "modern_allele_copies": 1549
+        },
+        {
+          "seed": 410039,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0287109375,
+          "modern_allele_copies": 294
+        },
+        {
+          "seed": 410040,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.05498046875,
+          "modern_allele_copies": 563
+        },
+        {
+          "seed": 410041,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0515625,
+          "modern_allele_copies": 528
+        },
+        {
+          "seed": 410042,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0779296875,
+          "modern_allele_copies": 798
+        },
+        {
+          "seed": 410043,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.01435546875,
+          "modern_allele_copies": 147
+        },
+        {
+          "seed": 410044,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.02353515625,
+          "modern_allele_copies": 241
+        },
+        {
+          "seed": 410045,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410046,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410047,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.10556640625,
+          "modern_allele_copies": 1081
+        },
+        {
+          "seed": 410048,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0166015625,
+          "modern_allele_copies": 170
+        },
+        {
+          "seed": 410049,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.01669921875,
+          "modern_allele_copies": 171
+        },
+        {
+          "seed": 410050,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410051,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410052,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.07265625,
+          "modern_allele_copies": 744
+        },
+        {
+          "seed": 410053,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410054,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.026171875,
+          "modern_allele_copies": 268
+        },
+        {
+          "seed": 410055,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410056,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.04462890625,
+          "modern_allele_copies": 457
+        },
+        {
+          "seed": 410057,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.00556640625,
+          "modern_allele_copies": 57
+        },
+        {
+          "seed": 410058,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.01015625,
+          "modern_allele_copies": 104
+        },
+        {
+          "seed": 410059,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0287109375,
+          "modern_allele_copies": 294
+        },
+        {
+          "seed": 410060,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.02021484375,
+          "modern_allele_copies": 207
+        },
+        {
+          "seed": 410061,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410062,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410063,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410064,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410065,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.2349609375,
+          "modern_allele_copies": 2406
+        },
+        {
+          "seed": 410066,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410067,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.08779296875,
+          "modern_allele_copies": 899
+        },
+        {
+          "seed": 410068,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410069,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.02109375,
+          "modern_allele_copies": 216
+        },
+        {
+          "seed": 410070,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0380859375,
+          "modern_allele_copies": 390
+        },
+        {
+          "seed": 410071,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.10771484375,
+          "modern_allele_copies": 1103
+        },
+        {
+          "seed": 410072,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.00849609375,
+          "modern_allele_copies": 87
+        },
+        {
+          "seed": 410073,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0517578125,
+          "modern_allele_copies": 530
+        },
+        {
+          "seed": 410074,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0005859375,
+          "modern_allele_copies": 6
+        },
+        {
+          "seed": 410075,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.070703125,
+          "modern_allele_copies": 724
+        },
+        {
+          "seed": 410076,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0466796875,
+          "modern_allele_copies": 478
+        },
+        {
+          "seed": 410077,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.038671875,
+          "modern_allele_copies": 396
+        },
+        {
+          "seed": 410078,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0515625,
+          "modern_allele_copies": 528
+        },
+        {
+          "seed": 410079,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410080,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.01689453125,
+          "modern_allele_copies": 173
+        },
+        {
+          "seed": 410081,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.076953125,
+          "modern_allele_copies": 788
+        },
+        {
+          "seed": 410082,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0873046875,
+          "modern_allele_copies": 894
+        },
+        {
+          "seed": 410083,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0783203125,
+          "modern_allele_copies": 802
+        },
+        {
+          "seed": 410084,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410085,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.1125,
+          "modern_allele_copies": 1152
+        },
+        {
+          "seed": 410086,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.01748046875,
+          "modern_allele_copies": 179
+        },
+        {
+          "seed": 410087,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410088,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0513671875,
+          "modern_allele_copies": 526
+        },
+        {
+          "seed": 410089,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.05859375,
+          "modern_allele_copies": 600
+        },
+        {
+          "seed": 410090,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410091,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.14423828125,
+          "modern_allele_copies": 1477
+        },
+        {
+          "seed": 410092,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.032421875,
+          "modern_allele_copies": 332
+        },
+        {
+          "seed": 410093,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.14404296875,
+          "modern_allele_copies": 1475
+        },
+        {
+          "seed": 410094,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410095,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0310546875,
+          "modern_allele_copies": 318
+        },
+        {
+          "seed": 410096,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.02763671875,
+          "modern_allele_copies": 283
+        },
+        {
+          "seed": 410097,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.10283203125,
+          "modern_allele_copies": 1053
+        },
+        {
+          "seed": 410098,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.04013671875,
+          "modern_allele_copies": 411
+        },
+        {
+          "seed": 410099,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.02705078125,
+          "modern_allele_copies": 277
+        },
+        {
+          "seed": 410100,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.20361328125,
+          "modern_allele_copies": 2085
+        },
+        {
+          "seed": 410101,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0078125,
+          "modern_allele_copies": 80
+        },
+        {
+          "seed": 410102,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0966796875,
+          "modern_allele_copies": 990
+        },
+        {
+          "seed": 410103,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        },
+        {
+          "seed": 410104,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.02900390625,
+          "modern_allele_copies": 297
+        },
+        {
+          "seed": 410105,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.00361328125,
+          "modern_allele_copies": 37
+        },
+        {
+          "seed": 410106,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.081640625,
+          "modern_allele_copies": 836
+        },
+        {
+          "seed": 410107,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.01083984375,
+          "modern_allele_copies": 111
+        },
+        {
+          "seed": 410108,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.00703125,
+          "modern_allele_copies": 72
+        },
+        {
+          "seed": 410109,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.06552734375,
+          "modern_allele_copies": 671
+        },
+        {
+          "seed": 410110,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.02958984375,
+          "modern_allele_copies": 303
+        },
+        {
+          "seed": 410111,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.01591796875,
+          "modern_allele_copies": 163
+        },
+        {
+          "seed": 410112,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.00517578125,
+          "modern_allele_copies": 53
+        },
+        {
+          "seed": 410113,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.2005859375,
+          "modern_allele_copies": 2054
+        },
+        {
+          "seed": 410114,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.02978515625,
+          "modern_allele_copies": 305
+        },
+        {
+          "seed": 410115,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.01064453125,
+          "modern_allele_copies": 109
+        },
+        {
+          "seed": 410116,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.04287109375,
+          "modern_allele_copies": 439
+        },
+        {
+          "seed": 410117,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.012890625,
+          "modern_allele_copies": 132
+        },
+        {
+          "seed": 410118,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.00810546875,
+          "modern_allele_copies": 83
+        },
+        {
+          "seed": 410119,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.00458984375,
+          "modern_allele_copies": 47
+        },
+        {
+          "seed": 410120,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.155078125,
+          "modern_allele_copies": 1588
+        },
+        {
+          "seed": 410121,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0298828125,
+          "modern_allele_copies": 306
+        },
+        {
+          "seed": 410122,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.2005859375,
+          "modern_allele_copies": 2054
+        },
+        {
+          "seed": 410123,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.1208984375,
+          "modern_allele_copies": 1238
+        },
+        {
+          "seed": 410124,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0150390625,
+          "modern_allele_copies": 154
+        },
+        {
+          "seed": 410125,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.223046875,
+          "modern_allele_copies": 2284
+        },
+        {
+          "seed": 410126,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.21298828125,
+          "modern_allele_copies": 2181
+        },
+        {
+          "seed": 410127,
+          "generation": 20,
+          "status": "evaluated_at_target",
+          "value": 0.0,
+          "modern_allele_copies": 0
+        }
+      ],
+      "ancestry": {
+        "mean": 0.045050048828124994,
+        "interval": [
+          0.0,
+          0.16509039774311507
+        ],
+        "method": "hoeffding_95_pointwise"
+      },
+      "target": {
+        "count": 28,
+        "replicates": 128,
+        "probability": 0.21875,
+        "interval": [
+          0.15590524094938307,
+          0.29798429695446543
+        ],
+        "method": "wilson_95_pointwise"
+      },
+      "work_units": {
+        "offspring_generated": 102400,
+        "block_copy_transmissions": 26214400,
+        "state_allele_entries": 10240
+      }
+    }
+  ],
+  "differences_from_finest": [
+    {
+      "block_count": 8,
+      "reference_block_count": 128,
+      "ancestry": {
+        "mean": 0.001104736328125,
+        "interval": [
+          -0.23897596150185518,
+          0.24118543415810517
+        ],
+        "method": "hoeffding_95_pointwise"
+      },
+      "target_probability": {
+        "mean": -0.03125,
+        "interval": [
+          -0.2713306978299802,
+          0.20883069782998018
+        ],
+        "method": "hoeffding_95_pointwise"
+      }
+    },
+    {
+      "block_count": 32,
+      "reference_block_count": 128,
+      "ancestry": {
+        "mean": 0.0016357421875000007,
+        "interval": [
+          -0.23844495564248017,
+          0.2417164400174802
+        ],
+        "method": "hoeffding_95_pointwise"
+      },
+      "target_probability": {
+        "mean": -0.0078125,
+        "interval": [
+          -0.24789319782998018,
+          0.23226819782998018
+        ],
+        "method": "hoeffding_95_pointwise"
+      }
+    }
+  ],
+  "total_work_units": {
+    "offspring_generated": 307200,
+    "block_copy_transmissions": 34406400,
+    "largest_population_state_allele_entries": 10240
+  }
+}

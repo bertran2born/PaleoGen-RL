@@ -1,0 +1,21 @@
+{
+  "protocol_version": "autosomal-evaluation-protocol-v1",
+  "protocol_id": "synthetic-four-blocks-v1",
+  "population_size": 40,
+  "generations": 3,
+  "pulse": {"f": 0.5, "male_fraction": 0.5},
+  "recombination_map": {
+    "panel": {"panel_id": "synthetic-four", "block_ids": ["a", "b", "c", "d"]},
+    "switch_probabilities": [0.1, 0.1, 0.1]
+  },
+  "partners": {"mt": "a", "y": "c"},
+  "measurement": {
+    "measurement_version": "autosomal-block-measurement-v1",
+    "observable": "total_diploid_block_ancestry",
+    "weighting": "equal_diploid_copies",
+    "sample_size": 10,
+    "sample_replacement": false,
+    "target_interval": [0.03, 0.07]
+  },
+  "resolution_control": {"status": "not_established"}
+}

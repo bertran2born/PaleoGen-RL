@@ -20,6 +20,14 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parent/'src'))
 from epi_pulse import Config, run
 from science_contract import load_contract
+from paleogen_rl.genetics.pulse import (
+    MODEL as BLOCK_MODEL, RESULT_SCHEMA_VERSION as BLOCK_RESULT_SCHEMA_VERSION,
+    MODE_RESULT_SCHEMA_VERSION as BLOCK_MODE_RESULT_SCHEMA_VERSION, evaluate_block_pulse, load_block_map,
+)
+from paleogen_rl.genetics.selected import BlockSelection
+from paleogen_rl.genetics.protocol import (
+    PROTOCOL_VERSION, PROTOCOL_RESULT_SCHEMA_VERSION, load_autosomal_protocol,
+)
 
 RESULT_SCHEMA_VERSION = 'pulse-result-v1'
 MODEL = 'panmictic_pulse_reciprocal_epistasis'
@@ -136,7 +144,68 @@ def target_metadata(cfg, contract):
                 years_per_generation=years, target_generations_ago=mixture-cfg.gens,
                 target_age_ka=(mixture-cfg.gens)*years/1000)
 
-def scientific_context(cfg, mt_selection_source):
+def run_block_full(cfg, mapping, mt_partner, y_partner):
+    return _run_block(cfg, mapping, mt_partner, y_partner, 'full')
+
+
+def run_block_mode(cfg, mode, mapping, mt_partner, y_partner):
+    if mode not in ('full', 'quick', 'adaptive'):
+        raise ValueError('mode must be full/quick/adaptive')
+    if mode == 'full':
+        return run_block_full(cfg, mapping, mt_partner, y_partner)
+    return _run_block(replace(cfg, stop_when_absorbed=False), mapping, mt_partner, y_partner, mode)
+
+
+def _run_block(cfg, mapping, mt_partner, y_partner, mode):
+    """Explicit adapter for the supported M2 parameters; never silently drop mechanisms."""
+    costs = ('mt_mod_nuc_arch', 'mt_arch_nuc_mod', 'y_mod_nuc_arch', 'y_arch_nuc_mod')
+    supported = {'N', 'f', 'male_frac', 'gens', 'seed', 's', 's_mt', 'sel_locus',
+                 'mismatch_dominance', 'stop_when_absorbed', *costs}
+    defaults = asdict(Config())
+    if not isinstance(cfg, Config):
+        raise ValueError('block adapter requires a pulse Config')
+    for field, value in asdict(cfg).items():
+        if field not in supported and (field not in defaults or value != defaults[field]):
+            raise ValueError(f'unsupported block configuration: {field}')
+    if cfg.stop_when_absorbed or cfg.sel_locus not in ('none', 'Y'):
+        raise ValueError('blocks require full mode and selection on mt/Y only')
+    if cfg.sel_locus == 'none' and cfg.s != 0:
+        raise ValueError('nonzero s requires sel_locus=Y for blocks')
+    selection = BlockSelection(s_mt=cfg.s_mt, s_y=cfg.s if cfg.sel_locus == 'Y' else 0.,
+                               **{field: getattr(cfg, field) for field in costs},
+                               mt_partner_block=mt_partner, y_partner_block=y_partner,
+                               dominance=cfg.mismatch_dominance)
+    report = evaluate_block_pulse(population_size=cfg.N, f=cfg.f, male_fraction=cfg.male_frac,
+                                  generations=cfg.gens, seed=cfg.seed,
+                                  recombination_map=mapping, selection=selection, mode=mode)
+    engine = report['engine_report']
+    final = engine['final_measurement']
+    sampling = {k: v for k, v in report['sampling'].items()
+                if k not in ('sample_size', 'replacement', 'generation', 'status')}
+    if mode != 'full':
+        screen = report['screening_report']
+        measurement = report['ancestry_measurement']
+        return dict(**sampling, generations_completed=screen['generations_completed'],
+                    termination_reason=screen['termination_reason'],
+                    marker_generations_completed=report['sampling']['generation'],
+                    marker_evaluation_status=report['sampling']['status'],
+                    auto_mod=report['stopping_ancestry_diagnostic']['value'],
+                    auto_mod_at_50ka=measurement['value'], auto_evaluation_status=measurement['status'],
+                    auto_generations_completed=measurement['generation'] if measurement['value'] is not None else '',
+                    target_auto=report['target']['target_auto'], joint_and_target=report['target']['joint_and_target'],
+                    block_count=measurement['panel']['block_count'],
+                    block_report=json.dumps(report, sort_keys=True, separators=(',', ':'), allow_nan=False))
+    return dict(**sampling, generations_completed=engine['generations_completed'],
+                termination_reason=engine['termination_reason'],
+                auto_mod=final['value'], auto_mod_at_50ka=final['value'],
+                auto_evaluation_status=final['status'], auto_generations_completed=final['generation'],
+                target_auto=report['target']['target_auto'],
+                joint_and_target=report['target']['joint_and_target'],
+                block_count=final['panel']['block_count'],
+                block_report=json.dumps(report, sort_keys=True, separators=(',', ':'), allow_nan=False))
+
+
+def scientific_context(cfg, mt_selection_source, *, autosomal_blocks=False):
     """Describe limits of the CLI experiment, without evaluating scientific fit."""
     notes = {
         'published_comparison': (
@@ -179,6 +248,18 @@ def scientific_context(cfg, mt_selection_source):
         notes['neutral_control'] = (
             'Ce contrôle neutre est une hypothèse de simulation, '
             'pas une reproduction de la référence sélectionnée publiée.')
+    if autosomal_blocks:
+        notes.pop('autosomal_proxy')
+        notes['autosomal_measurement'] = (
+            'Ascendance totale de blocs phasés de poids égal, partenaires inclus ; '
+            'la discrétisation et la recombinaison sont des approximations non calibrées.')
+        notes['convergence'] = (
+            'La convergence des scénarios sélectionnés n’est pas établie ; '
+            'la carte et la résolution sont des choix explicites de cette exécution.')
+        if active:
+            notes['epistasis'] = (
+                'Les pénalités réciproques sont exploratoires, sans validation biologique ; '
+                'les blocs partenaires restent inclus dans la mesure totale et sont suivis séparément.')
     return dict(scientific_status='exploratory_simulation',
                 published_result_reproduction='not_demonstrated',
                 uncertainty_scope='monte_carlo_only', approximation_notes=notes)
@@ -188,20 +269,50 @@ def main():
     ap.add_argument('--scenario',choices=['all',*SCENARIOS],default='all')
     ap.add_argument('--reps',type=int,default=30)
     ap.add_argument('--mode',choices=['full','quick','adaptive'],default='adaptive')
-    ap.add_argument('--N',type=int,default=1450)
-    ap.add_argument('--gens',type=int,default=6993)
-    ap.add_argument('--f',type=float,default=0.05)
-    ap.add_argument('--male-frac',type=float,default=0.5)
+    ap.add_argument('--N',type=int,default=None)
+    ap.add_argument('--gens',type=int,default=None)
+    ap.add_argument('--f',type=float,default=None)
+    ap.add_argument('--male-frac',type=float,default=None)
     ap.add_argument('--seed',type=int,default=62026)
     ap.add_argument('--output',default=None)
     ap.add_argument('--mt-posterior',default=None,
                     help='Optional Reich SI1 posterior txt file: draw s_mt independently per replicate')
+    ap.add_argument('--block-map',default=None,
+                    help='Explicit JSON block panel/map; enables phased blocks in all three modes')
+    ap.add_argument('--mt-partner-block',default=None)
+    ap.add_argument('--y-partner-block',default=None)
+    ap.add_argument('--autosomal-protocol',default=None,
+                    help='Versioned autosomal contract; fixes N, horizon, pulse, map and partners')
     # Optional compositional overrides; the scenario keeps its original Reich
     # Y selection and the SI1 mtDNA posterior unless explicitly replaced.
     for field in ('mt_mod_nuc_arch','mt_arch_nuc_mod','y_mod_nuc_arch','y_arch_nuc_mod'):
         ap.add_argument('--'+field.replace('_','-'),type=float,default=None,
                         help='Override this epistatic penalty in [0,1]')
     args=ap.parse_args()
+    autosomal_protocol = None
+    protocol_file_sha256 = ''
+    block_mapping = None
+    block_map_sha256 = ''
+    if args.autosomal_protocol is not None:
+        if any(value is not None for value in (args.block_map, args.mt_partner_block, args.y_partner_block)):
+            ap.error('--autosomal-protocol cannot be combined with map/partner options')
+        try:
+            autosomal_protocol, protocol_file_sha256 = load_autosomal_protocol(args.autosomal_protocol)
+        except (OSError, ValueError) as error:
+            ap.error(str(error))
+        locked = dict(N=autosomal_protocol.population_size, gens=autosomal_protocol.generations,
+                      f=autosomal_protocol.f, male_frac=autosomal_protocol.male_fraction)
+        for field, value in locked.items():
+            if getattr(args, field) is not None and getattr(args, field) != value:
+                ap.error(f'--{field.replace("_", "-")} conflicts with autosomal protocol')
+            setattr(args, field, value)
+        block_mapping = autosomal_protocol.recombination_map
+        args.mt_partner_block = autosomal_protocol.mt_partner_block
+        args.y_partner_block = autosomal_protocol.y_partner_block
+    else:
+        for field, value in dict(N=1450, gens=6993, f=.05, male_frac=.5).items():
+            if getattr(args, field) is None:
+                setattr(args, field, value)
     if args.reps<1 or args.N<20 or args.gens<1:ap.error('reps >= 1, N >= 20, gens >= 1')
     if not 0 <= args.f <= 1 or not 0<=args.male_frac<=1:ap.error('f and male-frac must be in [0,1]')
     overrides={name:getattr(args,name) for name in (
@@ -211,6 +322,26 @@ def main():
         ap.error('epistatic penalties must lie in [0,1]')
     if overrides and args.output is None:
         ap.error('when overriding epistasis, specify --output to avoid overwriting runs')
+    if args.block_map is not None or autosomal_protocol is not None:
+        if args.output is None or Path(args.output).suffix != '.csv':
+            ap.error('blocks require an explicit --output ending in .csv')
+        if args.mt_partner_block is None or args.y_partner_block is None:
+            ap.error('blocks require explicit --mt-partner-block and --y-partner-block')
+        try:
+            if autosomal_protocol is None:
+                block_mapping, block_map_sha256 = load_block_map(args.block_map)
+            for block in (args.mt_partner_block, args.y_partner_block):
+                if block not in block_mapping.panel.block_ids:
+                    raise ValueError('partner blocks must belong to the declared panel')
+            if args.seed < 0:
+                raise ValueError('block seed must be nonnegative')
+        except (OSError, ValueError) as error:
+            ap.error(str(error))
+        for destination in (Path(args.output), Path(args.output).with_suffix('.json')):
+            if destination.exists() or destination.is_symlink():
+                ap.error(f'block output already exists: {destination}')
+    elif args.mt_partner_block is not None or args.y_partner_block is not None:
+        ap.error('partner block options require --block-map')
     names=list(SCENARIOS) if args.scenario=='all' else [args.scenario]
     output=Path(args.output or (Path(__file__).parent/'results'/f'{args.mode}_{args.reps}.csv'))
     output.parent.mkdir(parents=True,exist_ok=True)
@@ -234,6 +365,11 @@ def main():
     base=Config(N=args.N,f=args.f,male_frac=args.male_frac,gens=args.gens,
                 stop_when_absorbed=args.mode!='full')
     chronology=target_metadata(base, load_contract())
+    if block_mapping is not None:
+        chronology.update(result_schema_version=(BLOCK_RESULT_SCHEMA_VERSION if args.mode == 'full'
+                                                  else BLOCK_MODE_RESULT_SCHEMA_VERSION), model=BLOCK_MODEL)
+    if autosomal_protocol is not None:
+        chronology['result_schema_version'] = PROTOCOL_RESULT_SCHEMA_VERSION
     for j,name in enumerate(names):
         cfg=replace(base,**{**SCENARIOS[name],**overrides})
         rows=[]
@@ -249,10 +385,20 @@ def main():
                 draw_rng=np.random.default_rng(draw_seed)
                 c=replace(c,s_mt=float(draw_rng.choice(posterior)))
             try:
-                res=run_mode(c, args.mode)
+                if block_mapping is None:
+                    res=run_mode(c, args.mode)
+                elif args.mode == 'full':
+                    res=run_block_full(c, block_mapping, args.mt_partner_block, args.y_partner_block)
+                else:
+                    res=run_block_mode(c, args.mode, block_mapping, args.mt_partner_block, args.y_partner_block)
             except RuntimeError as error:
                 ap.exit(1, f'{name} rep={i}: {error}\n')
-            context=scientific_context(c, mt_source)
+            except ValueError as error:
+                if block_mapping is None:
+                    raise
+                ap.exit(1, f'{name} rep={i}: {error}\n')
+            context=(scientific_context(c, mt_source) if block_mapping is None else
+                     scientific_context(c, mt_source, autosomal_blocks=True))
             row={'scenario':name,'rep':i,'seed':c.seed,'mode':args.mode,
                  'initial_f':args.f,'N':args.N,'gens_requested':args.gens,'s_mt_realized':c.s_mt,
                  **chronology,
@@ -262,6 +408,15 @@ def main():
                  **{key:value for key,value in context.items() if key != 'approximation_notes'},
                  'approximation_notes':json.dumps(context['approximation_notes'],sort_keys=True,ensure_ascii=False),
                  **res}
+            if block_mapping is not None:
+                row['block_map_sha256'] = block_map_sha256
+            if autosomal_protocol is not None:
+                row.update(autosomal_protocol_id=autosomal_protocol.protocol_id,
+                           autosomal_protocol_version=PROTOCOL_VERSION,
+                           autosomal_protocol_sha256=autosomal_protocol.sha256,
+                           autosomal_protocol_file_sha256=protocol_file_sha256,
+                           autosomal_protocol=autosomal_protocol.canonical_json,
+                           resolution_control_status='not_established')
             rows.append(row)
         keys=['p10_joint','mt_mod','Y_mod','joint_fixed']
         if args.mode=='full':keys.append('auto_mod')
@@ -279,25 +434,55 @@ def main():
             metrics['P10_Wilson95']=wilson_interval(sum(r['p10_joint'] for r in rows),len(rows))
         if args.mode in ('full','adaptive') and all(r['joint_and_target'] in (0.,1.) for r in rows):
             metrics['P_joint_auto_Wilson95']=wilson_interval(sum(r['joint_and_target'] for r in rows),len(rows))
+        if block_mapping is not None:
+            reports = [json.loads(row['block_report']) for row in rows]
+            work = [report.get('work_units', report['engine_report']['work_units']) for report in reports]
+            metrics['block_work_units'] = {
+                key: sum(item[key] for item in work) for key in
+                ('candidates_generated', 'accepted_candidates', 'offspring_generated', 'block_copy_transmissions')}
+            metrics['block_work_units']['state_allele_entries'] = max(item['state_allele_entries'] for item in work)
+            if args.reps == 1:
+                if args.mode != 'quick':
+                    metrics['joint_and_auto_95pct_bootstrap'] = None
+                metrics['p10_joint_95pct_bootstrap'] = None
         metrics['time_seconds']=round(time.monotonic()-start,2)
         # The context describes the scenario policy; realized coefficients remain
         # in each CSV row, including draws that happen to be zero.
         source=('posterior_draw' if posterior is not None and cfg.s_mt != 0
                 else 'fixed' if posterior is None else 'posterior_not_applied')
         summary.append(dict(name=name,reps=args.reps,**metrics,
-                            scientific_context=scientific_context(cfg, source)))
+                            scientific_context=(scientific_context(cfg, source) if block_mapping is None
+                                                else scientific_context(cfg, source, autosomal_blocks=True))))
         all_rows.extend(rows)
         print(f'{name:<29s}  P(sample 10 both)={metrics["p10_joint"]:.4%}  '
               f'P(mt,Y fixation)={metrics["joint_fixed"]:.4%}  '
               f't={metrics["time_seconds"]:.1f}s',flush=True)
-    with output.open('w',newline='') as fobj:
+    with output.open('x' if block_mapping is not None else 'w',newline='') as fobj:
         wr=csv.DictWriter(fobj,fieldnames=list(all_rows[0]));wr.writeheader();wr.writerows(all_rows)
     jsonpath=output.with_suffix('.json')
-    with jsonpath.open('w') as fobj:
-        json.dump(dict(meta=dict(vars(args),scenarios={k:{**SCENARIOS[k],**overrides} for k in names},
+    meta_args = vars(args).copy()
+    if autosomal_protocol is None:
+        meta_args.pop('autosomal_protocol')
+    else:
+        meta_args.update(autosomal_protocol_source=args.autosomal_protocol,
+                         autosomal_protocol=autosomal_protocol.to_dict(),
+                         autosomal_protocol_version=PROTOCOL_VERSION,
+                         autosomal_protocol_id=autosomal_protocol.protocol_id,
+                         autosomal_protocol_sha256=autosomal_protocol.sha256,
+                         autosomal_protocol_file_sha256=protocol_file_sha256,
+                         resolution_control_status='not_established')
+    if block_mapping is None:
+        for field in ('block_map', 'mt_partner_block', 'y_partner_block'):
+            meta_args.pop(field)
+    else:
+        meta_args.update(block_map_sha256=block_map_sha256,
+                         recombination_map=block_mapping.to_dict(),
+                         convergence_status='not_assessed_for_selected_scenarios')
+    with jsonpath.open('x' if block_mapping is not None else 'w') as fobj:
+        json.dump(dict(meta=dict(meta_args,scenarios={k:{**SCENARIOS[k],**overrides} for k in names},
             **chronology,
             definition=f'P(ten sampled males each modern mt AND modern Y at generation {args.gens} after pulse)'),
-            summary=summary),fobj,indent=2)
+            summary=summary),fobj,indent=2,allow_nan=block_mapping is None)
     print('Wrote:',output,'and',jsonpath,flush=True)
 
 if __name__=='__main__':main()
