@@ -8,8 +8,11 @@ from pathlib import Path
 import numpy as np
 
 from .ancestry import BlockPanel
-from .inheritance import RecombinationMap
+from .inheritance import RecombinationMap, copy_counts
 from .selected import BlockSelection, ReproductionFailure, run_selected
+from .weighted_ancestry import (
+    MEASUREMENT_VERSION as WEIGHTED_MEASUREMENT_VERSION, WeightedBlockPanel, measure_weighted_ancestry,
+)
 
 
 RESULT_SCHEMA_VERSION = 'block-pulse-result-v1'
@@ -17,6 +20,8 @@ MODEL = 'panmictic_pulse_phased_blocks_reciprocal_epistasis'
 EVALUATION_VERSION = 'block-pulse-evaluation-v1'
 MODE_RESULT_SCHEMA_VERSION = 'block-pulse-result-v2'
 MODE_EVALUATION_VERSION = 'block-pulse-evaluation-v2'
+WEIGHTED_EVALUATION_VERSION = 'weighted-block-pulse-evaluation-v1'
+WEIGHTED_MODE_EVALUATION_VERSION = 'weighted-block-pulse-evaluation-v2'
 
 
 def load_block_map(path):
@@ -67,10 +72,14 @@ def initialise_pulse(*, population_size, f, male_fraction, panel):
 
 
 def evaluate_block_pulse(*, population_size, f, male_fraction, generations, seed,
-                         recombination_map, selection, mode='full'):
+                         recombination_map, selection, mode='full', measurement_panel=None):
     """Evaluate all blocks and the unchanged ten-male/3–7% joint criterion."""
     if not isinstance(recombination_map, RecombinationMap):
         raise ValueError('recombination_map must be a RecombinationMap')
+    if measurement_panel is not None and (
+            not isinstance(measurement_panel, WeightedBlockPanel)
+            or measurement_panel.panel != recombination_map.panel):
+        raise ValueError('measurement_panel must be weighted and match the recombination panel exactly')
     if not isinstance(selection, BlockSelection):
         raise ValueError('selection must be a BlockSelection')
     if mode not in ('full', 'quick', 'adaptive'):
@@ -78,27 +87,35 @@ def evaluate_block_pulse(*, population_size, f, male_fraction, generations, seed
     if mode != 'full':
         return _evaluate_screened(population_size=population_size, f=f, male_fraction=male_fraction,
                                   generations=generations, seed=seed, recombination_map=recombination_map,
-                                  selection=selection, mode=mode)
+                                  selection=selection, mode=mode, measurement_panel=measurement_panel)
+    measurement_options = {} if measurement_panel is None else dict(measurement_panel=measurement_panel)
     state, initialisation = initialise_pulse(population_size=population_size, f=f,
                                             male_fraction=male_fraction, panel=recombination_map.panel)
     result = run_selected(**state, recombination_map=recombination_map, selection=selection,
-                          generations=generations, seed=seed)
+                          generations=generations, seed=seed, **measurement_options)
     engine = result.report
     measurement = engine['final_measurement']
     if (engine['termination_reason'] != 'horizon_reached'
             or engine['generations_completed'] != generations or measurement is None
             or measurement['status'] != 'evaluated_at_target'
             or measurement['generation'] != generations
-            or measurement['target_generation'] != generations or measurement['mode'] != 'full'):
+            or measurement['target_generation'] != generations or measurement['mode'] != 'full'
+            or not _matches_weighted_panel(measurement, measurement_panel)):
         raise RuntimeError('incomplete block horizon: final evaluation refused')
     sampling = _sampling(result)
     target = bool(.03 <= measurement['value'] <= .07)
-    return dict(evaluation_version=EVALUATION_VERSION,
+    return dict(evaluation_version=EVALUATION_VERSION if measurement_panel is None else WEIGHTED_EVALUATION_VERSION,
+                **({} if measurement_panel is None else dict(measurement_panel=measurement_panel.to_dict())),
                 convergence_status='not_assessed_for_selected_scenarios',
                 initialisation=initialisation, engine_report=engine,
                 sampling=sampling,
                 target=dict(bounds=[.03, .07], inclusive=True, target_auto=target,
                             joint_and_target=sampling['p10_joint']*int(target)))
+
+
+def _matches_weighted_panel(measurement, panel):
+    return panel is None or (measurement.get('measurement_version') == WEIGHTED_MEASUREMENT_VERSION
+                             and measurement.get('panel') == panel.to_dict())
 
 
 def _sampling(result):
@@ -120,11 +137,12 @@ def _combined_work(*reports):
 
 
 def _evaluate_screened(*, population_size, f, male_fraction, generations, seed,
-                       recombination_map, selection, mode):
+                       recombination_map, selection, mode, measurement_panel=None):
+    measurement_options = {} if measurement_panel is None else dict(measurement_panel=measurement_panel)
     state, initialisation = initialise_pulse(population_size=population_size, f=f,
                                             male_fraction=male_fraction, panel=recombination_map.panel)
     first = run_selected(**state, recombination_map=recombination_map, selection=selection,
-                         generations=generations, seed=seed, stop_when_absorbed=True)
+                         generations=generations, seed=seed, stop_when_absorbed=True, **measurement_options)
     screen = first.report
     completed = screen['generations_completed']
     absorbed = ((np.all(first.mt == 0) or np.all(first.mt == 1))
@@ -135,7 +153,10 @@ def _evaluate_screened(*, population_size, f, male_fraction, generations, seed,
     measurement = screen['final_measurement']
     if (measurement is None or measurement['status'] != 'not_evaluated_quick'
             or measurement['value'] is not None or measurement['partner_diagnostics'] is not None
-            or measurement['generation'] != completed or measurement['target_generation'] != generations):
+            or measurement['generation'] != completed or measurement['target_generation'] != generations
+            or not _matches_weighted_panel(measurement, measurement_panel)
+            or (measurement_panel is not None and (measurement.get('modern_ancestry_weight') is not None
+                                                   or measurement.get('unweighted_modern_allele_copies') is not None))):
         raise RuntimeError('invalid quick block measurement: evaluation refused')
     sampling = _sampling(first)
     target = dict(bounds=[.03, .07], inclusive=True, target_auto=None, joint_and_target=None)
@@ -152,7 +173,7 @@ def _evaluate_screened(*, population_size, f, male_fraction, generations, seed,
             try:
                 final = evaluate_block_pulse(population_size=population_size, f=f, male_fraction=male_fraction,
                                              generations=generations, seed=seed, recombination_map=recombination_map,
-                                             selection=selection)
+                                             selection=selection, **measurement_options)
             except ReproductionFailure as error:
                 error.report['total_work_units'] = _combined_work(screen, error.report)
                 error.report['screening_report'] = screen
@@ -164,10 +185,20 @@ def _evaluate_screened(*, population_size, f, male_fraction, generations, seed,
             target = final['target']
             work = _combined_work(screen, engine)
             continuation = 'rerun_to_target'
-    return dict(evaluation_version=MODE_EVALUATION_VERSION, mode=mode,
+    if measurement_panel is None:
+        stopping = dict(value=float(first.haplotypes.mean()), generation=completed)
+    else:
+        diagnostic = measure_weighted_ancestry(copy_counts(first.haplotypes), measurement_panel,
+                                               generation=completed, target_generation=completed, mode='full')
+        stopping = dict(value=diagnostic['value'], generation=completed,
+                        measurement_version=diagnostic['measurement_version'], observable=diagnostic['observable'],
+                        status='stopping_state_diagnostic_not_final')
+    return dict(evaluation_version=MODE_EVALUATION_VERSION if measurement_panel is None else WEIGHTED_MODE_EVALUATION_VERSION,
+                mode=mode,
+                **({} if measurement_panel is None else dict(measurement_panel=measurement_panel.to_dict())),
                 convergence_status='not_assessed_for_selected_scenarios', initialisation=initialisation,
                 screening_report=screen, engine_report=engine, ancestry_measurement=measurement,
                 sampling={**sampling, 'generation': completed,
                           'status': 'absorbed_before_target' if completed < generations else 'evaluated_at_target'},
-                stopping_ancestry_diagnostic=dict(value=float(first.haplotypes.mean()), generation=completed),
+                stopping_ancestry_diagnostic=stopping,
                 continuation_status=continuation, work_units=work, target=target)
