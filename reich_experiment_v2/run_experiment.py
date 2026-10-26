@@ -28,8 +28,12 @@ from paleogen_rl.genetics.selected import BlockSelection
 from paleogen_rl.genetics.protocol import (
     PROTOCOL_VERSION, PROTOCOL_RESULT_SCHEMA_VERSION, load_autosomal_protocol,
 )
+from paleogen_rl.genetics.weighted_protocol import (
+    WEIGHTED_PROTOCOL_VERSION, load_weighted_autosomal_protocol,
+)
 
 RESULT_SCHEMA_VERSION = 'pulse-result-v1'
+WEIGHTED_PROTOCOL_RESULT_SCHEMA_VERSION = 'weighted-block-pulse-result-v1'
 MODEL = 'panmictic_pulse_reciprocal_epistasis'
 
 SCENARIOS = {
@@ -144,19 +148,21 @@ def target_metadata(cfg, contract):
                 years_per_generation=years, target_generations_ago=mixture-cfg.gens,
                 target_age_ka=(mixture-cfg.gens)*years/1000)
 
-def run_block_full(cfg, mapping, mt_partner, y_partner):
-    return _run_block(cfg, mapping, mt_partner, y_partner, 'full')
+def run_block_full(cfg, mapping, mt_partner, y_partner, *, measurement_panel=None):
+    return _run_block(cfg, mapping, mt_partner, y_partner, 'full', measurement_panel=measurement_panel)
 
 
-def run_block_mode(cfg, mode, mapping, mt_partner, y_partner):
+def run_block_mode(cfg, mode, mapping, mt_partner, y_partner, *, measurement_panel=None):
     if mode not in ('full', 'quick', 'adaptive'):
         raise ValueError('mode must be full/quick/adaptive')
     if mode == 'full':
-        return run_block_full(cfg, mapping, mt_partner, y_partner)
-    return _run_block(replace(cfg, stop_when_absorbed=False), mapping, mt_partner, y_partner, mode)
+        options = {} if measurement_panel is None else dict(measurement_panel=measurement_panel)
+        return run_block_full(cfg, mapping, mt_partner, y_partner, **options)
+    return _run_block(replace(cfg, stop_when_absorbed=False), mapping, mt_partner, y_partner, mode,
+                      measurement_panel=measurement_panel)
 
 
-def _run_block(cfg, mapping, mt_partner, y_partner, mode):
+def _run_block(cfg, mapping, mt_partner, y_partner, mode, *, measurement_panel=None):
     """Explicit adapter for the supported M2 parameters; never silently drop mechanisms."""
     costs = ('mt_mod_nuc_arch', 'mt_arch_nuc_mod', 'y_mod_nuc_arch', 'y_arch_nuc_mod')
     supported = {'N', 'f', 'male_frac', 'gens', 'seed', 's', 's_mt', 'sel_locus',
@@ -175,9 +181,10 @@ def _run_block(cfg, mapping, mt_partner, y_partner, mode):
                                **{field: getattr(cfg, field) for field in costs},
                                mt_partner_block=mt_partner, y_partner_block=y_partner,
                                dominance=cfg.mismatch_dominance)
+    options = {} if measurement_panel is None else dict(measurement_panel=measurement_panel)
     report = evaluate_block_pulse(population_size=cfg.N, f=cfg.f, male_fraction=cfg.male_frac,
                                   generations=cfg.gens, seed=cfg.seed,
-                                  recombination_map=mapping, selection=selection, mode=mode)
+                                  recombination_map=mapping, selection=selection, mode=mode, **options)
     engine = report['engine_report']
     final = engine['final_measurement']
     sampling = {k: v for k, v in report['sampling'].items()
@@ -205,7 +212,7 @@ def _run_block(cfg, mapping, mt_partner, y_partner, mode):
                 block_report=json.dumps(report, sort_keys=True, separators=(',', ':'), allow_nan=False))
 
 
-def scientific_context(cfg, mt_selection_source, *, autosomal_blocks=False):
+def scientific_context(cfg, mt_selection_source, *, autosomal_blocks=False, autosomal_weighted=False):
     """Describe limits of the CLI experiment, without evaluating scientific fit."""
     notes = {
         'published_comparison': (
@@ -253,6 +260,11 @@ def scientific_context(cfg, mt_selection_source, *, autosomal_blocks=False):
         notes['autosomal_measurement'] = (
             'Ascendance totale de blocs phasés de poids égal, partenaires inclus ; '
             'la discrétisation et la recombinaison sont des approximations non calibrées.')
+        if autosomal_weighted:
+            notes['autosomal_measurement'] = (
+                'Ascendance totale de blocs phasés avec poids relatifs explicitement déclarés, '
+                'partenaires inclus ; leur justification est conservée dans le protocole. '
+                'Ces poids, la discrétisation et la recombinaison ne sont pas calibrés ici.')
         notes['convergence'] = (
             'La convergence des scénarios sélectionnés n’est pas établie ; '
             'la carte et la résolution sont des choix explicites de cette exécution.')
@@ -281,8 +293,11 @@ def main():
                     help='Explicit JSON block panel/map; enables phased blocks in all three modes')
     ap.add_argument('--mt-partner-block',default=None)
     ap.add_argument('--y-partner-block',default=None)
-    ap.add_argument('--autosomal-protocol',default=None,
+    protocols = ap.add_mutually_exclusive_group()
+    protocols.add_argument('--autosomal-protocol',default=None,
                     help='Versioned autosomal contract; fixes N, horizon, pulse, map and partners')
+    protocols.add_argument('--weighted-autosomal-protocol',default=None,
+                    help='Explicit weighted I28 contract; retains declared weights and their basis')
     # Optional compositional overrides; the scenario keeps its original Reich
     # Y selection and the SI1 mtDNA posterior unless explicitly replaced.
     for field in ('mt_mod_nuc_arch','mt_arch_nuc_mod','y_mod_nuc_arch','y_arch_nuc_mod'):
@@ -293,13 +308,23 @@ def main():
     protocol_file_sha256 = ''
     block_mapping = None
     block_map_sha256 = ''
-    if args.autosomal_protocol is not None:
+    measurement_panel = None
+    protocol_source = (args.weighted_autosomal_protocol if args.weighted_autosomal_protocol is not None
+                       else args.autosomal_protocol)
+    protocol_version = PROTOCOL_VERSION
+    if protocol_source is not None:
         if any(value is not None for value in (args.block_map, args.mt_partner_block, args.y_partner_block)):
-            ap.error('--autosomal-protocol cannot be combined with map/partner options')
+            ap.error('autosomal protocols cannot be combined with map/partner options')
         try:
-            autosomal_protocol, protocol_file_sha256 = load_autosomal_protocol(args.autosomal_protocol)
+            loader = load_autosomal_protocol
+            if args.weighted_autosomal_protocol is not None:
+                loader = load_weighted_autosomal_protocol
+                protocol_version = WEIGHTED_PROTOCOL_VERSION
+            autosomal_protocol, protocol_file_sha256 = loader(protocol_source)
         except (OSError, ValueError) as error:
             ap.error(str(error))
+        if args.weighted_autosomal_protocol is not None:
+            measurement_panel = autosomal_protocol.measurement_panel
         locked = dict(N=autosomal_protocol.population_size, gens=autosomal_protocol.generations,
                       f=autosomal_protocol.f, male_frac=autosomal_protocol.male_fraction)
         for field, value in locked.items():
@@ -369,7 +394,11 @@ def main():
         chronology.update(result_schema_version=(BLOCK_RESULT_SCHEMA_VERSION if args.mode == 'full'
                                                   else BLOCK_MODE_RESULT_SCHEMA_VERSION), model=BLOCK_MODEL)
     if autosomal_protocol is not None:
-        chronology['result_schema_version'] = PROTOCOL_RESULT_SCHEMA_VERSION
+        chronology['result_schema_version'] = (PROTOCOL_RESULT_SCHEMA_VERSION if measurement_panel is None
+                                                else WEIGHTED_PROTOCOL_RESULT_SCHEMA_VERSION)
+    context_options = dict(autosomal_blocks=True)
+    if measurement_panel is not None:
+        context_options['autosomal_weighted'] = True
     for j,name in enumerate(names):
         cfg=replace(base,**{**SCENARIOS[name],**overrides})
         rows=[]
@@ -387,6 +416,9 @@ def main():
             try:
                 if block_mapping is None:
                     res=run_mode(c, args.mode)
+                elif measurement_panel is not None:
+                    res=run_block_mode(c, args.mode, block_mapping, args.mt_partner_block,
+                                       args.y_partner_block, measurement_panel=measurement_panel)
                 elif args.mode == 'full':
                     res=run_block_full(c, block_mapping, args.mt_partner_block, args.y_partner_block)
                 else:
@@ -398,7 +430,7 @@ def main():
                     raise
                 ap.exit(1, f'{name} rep={i}: {error}\n')
             context=(scientific_context(c, mt_source) if block_mapping is None else
-                     scientific_context(c, mt_source, autosomal_blocks=True))
+                     scientific_context(c, mt_source, **context_options))
             row={'scenario':name,'rep':i,'seed':c.seed,'mode':args.mode,
                  'initial_f':args.f,'N':args.N,'gens_requested':args.gens,'s_mt_realized':c.s_mt,
                  **chronology,
@@ -412,7 +444,7 @@ def main():
                 row['block_map_sha256'] = block_map_sha256
             if autosomal_protocol is not None:
                 row.update(autosomal_protocol_id=autosomal_protocol.protocol_id,
-                           autosomal_protocol_version=PROTOCOL_VERSION,
+                           autosomal_protocol_version=protocol_version,
                            autosomal_protocol_sha256=autosomal_protocol.sha256,
                            autosomal_protocol_file_sha256=protocol_file_sha256,
                            autosomal_protocol=autosomal_protocol.canonical_json,
@@ -452,7 +484,7 @@ def main():
                 else 'fixed' if posterior is None else 'posterior_not_applied')
         summary.append(dict(name=name,reps=args.reps,**metrics,
                             scientific_context=(scientific_context(cfg, source) if block_mapping is None
-                                                else scientific_context(cfg, source, autosomal_blocks=True))))
+                                                else scientific_context(cfg, source, **context_options))))
         all_rows.extend(rows)
         print(f'{name:<29s}  P(sample 10 both)={metrics["p10_joint"]:.4%}  '
               f'P(mt,Y fixation)={metrics["joint_fixed"]:.4%}  '
@@ -461,12 +493,13 @@ def main():
         wr=csv.DictWriter(fobj,fieldnames=list(all_rows[0]));wr.writeheader();wr.writerows(all_rows)
     jsonpath=output.with_suffix('.json')
     meta_args = vars(args).copy()
+    meta_args.pop('weighted_autosomal_protocol')
     if autosomal_protocol is None:
         meta_args.pop('autosomal_protocol')
     else:
-        meta_args.update(autosomal_protocol_source=args.autosomal_protocol,
+        meta_args.update(autosomal_protocol_source=protocol_source,
                          autosomal_protocol=autosomal_protocol.to_dict(),
-                         autosomal_protocol_version=PROTOCOL_VERSION,
+                         autosomal_protocol_version=protocol_version,
                          autosomal_protocol_id=autosomal_protocol.protocol_id,
                          autosomal_protocol_sha256=autosomal_protocol.sha256,
                          autosomal_protocol_file_sha256=protocol_file_sha256,
