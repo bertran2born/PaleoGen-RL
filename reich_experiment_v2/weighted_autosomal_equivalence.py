@@ -18,6 +18,9 @@ from study_weighted_autosomal_resolution import (
 
 CRITERIA_VERSION = 'weighted-autosomal-equivalence-criteria-v1'
 ASSESSMENT_VERSION = 'weighted-autosomal-equivalence-assessment-v1'
+BERNSTEIN_CRITERIA_VERSION = 'weighted-autosomal-equivalence-criteria-v2'
+BERNSTEIN_ASSESSMENT_VERSION = 'weighted-autosomal-equivalence-assessment-v2'
+BERNSTEIN_METHOD = 'empirical_bernstein_maurer_pontil_2009'
 METRICS = ('ancestry', 'target_probability', 'p10_joint', 'joint_and_target')
 
 
@@ -39,10 +42,17 @@ def _number(value, field, *, positive=False):
 
 def validate_weighted_equivalence_criteria(criteria, plan):
     plan = validate_weighted_resolution_plan(plan)
+    version = criteria.get('criteria_version') if isinstance(criteria, dict) else None
     _keys(criteria, ('criteria_version', 'criteria_id', 'study_plan_sha256', 'alpha',
-                     'margins', 'max_interval_radius'), 'equivalence criteria')
-    if criteria['criteria_version'] != CRITERIA_VERSION:
+                     'margins', 'max_interval_radius') +
+                     (('method',) if version == BERNSTEIN_CRITERIA_VERSION else ()), 'equivalence criteria')
+    if version not in (CRITERIA_VERSION, BERNSTEIN_CRITERIA_VERSION):
         raise ValueError('unsupported equivalence criteria version')
+    if version == BERNSTEIN_CRITERIA_VERSION:
+        if criteria['method'] != BERNSTEIN_METHOD:
+            raise ValueError('v2 criteria require an explicit empirical Bernstein method')
+        if len(plan['seeds']) < 2:
+            raise ValueError('empirical Bernstein requires at least two replicates')
     identity = criteria['criteria_id']
     if not isinstance(identity, str) or not identity or identity != identity.strip():
         raise ValueError('criteria_id must be a nonempty trimmed string')
@@ -56,8 +66,11 @@ def validate_weighted_equivalence_criteria(criteria, plan):
     radius = _number(criteria['max_interval_radius'], 'max_interval_radius', positive=True)
     if radius > min(margins.values()) or radius*radius == 0:
         raise ValueError('precision radius must be representable and no larger than any margin')
-    return dict(criteria_version=CRITERIA_VERSION, criteria_id=identity, study_plan_sha256=_digest(plan),
-                alpha=alpha, margins=margins, max_interval_radius=radius)
+    result = dict(criteria_version=version, criteria_id=identity, study_plan_sha256=_digest(plan),
+                  alpha=alpha, margins=margins, max_interval_radius=radius)
+    if version == BERNSTEIN_CRITERIA_VERSION:
+        result['method'] = BERNSTEIN_METHOD
+    return result
 
 
 def load_weighted_equivalence_criteria(path, plan):
@@ -70,6 +83,8 @@ def preview_weighted_equivalence(criteria, plan):
     plan = validate_weighted_resolution_plan(plan)
     criteria = validate_weighted_equivalence_criteria(criteria, plan)
     comparisons = len(plan['scenarios'])*(len(plan['family']['refinement_factors'])-1)*len(METRICS)
+    if criteria['criteria_version'] == BERNSTEIN_CRITERIA_VERSION:
+        return _preview_bernstein(criteria, plan, comparisons)
     # Union bound of two-sided Hoeffding bounds for paired differences in [-1,1].
     coefficient = 2*(log(2*comparisons)-log(criteria['alpha']))
     quotient = coefficient/criteria['max_interval_radius']**2
@@ -86,6 +101,82 @@ def preview_weighted_equivalence(criteria, plan):
                 precision_satisfied=radius <= criteria['max_interval_radius'],
                 confidence_level=1-criteria['alpha'], method='hoeffding_union_bound_paired_differences',
                 independent_replicates_required=True, comparison_independence_required=False,
+                convergence_status='not_established')
+
+
+def _bernstein_log(comparisons, alpha):
+    return log(4*comparisons)-log(alpha)
+
+
+def empirical_bernstein_interval(values, *, comparisons, alpha):
+    """Two-sided fixed-n union bound from Maurer–Pontil (2009), theorem 4.
+
+    Each observation lies in [-1,1]; alpha/(2K) is assigned to each one-sided
+    comparison. No optional stopping or method selection is covered here.
+    """
+    if not isinstance(values, (tuple, list)) or len(values) < 2:
+        raise ValueError('at least two bounded differences are required')
+    if type(comparisons) is not int or comparisons < 1:
+        raise ValueError('comparisons must be a positive integer')
+    alpha = _number(alpha, 'alpha', positive=True)
+    if alpha == 1:
+        raise ValueError('alpha must be strictly less than 1')
+    owned = []
+    for value in values:
+        if isinstance(value, bool) or not isinstance(value, Real):
+            raise ValueError('differences must be finite numbers in [-1,1]')
+        try:
+            value = float(value)
+        except (ValueError, OverflowError) as error:
+            raise ValueError('differences must be representable floats') from error
+        if not isfinite(value) or not -1 <= value <= 1:
+            raise ValueError('differences must be finite numbers in [-1,1]')
+        owned.append(value)
+    n = len(owned)
+    mean = fsum(owned)/n
+    variance = fsum((value-mean)**2 for value in owned)/(n-1)
+    budget = _bernstein_log(comparisons, alpha)
+    radius = sqrt(2*variance*budget/n)+(14*budget/3)/(n-1)
+    return dict(mean_difference=mean, sample_variance=variance, replicates=n,
+                log_budget=budget, radius_unclipped=radius,
+                interval=[max(-1., mean-radius), min(1., mean+radius)])
+
+
+def _preview_bernstein(criteria, plan, comparisons):
+    budget = _bernstein_log(comparisons, criteria['alpha'])
+    residual = 14*budget/3
+    requested = criteria['max_interval_radius']
+    # S^2 <= n/(n-1) for observations in [-1,1]. This upper bound needs no data.
+    def worst_radius(n):
+        return sqrt(2*budget/(n-1))+residual/(n-1)
+    upper = max(8*budget/requested**2, 2*residual/requested)
+    zero_required = residual/requested
+    if not isfinite(upper) or not isfinite(zero_required):
+        raise ValueError('requested precision exceeds representable planning arithmetic')
+    zero_required = max(2, 1+ceil(zero_required))
+    if residual/(zero_required-1) > requested:
+        zero_required += 1
+    low, high = 2, 1+ceil(upper)
+    if worst_radius(high) > requested:
+        high *= 2
+    while low < high:
+        midpoint = (low+high)//2
+        if worst_radius(midpoint) <= requested:
+            high = midpoint
+        else:
+            low = midpoint+1
+    n = len(plan['seeds'])
+    return dict(criteria=criteria, criteria_sha256=_digest(criteria), study_plan_sha256=_digest(plan),
+                comparisons=comparisons, replicates_per_cell=n, method=BERNSTEIN_METHOD,
+                simultaneous_radius_unclipped=None, required_replicates_per_cell=None,
+                precision_satisfied=None, precision_is_outcome_dependent=True,
+                zero_variance_radius_unclipped=residual/(n-1),
+                worst_case_radius_unclipped=worst_radius(n),
+                zero_variance_required_replicates_per_cell=zero_required,
+                worst_case_sufficient_replicates_per_cell=low,
+                precision_guaranteed_from_range=worst_radius(n) <= requested,
+                confidence_level=1-criteria['alpha'], independent_replicates_required=True,
+                comparison_independence_required=False, sample_size_must_be_fixed=True,
                 convergence_status='not_established')
 
 
@@ -178,14 +269,30 @@ def assess_weighted_equivalence(criteria, report):
                                for rep, seed in zip(row['replicates'], plan['seeds'])])
             for row, current in zip(rows[:-1], values[:-1]):
                 for metric in METRICS:
-                    mean = fsum(a[metric]-b[metric] for a, b in zip(current, values[-1]))/len(current)
-                    radius = preview['simultaneous_radius_unclipped']
-                    interval = [max(-1., mean-radius), min(1., mean+radius)]
+                    differences = [a[metric]-b[metric] for a, b in zip(current, values[-1])]
+                    mean = fsum(differences)/len(current)
+                    extra = {}
+                    precise = preview['precision_satisfied']
+                    if preview['criteria']['criteria_version'] == BERNSTEIN_CRITERIA_VERSION:
+                        bounded = empirical_bernstein_interval(differences, comparisons=preview['comparisons'],
+                                                              alpha=preview['criteria']['alpha'])
+                        radius, interval = bounded['radius_unclipped'], bounded['interval']
+                        precise = radius <= preview['criteria']['max_interval_radius']
+                        extra = dict(sample_variance=bounded['sample_variance'], radius_unclipped=radius,
+                                     precision_satisfied=precise)
+                    else:
+                        radius = preview['simultaneous_radius_unclipped']
+                        interval = [max(-1., mean-radius), min(1., mean+radius)]
                     margin = preview['criteria']['margins'][metric]
                     results.append(dict(scenario=scenario['name'], block_count=row['block_count'],
                                         reference_block_count=rows[-1]['block_count'], metric=metric,
                                         mean_difference=mean, interval=interval, margin=margin,
-                                        status=_decision(interval, margin, preview['precision_satisfied'])))
+                                        status=_decision(interval, margin, precise), **extra))
+        version = ASSESSMENT_VERSION
+        if preview['criteria']['criteria_version'] == BERNSTEIN_CRITERIA_VERSION:
+            version = BERNSTEIN_ASSESSMENT_VERSION
+            preview['observed_max_interval_radius'] = max(row['radius_unclipped'] for row in results)
+            preview['precision_satisfied'] = all(row['precision_satisfied'] for row in results)
         statuses = {row['status'] for row in results}
         if 'difference_detected' in statuses:
             status = 'difference_detected'
@@ -195,7 +302,7 @@ def assess_weighted_equivalence(criteria, report):
             status = 'inconclusive_precision'
         else:
             status = 'inconclusive'
-        return dict(assessment_version=ASSESSMENT_VERSION, status=status, convergence_status='not_established',
+        return dict(assessment_version=version, status=status, convergence_status='not_established',
                     criteria=preview['criteria'], criteria_sha256=preview['criteria_sha256'],
                     study_plan_sha256=preview['study_plan_sha256'], study_report_sha256=_digest(report),
                     family_sha256=family['family_sha256'], precision=preview, comparisons=results)
