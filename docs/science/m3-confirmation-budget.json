@@ -1,0 +1,1293 @@
+{
+  "report_version": "m3-confirmation-feasibility-v1",
+  "scientific_status": "planning_only",
+  "simulation_performed": false,
+  "scientific_criteria_adopted": false,
+  "convergence_status": "not_established",
+  "mode": "full",
+  "plan_template": {
+    "plan_version": "weighted-autosomal-resolution-plan-v1",
+    "plan_id": "m3-confirmation-cost-template-i33",
+    "seeds": [
+      620000,
+      620001,
+      620002
+    ],
+    "scenarios": [
+      "neutral",
+      "reich_point",
+      "symmetric_1pct",
+      "symmetric_5pct",
+      "direction_mod_1pct",
+      "direction_arch_1pct",
+      "direction_mod_5pct",
+      "direction_arch_5pct",
+      "reich_plus_symmetric_1pct",
+      "reich_plus_symmetric_0p1pct",
+      "reich_plus_symmetric_0p3pct",
+      "reich_plus_favor_mod_0p1pct",
+      "reich_plus_favor_mod_0p3pct",
+      "reich_plus_favor_mod_1pct",
+      "reich_plus_favor_arch_0p1pct",
+      "reich_plus_favor_arch_0p3pct",
+      "reich_plus_favor_arch_1pct"
+    ],
+    "family": {
+      "base_protocol": {
+        "protocol_version": "weighted-autosomal-evaluation-protocol-v1",
+        "protocol_id": "cost-template-target-regime",
+        "population_size": 1450,
+        "generations": 6993,
+        "pulse": {
+          "f": 0.05,
+          "male_fraction": 0.5
+        },
+        "recombination_map": {
+          "panel": {
+            "panel_id": "cost-template-four",
+            "block_ids": [
+              "a",
+              "b",
+              "c",
+              "d"
+            ]
+          },
+          "switch_probabilities": [
+            0.1967346701436833,
+            0.26381672362949266,
+            0.1967346701436833
+          ]
+        },
+        "partners": {
+          "mt": "a",
+          "y": "d"
+        },
+        "measurement": {
+          "measurement_version": "weighted-autosomal-block-measurement-v1",
+          "observable": "total_weighted_diploid_block_ancestry",
+          "weighting": "explicit_relative_block_weights",
+          "sample_size": 10,
+          "sample_replacement": false,
+          "target_interval": [
+            0.03,
+            0.07
+          ]
+        },
+        "resolution_control": {
+          "status": "not_established"
+        },
+        "measurement_weights": {
+          "block_weights": [
+            1.0,
+            3.0,
+            3.0,
+            1.0
+          ],
+          "weight_basis": "synthetic cost template; not empirical genomic lengths"
+        }
+      },
+      "family_id": "cost-template-family",
+      "map_length": 1.0,
+      "refinement_factors": [
+        1,
+        3,
+        9
+      ]
+    }
+  },
+  "plan_template_sha256": "53b8d539f325531ee57185d29bb6082356877da0f224c5a24054f9b516525460",
+  "plan_template_file_sha256": "8fe96cc03706a61f1707f41e39e203bb22d34c30809eaa15b19bb50fe7d15f18",
+  "workload_template": {
+    "preview_version": "weighted-autosomal-resolution-preview-v1",
+    "scientific_status": "planning_only",
+    "simulation_performed": false,
+    "mode": "full",
+    "convergence_status": "not_established",
+    "plan": {
+      "plan_version": "weighted-autosomal-resolution-plan-v1",
+      "plan_id": "m3-confirmation-cost-template-i33",
+      "seeds": [
+        620000,
+        620001,
+        620002
+      ],
+      "scenarios": [
+        "neutral",
+        "reich_point",
+        "symmetric_1pct",
+        "symmetric_5pct",
+        "direction_mod_1pct",
+        "direction_arch_1pct",
+        "direction_mod_5pct",
+        "direction_arch_5pct",
+        "reich_plus_symmetric_1pct",
+        "reich_plus_symmetric_0p1pct",
+        "reich_plus_symmetric_0p3pct",
+        "reich_plus_favor_mod_0p1pct",
+        "reich_plus_favor_mod_0p3pct",
+        "reich_plus_favor_mod_1pct",
+        "reich_plus_favor_arch_0p1pct",
+        "reich_plus_favor_arch_0p3pct",
+        "reich_plus_favor_arch_1pct"
+      ],
+      "family": {
+        "base_protocol": {
+          "protocol_version": "weighted-autosomal-evaluation-protocol-v1",
+          "protocol_id": "cost-template-target-regime",
+          "population_size": 1450,
+          "generations": 6993,
+          "pulse": {
+            "f": 0.05,
+            "male_fraction": 0.5
+          },
+          "recombination_map": {
+            "panel": {
+              "panel_id": "cost-template-four",
+              "block_ids": [
+                "a",
+                "b",
+                "c",
+                "d"
+              ]
+            },
+            "switch_probabilities": [
+              0.1967346701436833,
+              0.26381672362949266,
+              0.1967346701436833
+            ]
+          },
+          "partners": {
+            "mt": "a",
+            "y": "d"
+          },
+          "measurement": {
+            "measurement_version": "weighted-autosomal-block-measurement-v1",
+            "observable": "total_weighted_diploid_block_ancestry",
+            "weighting": "explicit_relative_block_weights",
+            "sample_size": 10,
+            "sample_replacement": false,
+            "target_interval": [
+              0.03,
+              0.07
+            ]
+          },
+          "resolution_control": {
+            "status": "not_established"
+          },
+          "measurement_weights": {
+            "block_weights": [
+              1.0,
+              3.0,
+              3.0,
+              1.0
+            ],
+            "weight_basis": "synthetic cost template; not empirical genomic lengths"
+          }
+        },
+        "family_id": "cost-template-family",
+        "map_length": 1.0,
+        "refinement_factors": [
+          1,
+          3,
+          9
+        ]
+      }
+    },
+    "plan_sha256": "53b8d539f325531ee57185d29bb6082356877da0f224c5a24054f9b516525460",
+    "plan_file_sha256": "8fe96cc03706a61f1707f41e39e203bb22d34c30809eaa15b19bb50fe7d15f18",
+    "family": {
+      "family_version": "weighted-autosomal-refinement-family-v1",
+      "family_id": "cost-template-family",
+      "scientific_status": "synthetic_weighted_neutral_refinement",
+      "convergence_status": "not_established",
+      "base_protocol": {
+        "protocol_version": "weighted-autosomal-evaluation-protocol-v1",
+        "protocol_id": "cost-template-target-regime",
+        "population_size": 1450,
+        "generations": 6993,
+        "pulse": {
+          "f": 0.05,
+          "male_fraction": 0.5
+        },
+        "recombination_map": {
+          "panel": {
+            "panel_id": "cost-template-four",
+            "block_ids": [
+              "a",
+              "b",
+              "c",
+              "d"
+            ]
+          },
+          "switch_probabilities": [
+            0.1967346701436833,
+            0.26381672362949266,
+            0.1967346701436833
+          ]
+        },
+        "partners": {
+          "mt": "a",
+          "y": "d"
+        },
+        "measurement": {
+          "measurement_version": "weighted-autosomal-block-measurement-v1",
+          "observable": "total_weighted_diploid_block_ancestry",
+          "weighting": "explicit_relative_block_weights",
+          "sample_size": 10,
+          "sample_replacement": false,
+          "target_interval": [
+            0.03,
+            0.07
+          ]
+        },
+        "resolution_control": {
+          "status": "not_established"
+        },
+        "measurement_weights": {
+          "block_weights": [
+            1.0,
+            3.0,
+            3.0,
+            1.0
+          ],
+          "weight_basis": "synthetic cost template; not empirical genomic lengths"
+        }
+      },
+      "base_protocol_sha256": "4aa7b38abc52e834577d958f3f7c2f8923618fc93b680a970fa6a7fa245fba8b",
+      "refinement_factors": [
+        1,
+        3,
+        9
+      ],
+      "map_length": 1.0,
+      "geometry_rule": "contiguous_relative_weight_cells_with_midpoint_markers",
+      "map_rule": "r(d)=-expm1(-2*d)/2; d=L*(right_midpoint-left_midpoint)",
+      "map_absolute_tolerance": 1e-15,
+      "partner_refinement": "unsplit_finite_cells",
+      "resolutions": [
+        {
+          "refinement_factor": 1,
+          "block_count": 4,
+          "parent_block_ids": [
+            "a",
+            "b",
+            "c",
+            "d"
+          ],
+          "block_intervals": [
+            [
+              0.0,
+              0.125
+            ],
+            [
+              0.125,
+              0.5
+            ],
+            [
+              0.5,
+              0.875
+            ],
+            [
+              0.875,
+              1.0
+            ]
+          ],
+          "block_positions": [
+            0.0625,
+            0.3125,
+            0.6875,
+            0.9375
+          ],
+          "autosomal_protocol": {
+            "protocol_version": "weighted-autosomal-evaluation-protocol-v1",
+            "protocol_id": "cost-template-target-regime",
+            "population_size": 1450,
+            "generations": 6993,
+            "pulse": {
+              "f": 0.05,
+              "male_fraction": 0.5
+            },
+            "recombination_map": {
+              "panel": {
+                "panel_id": "cost-template-four",
+                "block_ids": [
+                  "a",
+                  "b",
+                  "c",
+                  "d"
+                ]
+              },
+              "switch_probabilities": [
+                0.1967346701436833,
+                0.26381672362949266,
+                0.1967346701436833
+              ]
+            },
+            "partners": {
+              "mt": "a",
+              "y": "d"
+            },
+            "measurement": {
+              "measurement_version": "weighted-autosomal-block-measurement-v1",
+              "observable": "total_weighted_diploid_block_ancestry",
+              "weighting": "explicit_relative_block_weights",
+              "sample_size": 10,
+              "sample_replacement": false,
+              "target_interval": [
+                0.03,
+                0.07
+              ]
+            },
+            "resolution_control": {
+              "status": "not_established"
+            },
+            "measurement_weights": {
+              "block_weights": [
+                1.0,
+                3.0,
+                3.0,
+                1.0
+              ],
+              "weight_basis": "synthetic cost template; not empirical genomic lengths"
+            }
+          },
+          "autosomal_protocol_sha256": "4aa7b38abc52e834577d958f3f7c2f8923618fc93b680a970fa6a7fa245fba8b"
+        },
+        {
+          "refinement_factor": 3,
+          "block_count": 8,
+          "parent_block_ids": [
+            "a",
+            "b",
+            "b",
+            "b",
+            "c",
+            "c",
+            "c",
+            "d"
+          ],
+          "block_intervals": [
+            [
+              0.0,
+              0.125
+            ],
+            [
+              0.125,
+              0.25
+            ],
+            [
+              0.25,
+              0.375
+            ],
+            [
+              0.375,
+              0.5
+            ],
+            [
+              0.5,
+              0.625
+            ],
+            [
+              0.625,
+              0.75
+            ],
+            [
+              0.75,
+              0.875
+            ],
+            [
+              0.875,
+              1.0
+            ]
+          ],
+          "block_positions": [
+            0.0625,
+            0.1875,
+            0.3125,
+            0.4375,
+            0.5625,
+            0.6875,
+            0.8125,
+            0.9375
+          ],
+          "autosomal_protocol": {
+            "protocol_version": "weighted-autosomal-evaluation-protocol-v1",
+            "protocol_id": "cost-template-family:split3",
+            "population_size": 1450,
+            "generations": 6993,
+            "pulse": {
+              "f": 0.05,
+              "male_fraction": 0.5
+            },
+            "recombination_map": {
+              "panel": {
+                "panel_id": "cost-template-family:split3",
+                "block_ids": [
+                  "a",
+                  "b::at1of6",
+                  "b",
+                  "b::at5of6",
+                  "c::at1of6",
+                  "c",
+                  "c::at5of6",
+                  "d"
+                ]
+              },
+              "switch_probabilities": [
+                0.11059960846429756,
+                0.11059960846429756,
+                0.11059960846429756,
+                0.11059960846429756,
+                0.11059960846429756,
+                0.11059960846429756,
+                0.11059960846429756
+              ]
+            },
+            "partners": {
+              "mt": "a",
+              "y": "d"
+            },
+            "measurement": {
+              "measurement_version": "weighted-autosomal-block-measurement-v1",
+              "observable": "total_weighted_diploid_block_ancestry",
+              "weighting": "explicit_relative_block_weights",
+              "sample_size": 10,
+              "sample_replacement": false,
+              "target_interval": [
+                0.03,
+                0.07
+              ]
+            },
+            "resolution_control": {
+              "status": "not_established"
+            },
+            "measurement_weights": {
+              "block_weights": [
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0,
+                1.0
+              ],
+              "weight_basis": "synthetic cost template; not empirical genomic lengths"
+            }
+          },
+          "autosomal_protocol_sha256": "c6a8fe5a3d6cf914cb39571194f4badb1a03ae8ad5bd6e402e398e5583bd8a5e"
+        },
+        {
+          "refinement_factor": 9,
+          "block_count": 20,
+          "parent_block_ids": [
+            "a",
+            "b",
+            "b",
+            "b",
+            "b",
+            "b",
+            "b",
+            "b",
+            "b",
+            "b",
+            "c",
+            "c",
+            "c",
+            "c",
+            "c",
+            "c",
+            "c",
+            "c",
+            "c",
+            "d"
+          ],
+          "block_intervals": [
+            [
+              0.0,
+              0.125
+            ],
+            [
+              0.125,
+              0.16666666666666666
+            ],
+            [
+              0.16666666666666666,
+              0.20833333333333334
+            ],
+            [
+              0.20833333333333334,
+              0.25
+            ],
+            [
+              0.25,
+              0.2916666666666667
+            ],
+            [
+              0.2916666666666667,
+              0.3333333333333333
+            ],
+            [
+              0.3333333333333333,
+              0.375
+            ],
+            [
+              0.375,
+              0.4166666666666667
+            ],
+            [
+              0.4166666666666667,
+              0.4583333333333333
+            ],
+            [
+              0.4583333333333333,
+              0.5
+            ],
+            [
+              0.5,
+              0.5416666666666666
+            ],
+            [
+              0.5416666666666666,
+              0.5833333333333334
+            ],
+            [
+              0.5833333333333334,
+              0.625
+            ],
+            [
+              0.625,
+              0.6666666666666666
+            ],
+            [
+              0.6666666666666666,
+              0.7083333333333334
+            ],
+            [
+              0.7083333333333334,
+              0.75
+            ],
+            [
+              0.75,
+              0.7916666666666666
+            ],
+            [
+              0.7916666666666666,
+              0.8333333333333334
+            ],
+            [
+              0.8333333333333334,
+              0.875
+            ],
+            [
+              0.875,
+              1.0
+            ]
+          ],
+          "block_positions": [
+            0.0625,
+            0.14583333333333334,
+            0.1875,
+            0.22916666666666666,
+            0.2708333333333333,
+            0.3125,
+            0.3541666666666667,
+            0.3958333333333333,
+            0.4375,
+            0.4791666666666667,
+            0.5208333333333334,
+            0.5625,
+            0.6041666666666666,
+            0.6458333333333334,
+            0.6875,
+            0.7291666666666666,
+            0.7708333333333334,
+            0.8125,
+            0.8541666666666666,
+            0.9375
+          ],
+          "autosomal_protocol": {
+            "protocol_version": "weighted-autosomal-evaluation-protocol-v1",
+            "protocol_id": "cost-template-family:split9",
+            "population_size": 1450,
+            "generations": 6993,
+            "pulse": {
+              "f": 0.05,
+              "male_fraction": 0.5
+            },
+            "recombination_map": {
+              "panel": {
+                "panel_id": "cost-template-family:split9",
+                "block_ids": [
+                  "a",
+                  "b::at1of18",
+                  "b::at1of6",
+                  "b::at5of18",
+                  "b::at7of18",
+                  "b",
+                  "b::at11of18",
+                  "b::at13of18",
+                  "b::at5of6",
+                  "b::at17of18",
+                  "c::at1of18",
+                  "c::at1of6",
+                  "c::at5of18",
+                  "c::at7of18",
+                  "c",
+                  "c::at11of18",
+                  "c::at13of18",
+                  "c::at5of6",
+                  "c::at17of18",
+                  "d"
+                ]
+              },
+              "switch_probabilities": [
+                0.07675913755469298,
+                0.03997779268533837,
+                0.03997779268533837,
+                0.03997779268533837,
+                0.039977792685338395,
+                0.039977792685338395,
+                0.03997779268533834,
+                0.039977792685338395,
+                0.039977792685338395,
+                0.039977792685338395,
+                0.03997779268533834,
+                0.03997779268533834,
+                0.039977792685338444,
+                0.03997779268533834,
+                0.03997779268533834,
+                0.039977792685338444,
+                0.03997779268533834,
+                0.03997779268533834,
+                0.07675913755469299
+              ]
+            },
+            "partners": {
+              "mt": "a",
+              "y": "d"
+            },
+            "measurement": {
+              "measurement_version": "weighted-autosomal-block-measurement-v1",
+              "observable": "total_weighted_diploid_block_ancestry",
+              "weighting": "explicit_relative_block_weights",
+              "sample_size": 10,
+              "sample_replacement": false,
+              "target_interval": [
+                0.03,
+                0.07
+              ]
+            },
+            "resolution_control": {
+              "status": "not_established"
+            },
+            "measurement_weights": {
+              "block_weights": [
+                1.0,
+                0.3333333333333333,
+                0.3333333333333333,
+                0.3333333333333333,
+                0.3333333333333333,
+                0.3333333333333333,
+                0.3333333333333333,
+                0.3333333333333333,
+                0.3333333333333333,
+                0.3333333333333333,
+                0.3333333333333333,
+                0.3333333333333333,
+                0.3333333333333333,
+                0.3333333333333333,
+                0.3333333333333333,
+                0.3333333333333333,
+                0.3333333333333333,
+                0.3333333333333333,
+                0.3333333333333333,
+                1.0
+              ],
+              "weight_basis": "synthetic cost template; not empirical genomic lengths"
+            }
+          },
+          "autosomal_protocol_sha256": "47d0d041729dece9dfbf2b094ce538dc57976dcf52eb0b09f497f15ec414a5da"
+        }
+      ],
+      "family_sha256": "fb318fc58bbd7b2ff14c62fc377c181519cbe202eef89360440ebb7ced5106c0"
+    },
+    "resolutions": [
+      {
+        "block_count": 4,
+        "refinement_factor": 1,
+        "evaluations": 51,
+        "offspring_generated_on_completion": 517132350,
+        "accepted_candidates_on_completion": 517132350,
+        "candidates_generated_lower_bound_on_completion": 517132350,
+        "block_copy_transmissions_lower_bound_on_completion": 4137058800,
+        "state_allele_entries": 11600
+      },
+      {
+        "block_count": 8,
+        "refinement_factor": 3,
+        "evaluations": 51,
+        "offspring_generated_on_completion": 517132350,
+        "accepted_candidates_on_completion": 517132350,
+        "candidates_generated_lower_bound_on_completion": 517132350,
+        "block_copy_transmissions_lower_bound_on_completion": 8274117600,
+        "state_allele_entries": 23200
+      },
+      {
+        "block_count": 20,
+        "refinement_factor": 9,
+        "evaluations": 51,
+        "offspring_generated_on_completion": 517132350,
+        "accepted_candidates_on_completion": 517132350,
+        "candidates_generated_lower_bound_on_completion": 517132350,
+        "block_copy_transmissions_lower_bound_on_completion": 20685294000,
+        "state_allele_entries": 58000
+      }
+    ],
+    "total_workload": {
+      "evaluations": 153,
+      "offspring_generated_on_completion": 1551397050,
+      "accepted_candidates_on_completion": 1551397050,
+      "candidates_generated_lower_bound_on_completion": 1551397050,
+      "block_copy_transmissions_lower_bound_on_completion": 33096470400,
+      "largest_population_state_allele_entries": 58000
+    },
+    "precision": {
+      "confidence_level": 0.95,
+      "intervals_simultaneous": false,
+      "bounded_mean_radius_unclipped": 0.7841002756996854,
+      "paired_difference_radius_unclipped": 1.5682005513993709,
+      "method": "hoeffding_95_pointwise"
+    },
+    "assumptions": {
+      "completion_required": true,
+      "rejection_overhead_included": false,
+      "independent_replicates_required": true,
+      "cost_units": "logical_counts_not_time",
+      "state_units": "allele_entries_one_population_not_peak_memory"
+    }
+  },
+  "sensitivity": [
+    {
+      "precision_radius": 0.1,
+      "precision": {
+        "criteria": {
+          "criteria_version": "weighted-autosomal-equivalence-criteria-v1",
+          "criteria_id": "cost-only-radius-0.1",
+          "study_plan_sha256": "53b8d539f325531ee57185d29bb6082356877da0f224c5a24054f9b516525460",
+          "alpha": 0.05,
+          "margins": {
+            "ancestry": 0.2,
+            "target_probability": 0.2,
+            "p10_joint": 0.2,
+            "joint_and_target": 0.2
+          },
+          "max_interval_radius": 0.1
+        },
+        "criteria_sha256": "a547e5dcab52baffb075a0caf5a2ff27afa38d864699431a05829a9369c10804",
+        "study_plan_sha256": "53b8d539f325531ee57185d29bb6082356877da0f224c5a24054f9b516525460",
+        "comparisons": 136,
+        "replicates_per_cell": 3,
+        "simultaneous_radius_unclipped": 2.39465158771932,
+        "required_replicates_per_cell": 1721,
+        "precision_satisfied": false,
+        "confidence_level": 0.95,
+        "method": "hoeffding_union_bound_paired_differences",
+        "independent_replicates_required": true,
+        "comparison_independence_required": false,
+        "convergence_status": "not_established"
+      },
+      "resolutions": [
+        {
+          "block_count": 4,
+          "refinement_factor": 1,
+          "evaluations": 29257,
+          "offspring_generated_on_completion": 296661591450,
+          "accepted_candidates_on_completion": 296661591450,
+          "candidates_generated_lower_bound_on_completion": 296661591450,
+          "block_copy_transmissions_lower_bound_on_completion": 2373292731600,
+          "state_allele_entries": 11600
+        },
+        {
+          "block_count": 8,
+          "refinement_factor": 3,
+          "evaluations": 29257,
+          "offspring_generated_on_completion": 296661591450,
+          "accepted_candidates_on_completion": 296661591450,
+          "candidates_generated_lower_bound_on_completion": 296661591450,
+          "block_copy_transmissions_lower_bound_on_completion": 4746585463200,
+          "state_allele_entries": 23200
+        },
+        {
+          "block_count": 20,
+          "refinement_factor": 9,
+          "evaluations": 29257,
+          "offspring_generated_on_completion": 296661591450,
+          "accepted_candidates_on_completion": 296661591450,
+          "candidates_generated_lower_bound_on_completion": 296661591450,
+          "block_copy_transmissions_lower_bound_on_completion": 11866463658000,
+          "state_allele_entries": 58000
+        }
+      ],
+      "total_workload": {
+        "evaluations": 87771,
+        "offspring_generated_on_completion": 889984774350,
+        "accepted_candidates_on_completion": 889984774350,
+        "candidates_generated_lower_bound_on_completion": 889984774350,
+        "block_copy_transmissions_lower_bound_on_completion": 18986341852800,
+        "largest_population_state_allele_entries": 58000
+      }
+    },
+    {
+      "precision_radius": 0.05,
+      "precision": {
+        "criteria": {
+          "criteria_version": "weighted-autosomal-equivalence-criteria-v1",
+          "criteria_id": "cost-only-radius-0.05",
+          "study_plan_sha256": "53b8d539f325531ee57185d29bb6082356877da0f224c5a24054f9b516525460",
+          "alpha": 0.05,
+          "margins": {
+            "ancestry": 0.1,
+            "target_probability": 0.1,
+            "p10_joint": 0.1,
+            "joint_and_target": 0.1
+          },
+          "max_interval_radius": 0.05
+        },
+        "criteria_sha256": "ed7c65420c90d7eb3dc2f8cd864fb1a6415a66e4cf9d95924f2d87b30523d09d",
+        "study_plan_sha256": "53b8d539f325531ee57185d29bb6082356877da0f224c5a24054f9b516525460",
+        "comparisons": 136,
+        "replicates_per_cell": 3,
+        "simultaneous_radius_unclipped": 2.39465158771932,
+        "required_replicates_per_cell": 6882,
+        "precision_satisfied": false,
+        "confidence_level": 0.95,
+        "method": "hoeffding_union_bound_paired_differences",
+        "independent_replicates_required": true,
+        "comparison_independence_required": false,
+        "convergence_status": "not_established"
+      },
+      "resolutions": [
+        {
+          "block_count": 4,
+          "refinement_factor": 1,
+          "evaluations": 116994,
+          "offspring_generated_on_completion": 1186301610900,
+          "accepted_candidates_on_completion": 1186301610900,
+          "candidates_generated_lower_bound_on_completion": 1186301610900,
+          "block_copy_transmissions_lower_bound_on_completion": 9490412887200,
+          "state_allele_entries": 11600
+        },
+        {
+          "block_count": 8,
+          "refinement_factor": 3,
+          "evaluations": 116994,
+          "offspring_generated_on_completion": 1186301610900,
+          "accepted_candidates_on_completion": 1186301610900,
+          "candidates_generated_lower_bound_on_completion": 1186301610900,
+          "block_copy_transmissions_lower_bound_on_completion": 18980825774400,
+          "state_allele_entries": 23200
+        },
+        {
+          "block_count": 20,
+          "refinement_factor": 9,
+          "evaluations": 116994,
+          "offspring_generated_on_completion": 1186301610900,
+          "accepted_candidates_on_completion": 1186301610900,
+          "candidates_generated_lower_bound_on_completion": 1186301610900,
+          "block_copy_transmissions_lower_bound_on_completion": 47452064436000,
+          "state_allele_entries": 58000
+        }
+      ],
+      "total_workload": {
+        "evaluations": 350982,
+        "offspring_generated_on_completion": 3558904832700,
+        "accepted_candidates_on_completion": 3558904832700,
+        "candidates_generated_lower_bound_on_completion": 3558904832700,
+        "block_copy_transmissions_lower_bound_on_completion": 75923303097600,
+        "largest_population_state_allele_entries": 58000
+      }
+    },
+    {
+      "precision_radius": 0.01,
+      "precision": {
+        "criteria": {
+          "criteria_version": "weighted-autosomal-equivalence-criteria-v1",
+          "criteria_id": "cost-only-radius-0.01",
+          "study_plan_sha256": "53b8d539f325531ee57185d29bb6082356877da0f224c5a24054f9b516525460",
+          "alpha": 0.05,
+          "margins": {
+            "ancestry": 0.02,
+            "target_probability": 0.02,
+            "p10_joint": 0.02,
+            "joint_and_target": 0.02
+          },
+          "max_interval_radius": 0.01
+        },
+        "criteria_sha256": "925f780604594ede66b0351d06d1db36c6edd42967a4f3c6b3f647e7f90d2575",
+        "study_plan_sha256": "53b8d539f325531ee57185d29bb6082356877da0f224c5a24054f9b516525460",
+        "comparisons": 136,
+        "replicates_per_cell": 3,
+        "simultaneous_radius_unclipped": 2.39465158771932,
+        "required_replicates_per_cell": 172031,
+        "precision_satisfied": false,
+        "confidence_level": 0.95,
+        "method": "hoeffding_union_bound_paired_differences",
+        "independent_replicates_required": true,
+        "comparison_independence_required": false,
+        "convergence_status": "not_established"
+      },
+      "resolutions": [
+        {
+          "block_count": 4,
+          "refinement_factor": 1,
+          "evaluations": 2924527,
+          "offspring_generated_on_completion": 29654265100950,
+          "accepted_candidates_on_completion": 29654265100950,
+          "candidates_generated_lower_bound_on_completion": 29654265100950,
+          "block_copy_transmissions_lower_bound_on_completion": 237234120807600,
+          "state_allele_entries": 11600
+        },
+        {
+          "block_count": 8,
+          "refinement_factor": 3,
+          "evaluations": 2924527,
+          "offspring_generated_on_completion": 29654265100950,
+          "accepted_candidates_on_completion": 29654265100950,
+          "candidates_generated_lower_bound_on_completion": 29654265100950,
+          "block_copy_transmissions_lower_bound_on_completion": 474468241615200,
+          "state_allele_entries": 23200
+        },
+        {
+          "block_count": 20,
+          "refinement_factor": 9,
+          "evaluations": 2924527,
+          "offspring_generated_on_completion": 29654265100950,
+          "accepted_candidates_on_completion": 29654265100950,
+          "candidates_generated_lower_bound_on_completion": 29654265100950,
+          "block_copy_transmissions_lower_bound_on_completion": 1186170604038000,
+          "state_allele_entries": 58000
+        }
+      ],
+      "total_workload": {
+        "evaluations": 8773581,
+        "offspring_generated_on_completion": 88962795302850,
+        "accepted_candidates_on_completion": 88962795302850,
+        "candidates_generated_lower_bound_on_completion": 88962795302850,
+        "block_copy_transmissions_lower_bound_on_completion": 1897872966460800,
+        "largest_population_state_allele_entries": 58000
+      }
+    },
+    {
+      "precision_radius": 0.005,
+      "precision": {
+        "criteria": {
+          "criteria_version": "weighted-autosomal-equivalence-criteria-v1",
+          "criteria_id": "cost-only-radius-0.005",
+          "study_plan_sha256": "53b8d539f325531ee57185d29bb6082356877da0f224c5a24054f9b516525460",
+          "alpha": 0.05,
+          "margins": {
+            "ancestry": 0.01,
+            "target_probability": 0.01,
+            "p10_joint": 0.01,
+            "joint_and_target": 0.01
+          },
+          "max_interval_radius": 0.005
+        },
+        "criteria_sha256": "a3ecc7c00833800a665c7fdc4a6078b412e3c8a1af06cfb64e9a78ae69800abf",
+        "study_plan_sha256": "53b8d539f325531ee57185d29bb6082356877da0f224c5a24054f9b516525460",
+        "comparisons": 136,
+        "replicates_per_cell": 3,
+        "simultaneous_radius_unclipped": 2.39465158771932,
+        "required_replicates_per_cell": 688123,
+        "precision_satisfied": false,
+        "confidence_level": 0.95,
+        "method": "hoeffding_union_bound_paired_differences",
+        "independent_replicates_required": true,
+        "comparison_independence_required": false,
+        "convergence_status": "not_established"
+      },
+      "resolutions": [
+        {
+          "block_count": 4,
+          "refinement_factor": 1,
+          "evaluations": 11698091,
+          "offspring_generated_on_completion": 118616888026350,
+          "accepted_candidates_on_completion": 118616888026350,
+          "candidates_generated_lower_bound_on_completion": 118616888026350,
+          "block_copy_transmissions_lower_bound_on_completion": 948935104210800,
+          "state_allele_entries": 11600
+        },
+        {
+          "block_count": 8,
+          "refinement_factor": 3,
+          "evaluations": 11698091,
+          "offspring_generated_on_completion": 118616888026350,
+          "accepted_candidates_on_completion": 118616888026350,
+          "candidates_generated_lower_bound_on_completion": 118616888026350,
+          "block_copy_transmissions_lower_bound_on_completion": 1897870208421600,
+          "state_allele_entries": 23200
+        },
+        {
+          "block_count": 20,
+          "refinement_factor": 9,
+          "evaluations": 11698091,
+          "offspring_generated_on_completion": 118616888026350,
+          "accepted_candidates_on_completion": 118616888026350,
+          "candidates_generated_lower_bound_on_completion": 118616888026350,
+          "block_copy_transmissions_lower_bound_on_completion": 4744675521054000,
+          "state_allele_entries": 58000
+        }
+      ],
+      "total_workload": {
+        "evaluations": 35094273,
+        "offspring_generated_on_completion": 355850664079050,
+        "accepted_candidates_on_completion": 355850664079050,
+        "candidates_generated_lower_bound_on_completion": 355850664079050,
+        "block_copy_transmissions_lower_bound_on_completion": 7591480833686400,
+        "largest_population_state_allele_entries": 58000
+      }
+    },
+    {
+      "precision_radius": 0.001,
+      "precision": {
+        "criteria": {
+          "criteria_version": "weighted-autosomal-equivalence-criteria-v1",
+          "criteria_id": "cost-only-radius-0.001",
+          "study_plan_sha256": "53b8d539f325531ee57185d29bb6082356877da0f224c5a24054f9b516525460",
+          "alpha": 0.05,
+          "margins": {
+            "ancestry": 0.002,
+            "target_probability": 0.002,
+            "p10_joint": 0.002,
+            "joint_and_target": 0.002
+          },
+          "max_interval_radius": 0.001
+        },
+        "criteria_sha256": "3e33351b1e09d7bed1a9ac7a91d586558c51a89ddeace2a2e760bf11e1c6ff80",
+        "study_plan_sha256": "53b8d539f325531ee57185d29bb6082356877da0f224c5a24054f9b516525460",
+        "comparisons": 136,
+        "replicates_per_cell": 3,
+        "simultaneous_radius_unclipped": 2.39465158771932,
+        "required_replicates_per_cell": 17203069,
+        "precision_satisfied": false,
+        "confidence_level": 0.95,
+        "method": "hoeffding_union_bound_paired_differences",
+        "independent_replicates_required": true,
+        "comparison_independence_required": false,
+        "convergence_status": "not_established"
+      },
+      "resolutions": [
+        {
+          "block_count": 4,
+          "refinement_factor": 1,
+          "evaluations": 292452173,
+          "offspring_generated_on_completion": 2965421166394050,
+          "accepted_candidates_on_completion": 2965421166394050,
+          "candidates_generated_lower_bound_on_completion": 2965421166394050,
+          "block_copy_transmissions_lower_bound_on_completion": 23723369331152400,
+          "state_allele_entries": 11600
+        },
+        {
+          "block_count": 8,
+          "refinement_factor": 3,
+          "evaluations": 292452173,
+          "offspring_generated_on_completion": 2965421166394050,
+          "accepted_candidates_on_completion": 2965421166394050,
+          "candidates_generated_lower_bound_on_completion": 2965421166394050,
+          "block_copy_transmissions_lower_bound_on_completion": 47446738662304800,
+          "state_allele_entries": 23200
+        },
+        {
+          "block_count": 20,
+          "refinement_factor": 9,
+          "evaluations": 292452173,
+          "offspring_generated_on_completion": 2965421166394050,
+          "accepted_candidates_on_completion": 2965421166394050,
+          "candidates_generated_lower_bound_on_completion": 2965421166394050,
+          "block_copy_transmissions_lower_bound_on_completion": 118616846655762000,
+          "state_allele_entries": 58000
+        }
+      ],
+      "total_workload": {
+        "evaluations": 877356519,
+        "offspring_generated_on_completion": 8896263499182150,
+        "accepted_candidates_on_completion": 8896263499182150,
+        "candidates_generated_lower_bound_on_completion": 8896263499182150,
+        "block_copy_transmissions_lower_bound_on_completion": 189786954649219200,
+        "largest_population_state_allele_entries": 58000
+      }
+    },
+    {
+      "precision_radius": 0.0005,
+      "precision": {
+        "criteria": {
+          "criteria_version": "weighted-autosomal-equivalence-criteria-v1",
+          "criteria_id": "cost-only-radius-0.0005",
+          "study_plan_sha256": "53b8d539f325531ee57185d29bb6082356877da0f224c5a24054f9b516525460",
+          "alpha": 0.05,
+          "margins": {
+            "ancestry": 0.001,
+            "target_probability": 0.001,
+            "p10_joint": 0.001,
+            "joint_and_target": 0.001
+          },
+          "max_interval_radius": 0.0005
+        },
+        "criteria_sha256": "12353665628a12ab83d8991e6d40c42468f4e0570597211370caa3b77093e10e",
+        "study_plan_sha256": "53b8d539f325531ee57185d29bb6082356877da0f224c5a24054f9b516525460",
+        "comparisons": 136,
+        "replicates_per_cell": 3,
+        "simultaneous_radius_unclipped": 2.39465158771932,
+        "required_replicates_per_cell": 68812275,
+        "precision_satisfied": false,
+        "confidence_level": 0.95,
+        "method": "hoeffding_union_bound_paired_differences",
+        "independent_replicates_required": true,
+        "comparison_independence_required": false,
+        "convergence_status": "not_established"
+      },
+      "resolutions": [
+        {
+          "block_count": 4,
+          "refinement_factor": 1,
+          "evaluations": 1169808675,
+          "offspring_generated_on_completion": 11861684493198750,
+          "accepted_candidates_on_completion": 11861684493198750,
+          "candidates_generated_lower_bound_on_completion": 11861684493198750,
+          "block_copy_transmissions_lower_bound_on_completion": 94893475945590000,
+          "state_allele_entries": 11600
+        },
+        {
+          "block_count": 8,
+          "refinement_factor": 3,
+          "evaluations": 1169808675,
+          "offspring_generated_on_completion": 11861684493198750,
+          "accepted_candidates_on_completion": 11861684493198750,
+          "candidates_generated_lower_bound_on_completion": 11861684493198750,
+          "block_copy_transmissions_lower_bound_on_completion": 189786951891180000,
+          "state_allele_entries": 23200
+        },
+        {
+          "block_count": 20,
+          "refinement_factor": 9,
+          "evaluations": 1169808675,
+          "offspring_generated_on_completion": 11861684493198750,
+          "accepted_candidates_on_completion": 11861684493198750,
+          "candidates_generated_lower_bound_on_completion": 11861684493198750,
+          "block_copy_transmissions_lower_bound_on_completion": 474467379727950000,
+          "state_allele_entries": 58000
+        }
+      ],
+      "total_workload": {
+        "evaluations": 3509426025,
+        "offspring_generated_on_completion": 35585053479596250,
+        "accepted_candidates_on_completion": 35585053479596250,
+        "candidates_generated_lower_bound_on_completion": 35585053479596250,
+        "block_copy_transmissions_lower_bound_on_completion": 759147807564720000,
+        "largest_population_state_allele_entries": 58000
+      }
+    },
+    {
+      "precision_radius": 0.0001,
+      "precision": {
+        "criteria": {
+          "criteria_version": "weighted-autosomal-equivalence-criteria-v1",
+          "criteria_id": "cost-only-radius-0.0001",
+          "study_plan_sha256": "53b8d539f325531ee57185d29bb6082356877da0f224c5a24054f9b516525460",
+          "alpha": 0.05,
+          "margins": {
+            "ancestry": 0.0002,
+            "target_probability": 0.0002,
+            "p10_joint": 0.0002,
+            "joint_and_target": 0.0002
+          },
+          "max_interval_radius": 0.0001
+        },
+        "criteria_sha256": "48906902551c079f1b1a422c28bae3178b63f3e792da22876bf04f0a29dc7722",
+        "study_plan_sha256": "53b8d539f325531ee57185d29bb6082356877da0f224c5a24054f9b516525460",
+        "comparisons": 136,
+        "replicates_per_cell": 3,
+        "simultaneous_radius_unclipped": 2.39465158771932,
+        "required_replicates_per_cell": 1720306868,
+        "precision_satisfied": false,
+        "confidence_level": 0.95,
+        "method": "hoeffding_union_bound_paired_differences",
+        "independent_replicates_required": true,
+        "comparison_independence_required": false,
+        "convergence_status": "not_established"
+      },
+      "resolutions": [
+        {
+          "block_count": 4,
+          "refinement_factor": 1,
+          "evaluations": 29245216756,
+          "offspring_generated_on_completion": 296542111123326600,
+          "accepted_candidates_on_completion": 296542111123326600,
+          "candidates_generated_lower_bound_on_completion": 296542111123326600,
+          "block_copy_transmissions_lower_bound_on_completion": 2372336888986612800,
+          "state_allele_entries": 11600
+        },
+        {
+          "block_count": 8,
+          "refinement_factor": 3,
+          "evaluations": 29245216756,
+          "offspring_generated_on_completion": 296542111123326600,
+          "accepted_candidates_on_completion": 296542111123326600,
+          "candidates_generated_lower_bound_on_completion": 296542111123326600,
+          "block_copy_transmissions_lower_bound_on_completion": 4744673777973225600,
+          "state_allele_entries": 23200
+        },
+        {
+          "block_count": 20,
+          "refinement_factor": 9,
+          "evaluations": 29245216756,
+          "offspring_generated_on_completion": 296542111123326600,
+          "accepted_candidates_on_completion": 296542111123326600,
+          "candidates_generated_lower_bound_on_completion": 296542111123326600,
+          "block_copy_transmissions_lower_bound_on_completion": 11861684444933064000,
+          "state_allele_entries": 58000
+        }
+      ],
+      "total_workload": {
+        "evaluations": 87735650268,
+        "offspring_generated_on_completion": 889626333369979800,
+        "accepted_candidates_on_completion": 889626333369979800,
+        "candidates_generated_lower_bound_on_completion": 889626333369979800,
+        "block_copy_transmissions_lower_bound_on_completion": 18978695111892902400,
+        "largest_population_state_allele_entries": 58000
+      }
+    }
+  ],
+  "implementation_sha256": {
+    "study_autosomal_resolution.py": "8b19331cf7ea04d02d84392af8224dd2c9923f63dffff62e8dd38a276353e836",
+    "run_experiment.py": "43048bbb2787fe3cba58c8dad8466c457fab3b3e4406f59db224fa78f6f7adaf",
+    "paleogen_rl/genetics/ancestry.py": "d210954f76756d90903fc2ac838cc696cfe4a8b3e1f7ded395c7be4082a2824f",
+    "paleogen_rl/genetics/inheritance.py": "8a8d1a8e5e9f7f6ac7a36822138e43f47fb303e72ddc00d6c868265a3a1b374f",
+    "paleogen_rl/genetics/selected.py": "74e32a14b01ccf5103ab9660f3426d6efa83a39a929ca211b43704dabc66ed56",
+    "paleogen_rl/genetics/pulse.py": "27b71730151bdcd6206f24982d9feb4d77408698c40808ae21b238198bd94dd0",
+    "paleogen_rl/genetics/resolution.py": "1a3d9aa0960811158017a945ac81a0deac9a0af6cf395d678e9207643b123af0",
+    "paleogen_rl/genetics/protocol.py": "f4144478f3a30562f4a8288ca207af42e926c72015cd8752df09b0218fc9c5c6",
+    "src/epi_pulse.py": "0e785fe9d303adac2043a7205fe021f5e1eea61933a721b613ab98dd147119c3",
+    "src/reich_panmictic_original.py": "95f854cb0a8eeef33810168a487d5b998a90f4f69f9d873508a1f67407deb641",
+    "flake.lock": "a52bdf3a3b9a069175d3af298234c3cf7adeba54540833eed6ad902e9ccc0a64",
+    "study_weighted_autosomal_resolution.py": "33526c5dd5fab0a44d169a1699f441f0654d55377444397feb86017404a4f961",
+    "paleogen_rl/genetics/weighted_ancestry.py": "309749facf46c6d9a9c4a03c46aaaf416c430a9cbb117c71c028b0df27588d20",
+    "paleogen_rl/genetics/weighted_protocol.py": "2c16340fc49ba4dd04d00c7ff68f4dc8d2cb265ce6a78a2b9b394ec66254e362",
+    "paleogen_rl/genetics/weighted_refinement.py": "5aa9767b9fec7ba17a18e9f8853e41f99c95fd111e0488875672a41d51c363f2",
+    "weighted_autosomal_equivalence.py": "16c8c3ee5ad09d35c4709de4eacc83bc22a39e700561fb0fb9a8d61b12a9a60d"
+  },
+  "python_version": "3.14.8",
+  "numpy_version": "2.5.3",
+  "generator": "docs/science/m3-confirmation-budget.md:reproduction",
+  "assumptions": {
+    "completion_required": true,
+    "rejection_overhead_included": false,
+    "independent_replicates_required": true,
+    "cost_units": "logical_counts_not_time",
+    "state_units": "allele_entries_one_population_not_peak_memory",
+    "template_seeds_are_not_a_confirmation_plan": true,
+    "technical_margins_are_twice_radius": true,
+    "no_large_seed_lists_materialized": true
+  }
+}

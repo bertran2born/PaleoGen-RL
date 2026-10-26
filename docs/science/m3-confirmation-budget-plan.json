@@ -1,0 +1,90 @@
+{
+  "plan_version": "weighted-autosomal-resolution-plan-v1",
+  "plan_id": "m3-confirmation-cost-template-i33",
+  "family": {
+    "base_protocol": {
+      "protocol_version": "weighted-autosomal-evaluation-protocol-v1",
+      "protocol_id": "cost-template-target-regime",
+      "population_size": 1450,
+      "generations": 6993,
+      "pulse": {
+        "f": 0.05,
+        "male_fraction": 0.5
+      },
+      "recombination_map": {
+        "panel": {
+          "panel_id": "cost-template-four",
+          "block_ids": [
+            "a",
+            "b",
+            "c",
+            "d"
+          ]
+        },
+        "switch_probabilities": [
+          0.1967346701436833,
+          0.26381672362949266,
+          0.1967346701436833
+        ]
+      },
+      "partners": {
+        "mt": "a",
+        "y": "d"
+      },
+      "measurement": {
+        "measurement_version": "weighted-autosomal-block-measurement-v1",
+        "observable": "total_weighted_diploid_block_ancestry",
+        "weighting": "explicit_relative_block_weights",
+        "sample_size": 10,
+        "sample_replacement": false,
+        "target_interval": [
+          0.03,
+          0.07
+        ]
+      },
+      "resolution_control": {
+        "status": "not_established"
+      },
+      "measurement_weights": {
+        "block_weights": [
+          1.0,
+          3.0,
+          3.0,
+          1.0
+        ],
+        "weight_basis": "synthetic cost template; not empirical genomic lengths"
+      }
+    },
+    "family_id": "cost-template-family",
+    "map_length": 1.0,
+    "refinement_factors": [
+      1,
+      3,
+      9
+    ]
+  },
+  "seeds": [
+    620000,
+    620001,
+    620002
+  ],
+  "scenarios": [
+    "neutral",
+    "reich_point",
+    "symmetric_1pct",
+    "symmetric_5pct",
+    "direction_mod_1pct",
+    "direction_arch_1pct",
+    "direction_mod_5pct",
+    "direction_arch_5pct",
+    "reich_plus_symmetric_1pct",
+    "reich_plus_symmetric_0p1pct",
+    "reich_plus_symmetric_0p3pct",
+    "reich_plus_favor_mod_0p1pct",
+    "reich_plus_favor_mod_0p3pct",
+    "reich_plus_favor_mod_1pct",
+    "reich_plus_favor_arch_0p1pct",
+    "reich_plus_favor_arch_0p3pct",
+    "reich_plus_favor_arch_1pct"
+  ]
+}
