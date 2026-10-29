@@ -57,6 +57,48 @@ PaleoGen-RL mesure l'ascendance autosomale finale avec une représentation adapt
 - `tests/test_autosomal_selected.py`, `test_autosomal_block_modes.py`, `test_autosomal_protocol.py` — scénarios, modes et identité de mesure.
 - `docs/science/m3-audit.md` — correspondance des critères et limites d'acceptation.
 
+## Scientific Acceptance — M3
+
+La clôture de M3 exige, outre la validation technique des mécanismes autosomiques,
+une confirmation indépendante de la stabilité numérique de la métrique principale
+entre les résolutions retenues.
+
+**Portée scientifique**
+
+- Une validation conditionnelle sur une famille synthétique est admissible, à
+  condition que son architecture, ses hypothèses et ses limitations soient explicites.
+- Une équivalence dans une famille finie de résolutions ne constitue ni une preuve
+  de convergence universelle, ni une calibration du génome humain, ni une validation
+  historique.
+- Les poids des loci partenaires doivent être conservés selon les règles du
+  raffinement retenu, sans modification silencieuse du dénominateur de l'ascendance.
+
+**Exigences de confirmation**
+
+1. L'architecture principale, les résolutions et les observables sont définies avant
+   la confirmation.
+2. Les quatre marges d'équivalence, le risque statistique simultané, la précision
+   requise, la méthode d'inférence, les effectifs, les graines et le budget sont
+   fixés dans un protocole versionné.
+3. L'équivalence est évaluée à partir des intervalles simultanés des différences
+   entre résolutions, et non de la seule absence de différence statistiquement
+   significative.
+4. Les événements rares font l'objet d'une justification explicite des marges et
+   de leur portée scientifique.
+5. Les données confirmatoires sont indépendantes de celles ayant servi au
+   dimensionnement et à la sélection des paramètres.
+6. Les résultats non concluants et les échecs sont conservés sans modification
+   rétroactive des critères.
+
+**Règle de clôture**
+
+M3 ne peut être déclaré `COMPLETE` que si les critères confirmatoires préalablement
+définis sont satisfaits et si le protocole autosomal principal est effectivement
+adopté pour les 17 scénarios, avec préservation explicite du chemin historique.
+
+Le rapport final doit identifier précisément la famille de modèles et les
+résolutions pour lesquelles cette validation est établie.
+
 ## Definition of Done
 
 - [ ] D1 [O1] Tous les scénarios existants utilisent le même nombre et la même définition de blocs autosomiques pour la métrique principale.
