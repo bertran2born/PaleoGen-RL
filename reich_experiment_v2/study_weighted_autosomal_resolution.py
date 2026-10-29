@@ -10,6 +10,7 @@ import platform
 
 import numpy as np
 
+from autosomal_seed_history import audit_seed_separation, load_seed_history
 from run_experiment import Config, SCENARIOS, run_block_full
 from study_autosomal_resolution import IMPLEMENTATION_FILES, _differences, _metrics, _sum_work
 from paleogen_rl.genetics.protocol import _canonical, _keys, _unique_fields
@@ -23,7 +24,7 @@ PREVIEW_VERSION = 'weighted-autosomal-resolution-preview-v1'
 ROOT = Path(__file__).resolve().parent
 WEIGHTED_IMPLEMENTATION_FILES = (*IMPLEMENTATION_FILES, 'study_weighted_autosomal_resolution.py',
     'paleogen_rl/genetics/weighted_ancestry.py', 'paleogen_rl/genetics/weighted_protocol.py',
-    'paleogen_rl/genetics/weighted_refinement.py')
+    'paleogen_rl/genetics/weighted_refinement.py', 'autosomal_seed_history.py')
 
 
 def validate_weighted_resolution_plan(plan):
@@ -57,8 +58,15 @@ def load_weighted_resolution_plan(path):
     return plan, hashlib.sha256(payload).hexdigest()
 
 
-def preview_weighted_resolution_plan(plan):
+def preview_weighted_resolution_plan(plan, *, seed_history=None):
     plan = validate_weighted_resolution_plan(plan)
+    seed_audit = None
+    if seed_history is not None:
+        seed_audit = audit_seed_separation(plan['seeds'], seed_history)
+        if seed_audit['collisions']:
+            conflicts = '; '.join(f'{row["source_id"]}: {row["seeds"]}' for row in seed_audit['collisions'])
+            raise ValueError(f'seed history overlap: {conflicts}')
+        seed_audit['study_plan_sha256'] = hashlib.sha256(_canonical(plan).encode('utf-8')).hexdigest()
     declaration = plan['family']
     base = WeightedAutosomalProtocol.from_dict(declaration['base_protocol'])
     family = build_weighted_refinement_family(base, **{key: declaration[key] for key in
@@ -76,7 +84,7 @@ def preview_weighted_resolution_plan(plan):
         'evaluations', 'offspring_generated_on_completion', 'accepted_candidates_on_completion',
         'candidates_generated_lower_bound_on_completion', 'block_copy_transmissions_lower_bound_on_completion')}
     total['largest_population_state_allele_entries'] = max(row['state_allele_entries'] for row in rows)
-    return dict(preview_version=PREVIEW_VERSION, scientific_status='planning_only', simulation_performed=False,
+    report = dict(preview_version=PREVIEW_VERSION, scientific_status='planning_only', simulation_performed=False,
                 mode='full', convergence_status='not_established', plan=plan,
                 plan_sha256=hashlib.sha256(_canonical(plan).encode('utf-8')).hexdigest(), plan_file_sha256=None,
                 family=family, resolutions=rows, total_workload=total,
@@ -87,10 +95,13 @@ def preview_weighted_resolution_plan(plan):
                 assumptions=dict(completion_required=True, rejection_overhead_included=False,
                                  independent_replicates_required=True, cost_units='logical_counts_not_time',
                                  state_units='allele_entries_one_population_not_peak_memory'))
+    if seed_audit is not None:
+        report['seed_audit'] = seed_audit
+    return report
 
 
-def run_weighted_resolution_plan(plan):
-    preview = preview_weighted_resolution_plan(plan)
+def run_weighted_resolution_plan(plan, *, seed_history=None):
+    preview = preview_weighted_resolution_plan(plan, seed_history=seed_history)
     plan, family = preview['plan'], preview['family']
     hashes = {path: hashlib.sha256((ROOT/path).read_bytes()).hexdigest() for path in WEIGHTED_IMPLEMENTATION_FILES}
     scenarios = []
@@ -121,7 +132,7 @@ def run_weighted_resolution_plan(plan):
                              metrics=_metrics(replicates), work_units=_sum_work(replicates)))
         scenarios.append(dict(name=name, parameters=dict(SCENARIOS[name]), resolutions=rows,
                               differences_from_finest=_differences(rows), work_units=_sum_work(rows)))
-    return dict(study_version=STUDY_VERSION, scientific_status='exploratory_weighted_resolution_diagnostic',
+    report = dict(study_version=STUDY_VERSION, scientific_status='exploratory_weighted_resolution_diagnostic',
                 simulation_performed=True, mode='full', convergence_status='not_established',
                 plan=plan, plan_sha256=preview['plan_sha256'], plan_file_sha256=None, family=family,
                 interval_scope='pointwise_monte_carlo_not_equivalence',
@@ -129,6 +140,9 @@ def run_weighted_resolution_plan(plan):
                 python_version=platform.python_version(), numpy_version=np.__version__,
                 rng_bit_generator=evaluation['engine_report']['rng_bit_generator'],
                 workload_preview=preview, scenarios=scenarios, total_work_units=_sum_work(scenarios))
+    if 'seed_audit' in preview:
+        report['seed_audit'] = json.loads(_canonical(preview['seed_audit']))
+    return report
 
 
 def main(argv=None):
@@ -136,6 +150,8 @@ def main(argv=None):
     parser.add_argument('--plan', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True, help='new JSON destination; no overwrite')
     parser.add_argument('--preview', action='store_true', help='forecast logical work without simulation')
+    parser.add_argument('--seed-history', type=Path,
+                        help='declared prior seeds; reject overlap before simulation (not an independence proof)')
     args = parser.parse_args(argv)
     if args.output.exists() or args.output.is_symlink():
         parser.error('output already exists')
@@ -143,7 +159,13 @@ def main(argv=None):
         parser.error('output parent directory must exist')
     try:
         plan, file_hash = load_weighted_resolution_plan(args.plan)
-        report = preview_weighted_resolution_plan(plan) if args.preview else run_weighted_resolution_plan(plan)
+        history, history_hash = load_seed_history(args.seed_history) if args.seed_history is not None else (None, None)
+        operation = preview_weighted_resolution_plan if args.preview else run_weighted_resolution_plan
+        report = operation(plan, seed_history=history)
+        if history is not None:
+            report['seed_audit']['history_file_sha256'] = history_hash
+            if not args.preview:
+                report['workload_preview']['seed_audit']['history_file_sha256'] = history_hash
         report['plan_file_sha256'] = file_hash
         if not args.preview:
             report['workload_preview']['plan_file_sha256'] = file_hash
